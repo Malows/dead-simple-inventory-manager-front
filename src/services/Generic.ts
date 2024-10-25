@@ -1,10 +1,6 @@
 import Service from './Service'
 import HttpResponse, { handle } from './Response'
 
-interface UrlParameter {
-  [key: string]: unknown
-}
-
 /**
  * Generic CRUD service
  */
@@ -15,27 +11,14 @@ class Generic<T> extends Service {
   _url = ''
 
   /**
-   * {string} _idProperty
-   */
-  _idProperty = 'id'
-
-  /**
    * Format the url according the payload parameter.
-   *
-   * @param {Record<string, unknown>|undefined} parameter
-   *
-   * @returns {string}
    */
-  url (parameter?: UrlParameter): string {
-    return parameter
-      ? `${this._url}/${String(parameter[this._idProperty])}`
-      : this._url
+  url (id?: string): string {
+    return id ? `${this._url}/${id}` : this._url
   }
 
   /**
    * Fetch the list of resources.
-   *
-   * @returns {Promise<HttpResponse<T[]>>}
    */
   fetch (): Promise<HttpResponse<T[]>> {
     return handle<T[]>(
@@ -47,14 +30,10 @@ class Generic<T> extends Service {
 
   /**
    * Fetch the individual resource.
-   *
-   * @param {UrlParameter} payload
-   *
-   * @returns {Promise<HttpResponse<T>>}
    */
-  get (payload: UrlParameter): Promise<HttpResponse<T>> {
+  get (id: string): Promise<HttpResponse<T>> {
     return handle<T>(
-      fetch(this.url(payload), {
+      fetch(this.url(id), {
         headers: this.authHeader()
       })
     )
@@ -62,12 +41,8 @@ class Generic<T> extends Service {
 
   /**
    * Create a new resource.
-   *
-   * @param {UrlParameter} payload
-   *
-   * @returns {Promise<HttpResponse<T>>}
    */
-  create (payload: UrlParameter): Promise<HttpResponse<T>> {
+  create <T extends object> (payload: T): Promise<HttpResponse<T>> {
     return handle<T>(
       fetch(this.url(), {
         headers: this.authHeader(),
@@ -79,14 +54,10 @@ class Generic<T> extends Service {
 
   /**
    * Update the resource.
-   *
-   * @param {UrlParameter} payload
-   *
-   * @returns {Promise<HttpResponse<T>>}
    */
-  update (payload: UrlParameter): Promise<HttpResponse<T>> {
+  update <T extends object> (id: string, payload: T): Promise<HttpResponse<T>> {
     return handle<T>(
-      fetch(this.url(payload), {
+      fetch(this.url(id), {
         headers: this.authHeader(),
         method: 'PUT',
         body: JSON.stringify(payload)
@@ -96,14 +67,10 @@ class Generic<T> extends Service {
 
   /**
    * Delete the resource.
-   *
-   * @param {UrlParameter} payload
-   *
-   * @returns {Promise<HttpResponse<T>>}
    */
-  remove (payload: UrlParameter): Promise<HttpResponse<T>> {
+  remove (id: string): Promise<HttpResponse<T>> {
     return handle<T>(
-      fetch(this.url(payload), {
+      fetch(this.url(id), {
         headers: this.authHeader(),
         method: 'DELETE'
       })
