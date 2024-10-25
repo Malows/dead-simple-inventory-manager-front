@@ -1,3 +1,5 @@
+import { RouteLocationRaw } from 'vue-router'
+
 export interface Model {
   id: number,
   uuid: string,
@@ -34,10 +36,17 @@ export interface Product extends Model {
   categories?: Category[] | null,
 }
 
-export interface SupplierWithProducts extends Supplier {
+export type WithProducts<T extends Model> = T & {
   products?: Product[],
 }
 
-export interface CategoryWithProducts extends Category {
-  products?: Product[],
+export type CategoryWithProducts = WithProducts<Category>
+export type SupplierWithProducts = WithProducts<Supplier>
+
+export type SelectOption<T> = { label: string, value: T }
+export type WithId<T> = T & { id: number | string }
+export interface Link {
+  to: RouteLocationRaw,
+  label: string,
+  icon?: string,
 }
