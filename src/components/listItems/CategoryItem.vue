@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { CategoryWithProducts } from '../../types'
+import { Category } from '../../types/category.interfaces'
 
-const props = defineProps<{ category: CategoryWithProducts }>()
+const props = defineProps<{ category: Category }>()
 
 const amount = computed(() => (props.category.products?.length ?? 0))
 

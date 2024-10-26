@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { Product } from '../../types'
+import { Product } from '../../types/product.interfaces'
 import { parsePrice } from '../../utils/text'
 
 const props = withDefaults(

@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { useQuasar } from 'quasar'
 
 import { useProductsStore } from '../../stores/products'
-import { Product } from '../../types'
+import { Product } from '../../types/product.interfaces'
 
 const props = defineProps<{ product: Product }>()
 const show = defineModel({ type: Boolean, default: false })

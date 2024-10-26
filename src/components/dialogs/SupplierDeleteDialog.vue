@@ -3,7 +3,7 @@ import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 
 import { useSuppliersStore } from '../../stores/suppliers'
-import { Supplier } from '../../types'
+import { Supplier } from '../../types/supplier.interfaces'
 
 const props = defineProps<{ supplier: Supplier }>()
 const show = defineModel({ type: Boolean, default: false })

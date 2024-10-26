@@ -3,7 +3,7 @@ import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 
 import { useProductsStore } from '../../stores/products'
-import { Product } from '../../store/store-flag'
+import { Product } from '../../types/product.interfaces'
 
 const props = defineProps<{ product: Product }>()
 const show = defineModel({ type: Boolean, default: false })

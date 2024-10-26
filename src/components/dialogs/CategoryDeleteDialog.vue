@@ -3,13 +3,13 @@ import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 
 import { useCategoriesStore } from '../../stores/categories'
-import { CategoryWithProducts } from '../../types'
+import { Category } from '../../types/category.interfaces'
 
 const categoriesStore = useCategoriesStore()
 const router = useRouter()
 const quasar = useQuasar()
 
-const props = defineProps<{ category: CategoryWithProducts | null }>()
+const props = defineProps<{ category: Category | null }>()
 
 const show = defineModel({ type: Boolean, default: false })
 

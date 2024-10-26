@@ -1,5 +1,57 @@
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
+
+import { useStore } from 'src/store'
+import { pull, pullMany } from 'src/utils/api'
+
+import UserMenu from './UserMenu.vue'
+import LeftDrawer from './LeftDrawer.vue'
+
+const NAME = process.env.NAME
+
+const router = useRouter()
+const quasar = useQuasar()
+
+const drawer = ref(false)
+const toggleDrawer = () => {
+  drawer.value = !drawer.value
+}
+
+const store = useStore()
+const user = computed(
+  () => store.state.session.user as { name: string } | null
+)
+const logout = async () => {
+  await store.dispatch('session/logout')
+  return router.push({ name: 'login' })
+}
+
+onMounted(async () => {
+  if (!user.value) {
+    const response = await pull(store, quasar, 'session/fetchUserData').catch(
+      logout
+    )
+
+    if (response.code === 401) {
+      await logout()
+    }
+  }
+
+  const responses = await pullMany(store, quasar, [
+    ['categories/fetch'],
+    ['suppliers/fetch']
+  ])
+
+  if (responses.some((x) => x.code === 401)) {
+    await logout()
+  }
+})
+</script>
+
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout v-if="user" view="hHh LpR fFf">
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -8,99 +60,18 @@
           round
           icon="menu"
           aria-label="Menu"
-          @click="toggleLeftDrawer"
+          @click="toggleDrawer"
         />
+        <q-toolbar-title>{{ NAME }}</q-toolbar-title>
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+        <user-menu :user @logout="logout" />
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
+    <left-drawer v-model="drawer" />
 
     <q-page-container>
       <router-view />
     </q-page-container>
   </q-layout>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue'
-import EssentialLink, { EssentialLinkProps } from 'components/EssentialLink.vue'
-
-defineOptions({
-  name: 'MainLayout'
-})
-
-const linksList: EssentialLinkProps[] = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
-
-const leftDrawerOpen = ref(false)
-
-function toggleLeftDrawer () {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
-</script>

@@ -1,9 +1,9 @@
 <script lang="ts">
 import { computed } from 'vue'
 
-import { SupplierWithProducts } from '../../types'
+import { Supplier } from '../../types/supplier.interfaces'
 
-const props = defineProps<{ supplier: SupplierWithProducts}>()
+const props = defineProps<{ supplier: Supplier}>()
 
 const amount = computed(() => (props.supplier.products?.length ?? 0))
 const to = computed(() => ({ name: 'suppliers show', params: { supplierId: props.supplier.uuid } }))
