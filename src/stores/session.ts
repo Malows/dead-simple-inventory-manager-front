@@ -1,14 +1,19 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { isPast, parseISO } from 'date-fns'
+import { isPast } from 'date-fns'
 
-import Service from '../service'
-import utils from '../utils'
+import SessionService from '../services/SessionService'
+import { mapSession, setStorage, getStorage, removeStorage } from '../services/interceptors/session.interceptors'
+import { RawSession, User } from 'src/types/session.interfaces'
 
-const PREFIX = process.env.STORAGE_PREFIX
+const PREFIX = process.env.STORAGE_PREFIX || 'session'
 
-const service = new Service({
-
+const service = new SessionService({
+  clientSecret: process.env.CLIENT_SECRET || '',
+  clientID: process.env.CLIENT_ID || '',
+  url: process.env.API_URL || '',
+  oauthURI: process.env.OAUTH_URI || '',
+  profileURI: process.env.PROFILE_URI || ''
 })
 
 export const useSessionStore = defineStore('session', () => {
@@ -18,15 +23,11 @@ export const useSessionStore = defineStore('session', () => {
   const expirationAt = ref<Date | null>(null)
   const refreshExpirationAt = ref<Date | null>(null)
 
-  const user = ref(null)
+  async function login (payload: { username: string, password: string }) {
+    const response = await service.login<RawSession>(payload)
 
-  const { getValues, parseValuesFromResponse } = utils(context)
-
-  async function login (payload) {
-    const response = await service.login(payload)
-
-    if (response.isOk) {
-      const parsed = parseValuesFromResponse(response)
+    if (response.data) {
+      const parsed = mapSession(response.data)
 
       accessToken.value = parsed.accessToken
       refreshToken.value = parsed.refreshToken
@@ -34,11 +35,7 @@ export const useSessionStore = defineStore('session', () => {
       expirationAt.value = parsed.expirationAt
       refreshExpirationAt.value = parsed.refreshExpirationAt
 
-      localStorage.setItem(`${PREFIX}_access_token`, parsed.accessToken)
-      localStorage.setItem(`${PREFIX}_refresh_token`, parsed.refreshToken)
-      localStorage.setItem(`${PREFIX}_login_at`, parsed.loginAt)
-      localStorage.setItem(`${PREFIX}_expiration_at`, parsed.expirationAt)
-      localStorage.setItem(`${PREFIX}_refresh_expiration_at`, parsed.refreshExpirationAt)
+      setStorage(PREFIX, parsed)
 
       await fetchUserData()
     }
@@ -54,34 +51,32 @@ export const useSessionStore = defineStore('session', () => {
     refreshExpirationAt.value = null
     user.value = null
 
-    localStorage.removeItem(`${PREFIX}_access_token`)
-    localStorage.removeItem(`${PREFIX}_refresh_token`)
-    localStorage.removeItem(`${PREFIX}_login_at`)
-    localStorage.removeItem(`${PREFIX}_expiration_at`)
-    localStorage.removeItem(`${PREFIX}_refresh_expiration_at`)
+    removeStorage(PREFIX)
   }
 
   async function checkSession () {
-    const values = getValues()
+    const values = getStorage(PREFIX)
+
+    if (!values) {
+      return null
+    }
+
     const { loginAt, expirationAt, accessToken } = values
 
     const areInvalid = !(loginAt && expirationAt && accessToken)
 
-    if (areInvalid || isPast(parseISO(expirationAt))) {
-      return false
+    if (areInvalid || isPast(expirationAt)) {
+      return null
     }
 
-    commit('login', values)
-
-    const response = await dispatch('fetchUserData')
-
-    return response
+    return fetchUserData()
   }
 
+  const user = ref<User | null>(null)
   async function fetchUserData () {
-    const response = await (new Service(context)).fetchUserData()
+    const response = await service.fetchUserData<User>()
 
-    if (response.isOk) {
+    if (response.data) {
       user.value = response.data
     }
 
@@ -89,12 +84,17 @@ export const useSessionStore = defineStore('session', () => {
   }
 
   return {
-
     accessToken,
     refreshToken,
     loginAt,
     expirationAt,
     refreshExpirationAt,
-    user
+
+    login,
+    logout,
+    checkSession,
+
+    user,
+    fetchUserData
   }
 })
