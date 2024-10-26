@@ -1,73 +1,69 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { SupplierWithProducts } from '../types'
+
 import { supplierService } from '../services/Crud'
+import { mapSupplier } from '../services/interceptors/supplier.interceptors'
+import { Supplier } from '../types/supplier.interfaces'
+import { useRequests } from '../composition/useRequests'
 
 export const useSuppliersStore = defineStore('suppliers', () => {
-  const suppliersRequest = ref({ idle: true, fetching: false })
-  const suppliers = ref<SupplierWithProducts[]>([])
+  const suppliers = ref<Supplier[]>([])
 
-  async function request<T> (promise: Promise<T>) {
-    suppliersRequest.value = { idle: false, fetching: true }
-    const response = await promise
-    suppliersRequest.value = { idle: false, fetching: false }
-
-    return response
-  }
+  const { requestStatus, request } = useRequests()
 
   async function getSuppliers () {
     const response = await request(supplierService.fetch())
 
     if (response.data) {
-      suppliers.value = response.data
+      suppliers.value = response.data.map(mapSupplier)
     }
 
     return response
   }
 
-  async function getSupplier (supplier: SupplierWithProducts) {
+  async function getSupplier (supplier: Supplier) {
     const response = await request(supplierService.get(supplier.uuid))
 
     if (response.data) {
       const index = suppliers.value.findIndex((s) => s.uuid === supplier.uuid)
 
       if (index !== -1) {
-        suppliers.value.splice(index, 1, response.data)
+        suppliers.value.splice(index, 1, mapSupplier(response.data))
       } else {
-        suppliers.value.push(response.data)
+        suppliers.value.push(mapSupplier(response.data))
       }
     }
 
     return response
   }
 
-  async function createSupplier (supplier: SupplierWithProducts) {
+  async function createSupplier (supplier: Supplier) {
     const response = await request(supplierService.create(supplier))
 
     if (response.data) {
-      suppliers.value.push(response.data)
+      suppliers.value.push(mapSupplier(response.data))
     }
 
     return response
   }
 
-  async function updateSupplier (supplier: SupplierWithProducts) {
+  async function updateSupplier (supplier: Supplier) {
     const response = await request(supplierService.update(supplier.uuid, supplier))
 
     if (response.data) {
       const index = suppliers.value.findIndex((s) => s.uuid === supplier.uuid)
 
       if (index !== -1) {
-        suppliers.value.splice(index, 1, response.data)
+        suppliers.value.splice(index, 1, mapSupplier(response.data))
       } else {
-        suppliers.value.push(response.data)
+        suppliers.value.push(mapSupplier(response.data))
       }
     }
 
     return response
   }
 
-  async function deleteSupplier (supplier: SupplierWithProducts) {
+  async function deleteSupplier (supplier: Supplier) {
     const response = await request(supplierService.remove(supplier.uuid))
 
     if (response.data) {
@@ -83,7 +79,7 @@ export const useSuppliersStore = defineStore('suppliers', () => {
 
   return {
     suppliers,
-    suppliersRequest,
+    suppliersRequest: requestStatus,
 
     getSuppliers,
     getSupplier,

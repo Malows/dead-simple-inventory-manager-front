@@ -42,7 +42,7 @@ class Generic<T> extends Service {
   /**
    * Create a new resource.
    */
-  create <T extends object> (payload: T): Promise<HttpResponse<T>> {
+  create <U extends object> (payload: U): Promise<HttpResponse<T>> {
     return handle<T>(
       fetch(this.url(), {
         headers: this.authHeader(),
@@ -55,7 +55,7 @@ class Generic<T> extends Service {
   /**
    * Update the resource.
    */
-  update <T extends object> (id: string, payload: T): Promise<HttpResponse<T>> {
+  update <U extends object> (id: string, payload: U): Promise<HttpResponse<T>> {
     return handle<T>(
       fetch(this.url(id), {
         headers: this.authHeader(),

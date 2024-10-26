@@ -1,25 +1,21 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { Product } from '../types'
+
 import { productService } from '../services/Crud'
+import { mapProduct } from '../services/interceptors/product.interceptors'
+import { Product, ProductDTO } from '../types/product.interfaces'
+import { useRequests } from '../composition/useRequests'
 
 export const useProductsStore = defineStore('products', () => {
-  const productsRequest = ref({ idle: true, fetching: false })
   const products = ref<Product[]>([])
 
-  async function request<T> (promise: Promise<T>) {
-    productsRequest.value = { idle: false, fetching: true }
-    const response = await promise
-    productsRequest.value = { idle: false, fetching: false }
-
-    return response
-  }
+  const { requestStatus, request } = useRequests()
 
   async function getProducts () {
     const response = await request(productService.fetch())
 
     if (response.data) {
-      products.value = response.data
+      products.value = response.data.map(mapProduct)
     }
 
     return response
@@ -32,20 +28,20 @@ export const useProductsStore = defineStore('products', () => {
       const index = products.value.findIndex((p) => p.uuid === product.uuid)
 
       if (index !== -1) {
-        products.value.splice(index, 1, response.data)
+        products.value.splice(index, 1, mapProduct(response.data))
       } else {
-        products.value.push(response.data)
+        products.value.push(mapProduct(response.data))
       }
     }
 
     return response
   }
 
-  async function createProduct (product: Product) {
+  async function createProduct (product: ProductDTO) {
     const response = await request(productService.create(product))
 
     if (response.data) {
-      products.value.push(response.data)
+      products.value.push(mapProduct(response.data))
     }
 
     return response
@@ -58,9 +54,9 @@ export const useProductsStore = defineStore('products', () => {
       const index = products.value.findIndex((c) => c.uuid === product.uuid)
 
       if (index !== -1) {
-        products.value.splice(index, 1, response.data)
+        products.value.splice(index, 1, mapProduct(response.data))
       } else {
-        products.value.push(response.data)
+        products.value.push(mapProduct(response.data))
       }
     }
 
@@ -83,7 +79,7 @@ export const useProductsStore = defineStore('products', () => {
 
   return {
     products,
-    productsRequest,
+    productsRequest: requestStatus,
 
     getProducts,
     getProduct,

@@ -1,0 +1,31 @@
+import type { CategoryEntity } from './category.interfaces'
+import type { SupplierEntity } from './supplier.interfaces'
+
+export interface ProductDTO {
+  name: string;
+  code: string;
+  stock: number;
+  min_stock_warning: number;
+  description: string | null;
+  price: number | null;
+  supplier_id: number | null;
+}
+
+export interface ProductEntity extends ProductDTO {
+  id: number;
+  uuid: string;
+}
+
+export interface RawProduct extends ProductEntity {
+  supplier?: SupplierEntity | null;
+  categories?: CategoryEntity[] | null;
+  created_at: string | null;
+  updated_at: string | null;
+}
+
+export interface Product extends ProductEntity {
+  supplier: SupplierEntity | null;
+  categories: CategoryEntity[];
+  created_at: Date | null;
+  updated_at: Date | null;
+}
