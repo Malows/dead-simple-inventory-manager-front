@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import { ref, computed } from 'vue'
 
 import { byName } from '../../utils/filters'
@@ -8,11 +8,13 @@ import FilterPagination from './FilterPagination.vue'
 
 const props = withDefaults(
   defineProps<{
-    items: unknown[],
-    filterFn?:(search: string) => (item: Record<string, string>) => boolean,
+    items: T[],
+    filterFn?:(search: string) => (item: T) => boolean,
     itemsPerPage?: number,
   }>(),
   {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     filterFn: byName,
     itemsPerPage: 10
   }
@@ -27,7 +29,7 @@ const filtered = computed(() => {
   if (!props.items) return []
   if (!searchField.value) return props.items
 
-  return props.items.filter((x: unknown) => props.filterFn(searchField.value)(x as Record<string, string>))
+  return props.items.filter((x: T) => props.filterFn(searchField.value)(x))
 })
 
 const numberOfPages = computed(() => Math.ceil(filtered.value.length / props.itemsPerPage))

@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 
 import { supplierService } from '../services/Crud'
 import { mapSupplier } from '../services/interceptors/supplier.interceptors'
-import { Supplier } from '../types/supplier.interfaces'
+import { Supplier, SupplierDTO } from '../types/supplier.interfaces'
 import { useRequests } from '../composition/useRequests'
 
 export const useSuppliersStore = defineStore('suppliers', () => {
@@ -21,11 +21,11 @@ export const useSuppliersStore = defineStore('suppliers', () => {
     return response
   }
 
-  async function getSupplier (supplier: Supplier) {
-    const response = await request(supplierService.get(supplier.uuid))
+  async function getSupplier (uuid: string) {
+    const response = await request(supplierService.get(uuid))
 
     if (response.data) {
-      const index = suppliers.value.findIndex((s) => s.uuid === supplier.uuid)
+      const index = suppliers.value.findIndex((supplier) => supplier.uuid === uuid)
 
       if (index !== -1) {
         suppliers.value.splice(index, 1, mapSupplier(response.data))
@@ -37,7 +37,7 @@ export const useSuppliersStore = defineStore('suppliers', () => {
     return response
   }
 
-  async function createSupplier (supplier: Supplier) {
+  async function createSupplier (supplier: SupplierDTO) {
     const response = await request(supplierService.create(supplier))
 
     if (response.data) {

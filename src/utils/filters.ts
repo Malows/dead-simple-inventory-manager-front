@@ -1,26 +1,4 @@
-/**
- *
- * @param {*} object
- * @param {*} keys
- * @returns
- */
-function only (object: Record<string, string>, keys: string[]): string[] {
-  return keys.map(x => (object[x]).toLowerCase())
-}
-
-/**
- *
- * @param {*} searchInput
- * @param {*} searchFields
- * @returns
- */
-function compare (searchInput: string, searchFields: string[]) {
-  const toSearch = searchInput.toLowerCase()
-
-  return (x: Record<string, string>) => {
-    return only(x, searchFields).some(value => value?.includes(toSearch))
-  }
-}
+import { Product } from '../types/product.interfaces'
 
 /**
  *
@@ -28,7 +6,8 @@ function compare (searchInput: string, searchFields: string[]) {
  * @returns
  */
 export function byName (searchField: string) {
-  return compare(searchField, ['name'])
+  const toSearch = searchField.toLowerCase()
+  return (x: { name: string }) => x.name.toLowerCase().includes(toSearch)
 }
 
 /**
@@ -37,5 +16,7 @@ export function byName (searchField: string) {
  * @returns
  */
 export function byProduct (searchField: string) {
-  return compare(searchField, ['name', 'code'])
+  const toSearch = searchField.toLowerCase()
+
+  return ({ name, code }: Product) => name.toLowerCase().includes(toSearch) || code.toLowerCase().includes(toSearch)
 }

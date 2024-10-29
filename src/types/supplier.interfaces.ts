@@ -1,6 +1,14 @@
 import { ProductEntity } from './product.interfaces'
 
-export interface SupplierEntity {
+export interface SupplierDTO {
+  name: string;
+  email: string | null;
+  phone: string | null;
+  address: string | null;
+  web: string | null;
+}
+
+export interface SupplierEntity extends SupplierDTO {
   id: number;
   uuid: string;
   name: string;
