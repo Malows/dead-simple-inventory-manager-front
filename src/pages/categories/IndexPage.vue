@@ -1,0 +1,39 @@
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useQuasar } from 'quasar'
+
+import { useCategoriesStore } from '../../stores/categories'
+
+import PageWithAdd from '../../components/pages/PageWithAdd.vue'
+import FilterableList from '../../components/filterable/FilterableList.vue'
+import CategoryItem from '../../components/listItems/CategoryItem.vue'
+
+const categoriesStore = useCategoriesStore()
+const quasar = useQuasar()
+
+onMounted(() => {
+  quasar.loading.show()
+  categoriesStore
+    .getCategories()
+    .catch(console.error)
+    .finally(() => {
+      quasar.loading.hide()
+    })
+})
+</script>
+
+<template>
+  <page-with-add
+    title="Categorías"
+    :to="{ name: 'categories create'}"
+  >
+    <filterable-list
+      :items="categoriesStore.categories"
+      :items-per-page="50"
+    >
+      <template #default="{ item }">
+        <category-item :category="item" />
+      </template>
+    </filterable-list>
+  </page-with-add>
+</template>
