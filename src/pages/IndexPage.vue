@@ -1,47 +1,79 @@
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { useQuasar } from 'quasar'
+
+import { Product } from '../types/product.interfaces'
+import { useProductsStore } from '../stores/products'
+import { byProduct } from '../utils/filters'
+
+import HomeItem from '../components/listItems/HomeItem.vue'
+import FilterableList from '../components/filterable/FilterableList.vue'
+import ProductStockDialog from '../components/dialogs/ProductStockDialog.vue'
+
+const quasar = useQuasar()
+const productsStore = useProductsStore()
+
+const selected = ref<Product | null>(null)
+const showStock = ref(false)
+
+const codePadding = computed(() => Math.max(...productsStore.products.map(x => x.code.length)))
+
+onMounted(() => {
+  quasar.loading.show()
+
+  productsStore
+    .getProducts()
+    .catch(console.error)
+    .finally(() => quasar.loading.hide())
+})
+</script>
+
 <template>
-  <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+  <q-page padding>
+    <filterable-list
+      :items="productsStore.products"
+      :filter-fn="byProduct"
+      @changeSearch="selected = null"
+      :items-per-page="50"
+    >
+      <template #default="{ item }">
+        <home-item
+          :product="item"
+          v-model:selected="selected"
+          :code-padding="codePadding"
+        />
+      </template>
+    </filterable-list>
+
+    <q-page-sticky position="bottom-right" :offset="[32, 32]">
+      <transition name="fade">
+          <q-btn
+            v-show="selected"
+            color="positive"
+            size="xl"
+            icon="assignment"
+            round
+            @click="showStock = true"
+          />
+      </transition>
+    </q-page-sticky>
+
+    <product-stock-dialog
+      v-model="showStock"
+      v-if="selected"
+      :product="selected"
+    />
   </q-page>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue'
-import { Todo, Meta } from 'components/models'
-import ExampleComponent from 'components/ExampleComponent.vue'
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
 
-defineOptions({
-  name: 'IndexPage'
-})
-
-const todos = ref<Todo[]>([
-  {
-    id: 1,
-    content: 'ct1'
-  },
-  {
-    id: 2,
-    content: 'ct2'
-  },
-  {
-    id: 3,
-    content: 'ct3'
-  },
-  {
-    id: 4,
-    content: 'ct4'
-  },
-  {
-    id: 5,
-    content: 'ct5'
-  }
-])
-
-const meta = ref<Meta>({
-  totalCount: 1200
-})
-</script>
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
