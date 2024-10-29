@@ -21,11 +21,11 @@ export const useCategoriesStore = defineStore('categories', () => {
     return response
   }
 
-  async function getCategory (category: Category) {
-    const response = await request(categoryService.get(category.uuid))
+  async function getCategory (uuid: string) {
+    const response = await request(categoryService.get(uuid))
 
     if (response.data) {
-      const index = categories.value.findIndex((c) => c.uuid === category.uuid)
+      const index = categories.value.findIndex((category: Category) => category.uuid === uuid)
 
       if (index !== -1) {
         categories.value.splice(index, 1, mapCategory(response.data))
