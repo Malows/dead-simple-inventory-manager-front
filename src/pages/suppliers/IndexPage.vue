@@ -29,7 +29,7 @@ onMounted(() => {
 
 <template>
   <page-with-add title="Proveedores" :to="{ name: 'suppliers create' }">
-    <filterable-list :items="suppliers" :items-per-page="50">
+    <filterable-list :items="suppliersStore.suppliers" :items-per-page="50">
       <template #default="{ item }">
         <supplier-item :supplier="item" />
       </template>

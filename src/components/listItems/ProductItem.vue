@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { Product } from '../../types/product.interfaces'
+import { ProductEntity } from '../../types/product.interfaces'
 import { parsePrice } from '../../utils/text'
 
 const props = withDefaults(
-  defineProps<{ product: Product; codePadding?: number; }>(),
+  defineProps<{ product: ProductEntity; codePadding?: number; }>(),
   { codePadding: 0 }
 )
 

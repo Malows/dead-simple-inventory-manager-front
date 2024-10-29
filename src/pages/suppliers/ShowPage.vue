@@ -1,4 +1,4 @@
-<script lang="ts">
+<script setup lang="ts">
 import { onMounted, computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
@@ -59,6 +59,6 @@ const editRoute = computed(() => ({ name: 'suppliers edit', params: route.params
     <h5>Productos</h5>
     <product-list :products="supplier.products" />
 
-    <supplier-delete-dialog v-model="showDeleteDialog" />
+    <supplier-delete-dialog v-model="showDeleteDialog" :supplier="supplier" />
   </page-with-actions>
 </template>

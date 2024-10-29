@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Product } from '../types/product.interfaces'
+import { ProductEntity } from '../types/product.interfaces'
 
 import ProductItem from './listItems/ProductItem.vue'
 
-defineProps<{ products: Product[] }>()
+defineProps<{ products: ProductEntity[] }>()
 </script>
 
 <template>

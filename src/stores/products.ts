@@ -21,11 +21,11 @@ export const useProductsStore = defineStore('products', () => {
     return response
   }
 
-  async function getProduct (product: Product) {
-    const response = await request(productService.get(product.uuid))
+  async function getProduct (uuid: string) {
+    const response = await request(productService.get(uuid))
 
     if (response.data) {
-      const index = products.value.findIndex((p) => p.uuid === product.uuid)
+      const index = products.value.findIndex((product) => product.uuid === uuid)
 
       if (index !== -1) {
         products.value.splice(index, 1, mapProduct(response.data))

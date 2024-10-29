@@ -9,11 +9,19 @@ export interface ProductDTO {
   description: string | null;
   price: number | null;
   supplier_id: number | null;
+  categories?: number[];
 }
 
-export interface ProductEntity extends ProductDTO {
+export interface ProductEntity {
   id: number;
   uuid: string;
+  name: string;
+  code: string;
+  stock: number;
+  min_stock_warning: number;
+  description: string | null;
+  price: number | null;
+  supplier_id: number | null;
 }
 
 export interface RawProduct extends ProductEntity {

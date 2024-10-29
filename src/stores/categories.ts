@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 import { categoryService } from '../services/Crud'
@@ -77,9 +77,12 @@ export const useCategoriesStore = defineStore('categories', () => {
     return response
   }
 
+  const categoriesMap = computed(() => new Map(categories.value.map((category) => [category.id, category])))
+
   return {
     categories,
     categoriesRequest: requestStatus,
+    categoriesMap,
 
     getCategories,
     getCategory,

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script setup lang="ts">
 import { computed } from 'vue'
 
 import { Supplier } from '../../types/supplier.interfaces'

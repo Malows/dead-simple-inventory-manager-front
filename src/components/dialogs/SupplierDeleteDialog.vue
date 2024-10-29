@@ -6,7 +6,7 @@ import { useSuppliersStore } from '../../stores/suppliers'
 import { Supplier } from '../../types/supplier.interfaces'
 
 const props = defineProps<{ supplier: Supplier }>()
-const show = defineModel({ type: Boolean, default: false })
+const show = defineModel<boolean>()
 
 const suppliersStore = useSuppliersStore()
 const router = useRouter()
