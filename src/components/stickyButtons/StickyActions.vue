@@ -3,7 +3,7 @@ import { useStickyButton } from 'src/composition/components/stickyButtons'
 
 withDefaults(defineProps<{ color?: string }>(), { color: 'accent' })
 
-const { position, offset } = useStickyButton()
+const { position, offset, direction, icon } = useStickyButton()
 </script>
 
 <template>

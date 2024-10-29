@@ -25,6 +25,7 @@ const reduce = () => {
   productsStore
     .updateProduct({
       ...props.product,
+      categories: props.product.categories.map((category) => category.id),
       stock: props.product.stock - stock.value
     })
     .then(() => {

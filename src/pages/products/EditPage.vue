@@ -57,7 +57,7 @@ const suppliersOptions = computed(() => suppliersStore.suppliers.map((supplier) 
 
 const submit = () => {
   productsStore.updateProduct({
-    ...product.value,
+    uuid: uuid.value,
     name: name.value,
     code: code.value,
     price: Number(price.value.toString().replace(',', '.')),
@@ -65,7 +65,7 @@ const submit = () => {
     stock: stock.value,
     min_stock_warning: stockWarning.value,
     supplier_id: supplier.value,
-    categories: categories.value.map((id) => categoriesStore.categoriesMap.get(id)!)
+    categories: categories.value
   })
     .then(() => {
       quasar.notify('Producto creado')

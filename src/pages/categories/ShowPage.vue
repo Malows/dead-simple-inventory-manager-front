@@ -14,6 +14,8 @@ const route = useRoute()
 const quasar = useQuasar()
 const categoriesStore = useCategoriesStore()
 
+const showDeleteDialog = ref(false)
+
 const uuid = computed(() => Array.isArray(route.params.categoryId) ? route.params.categoryId[0] : route.params.categoryId)
 const category = computed(() => categoriesStore.categories.find((category: Category) => category.uuid === uuid.value))
 
@@ -25,17 +27,23 @@ onMounted(async () => {
     .getCategory(uuid.value)
     .finally(() => quasar.loading.hide())
 })
-const showDeleteDialog = ref(false)
 </script>
 
 <template>
-  <page-with-actions v-if="category" title="Ver categoría">
+  <page-with-actions
+    v-if="category"
+    title="Ver categoría"
+  >
     <template #actions>
       <q-btn round color="primary" size="md" icon="edit" :to="editRoute" />
       <q-btn round color="negative" size="md" icon="delete" @click="showDeleteDialog = true" />
     </template>
+
     <inline-data label="Nombre">{{ category.name }}</inline-data>
 
-    <category-delete-dialog v-model="showDeleteDialog" />
+    <category-delete-dialog
+      v-model="showDeleteDialog"
+      :category
+    />
   </page-with-actions>
 </template>

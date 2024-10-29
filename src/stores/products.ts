@@ -47,7 +47,7 @@ export const useProductsStore = defineStore('products', () => {
     return response
   }
 
-  async function updateProduct (product: Product) {
+  async function updateProduct (product: ProductDTO & { uuid: string }) {
     const response = await request(productService.update(product.uuid, product))
 
     if (response.data) {
