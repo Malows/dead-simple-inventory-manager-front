@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 
-import { useStore } from 'src/store'
-import { pull, pullMany } from 'src/utils/api'
+import { useSessionStore } from '../stores/session'
+import { useCategoriesStore } from '../stores/categories'
+import { useSuppliersStore } from '../stores/suppliers'
 
 import UserMenu from './UserMenu.vue'
 import LeftDrawer from './LeftDrawer.vue'
@@ -19,39 +20,40 @@ const toggleDrawer = () => {
   drawer.value = !drawer.value
 }
 
-const store = useStore()
-const user = computed(
-  () => store.state.session.user as { name: string } | null
-)
-const logout = async () => {
-  await store.dispatch('session/logout')
-  return router.push({ name: 'login' })
+const sessionStore = useSessionStore()
+const categoriesStore = useCategoriesStore()
+const suppliersStore = useSuppliersStore()
+
+const logout = () => {
+  sessionStore.logout()
+  router.push({ name: 'login' })
 }
 
 onMounted(async () => {
-  if (!user.value) {
-    const response = await pull(store, quasar, 'session/fetchUserData').catch(
-      logout
-    )
+  if (!sessionStore.user) {
+    const response = await sessionStore.fetchUserData().catch(logout)
 
-    if (response.code === 401) {
-      await logout()
+    if (response?.code === 401) {
+      logout()
     }
   }
 
-  const responses = await pullMany(store, quasar, [
-    ['categories/fetch'],
-    ['suppliers/fetch']
+  quasar.loading.show()
+
+  const responses = await Promise.all([
+    categoriesStore.getCategories(),
+    suppliersStore.getSuppliers()
   ])
+    .finally(() => quasar.loading.hide())
 
   if (responses.some((x) => x.code === 401)) {
-    await logout()
+    logout()
   }
 })
 </script>
 
 <template>
-  <q-layout v-if="user" view="hHh LpR fFf">
+  <q-layout v-if="sessionStore.user" view="hHh LpR fFf">
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -64,7 +66,7 @@ onMounted(async () => {
         />
         <q-toolbar-title>{{ NAME }}</q-toolbar-title>
 
-        <user-menu :user @logout="logout" />
+        <user-menu :user="sessionStore.user" @logout="logout" />
       </q-toolbar>
     </q-header>
 
