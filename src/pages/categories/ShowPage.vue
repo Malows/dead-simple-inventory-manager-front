@@ -55,7 +55,7 @@ onMounted(async () => {
       />
     </template>
 
-    <inline-data label="Nombre">{{ category.name }}</inline-data>
+    <inline-data :label="t('common.name')">{{ category.name }}</inline-data>
 
     <category-delete-dialog v-model="showDeleteDialog" :category />
   </page-with-actions>

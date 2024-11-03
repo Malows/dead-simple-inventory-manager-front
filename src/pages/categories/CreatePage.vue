@@ -24,7 +24,13 @@ const submit = () => {
       })
       return router.push({ name: 'categories index' })
     })
-    .catch(console.error)
+    .catch((error) => {
+      quasar.notify({
+        color: 'negative',
+        message: t('categories.error_creating')
+      })
+      console.error(error)
+    })
 }
 </script>
 
@@ -42,7 +48,7 @@ const submit = () => {
 
       <q-btn
         color="primary"
-        label="Crear"
+        :label="t('common.create')"
         :loading="categoriesStore.categoriesRequest.fetching"
         @click="submit"
       />

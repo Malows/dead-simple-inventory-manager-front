@@ -6,8 +6,10 @@ export default {
   count: 'sin @:categories.categories | una @:categories.category | {count} @:categories.categories',
   create: 'Crear @:categories.category',
   created: 'Nueva @:categories.category creada',
+  error_creating: 'Error creando @:categories.category',
   update: 'Editar @:categories.category',
   updated: '@:categories.Category actualizada',
+  error_updating: 'Error editando @:categories.category',
   deleted: '@:categories.Category eliminada',
   show: 'Ver @:categories.category'
 }

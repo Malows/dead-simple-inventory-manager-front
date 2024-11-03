@@ -50,11 +50,12 @@ const submit = () => {
         params: route.params
       })
     })
-    .catch(() => {
+    .catch((error) => {
       quasar.notify({
         color: 'negative',
-        message: 'Error al editar la categoría'
+        message: t('categories.error_updating')
       })
+      console.error(error)
     })
 }
 </script>
@@ -71,7 +72,12 @@ const submit = () => {
         :rules="[(val) => val?.length > 0 || t('common.required_field')]"
       />
 
-      <q-btn color="primary" @click="submit">Editar</q-btn>
+      <q-btn
+        color="primary"
+        :label="t('common.update')"
+        :loading="categoriesStore.categoriesRequest.fetching"
+        @click="submit"
+      />
     </div>
   </q-page>
 </template>
