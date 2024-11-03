@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
 
 import { useCategoriesStore } from '../../stores/categories'
@@ -12,6 +13,7 @@ import ToggleGrid from 'src/components/ToggleGrid.vue'
 
 const router = useRouter()
 const quasar = useQuasar()
+const { t } = useI18n()
 const categoriesStore = useCategoriesStore()
 const productsStore = useProductsStore()
 const suppliersStore = useSuppliersStore()
@@ -33,24 +35,40 @@ onMounted(async () => {
   ]).finally(() => quasar.loading.hide())
 })
 
-const categoriesOptions = computed(() => categoriesStore.categories.map((category) => ({ label: category.name, value: category.id, id: category.id }) as WithId<SelectOption<number>>))
-const suppliersOptions = computed(() => suppliersStore.suppliers.map((supplier) => ({ label: supplier.name, value: supplier.id }) as SelectOption<number>))
+const categoriesOptions = computed(() =>
+  categoriesStore.categories.map(
+    (category) =>
+      ({ label: category.name, value: category.id, id: category.id } as WithId<
+        SelectOption<number>
+      >)
+  )
+)
+const suppliersOptions = computed(() =>
+  suppliersStore.suppliers.map(
+    (supplier) =>
+      ({ label: supplier.name, value: supplier.id } as SelectOption<number>)
+  )
+)
 
 const submit = () => {
   quasar.loading.show()
 
-  productsStore.createProduct({
-    name: name.value,
-    code: code.value,
-    price: Number(price.value.toString().replace(',', '.')),
-    description: description.value,
-    stock: stock.value,
-    min_stock_warning: stockWarning.value,
-    supplier_id: supplier.value,
-    categories: categories.value
-  })
+  productsStore
+    .createProduct({
+      name: name.value,
+      code: code.value,
+      price: Number(price.value.toString().replace(',', '.')),
+      description: description.value,
+      stock: stock.value,
+      min_stock_warning: stockWarning.value,
+      supplier_id: supplier.value,
+      categories: categories.value
+    })
     .then(() => {
-      quasar.notify('Producto creado')
+      quasar.notify({
+        color: 'positive',
+        message: t('products.created')
+      })
       return router.push({ name: 'products index' })
     })
     .catch(console.error)
@@ -60,10 +78,15 @@ const submit = () => {
 
 <template>
   <q-page padding>
-    <h4>Crear producto</h4>
+    <h4>{{ t("products.create") }}</h4>
 
     <div class="q-gutter-md">
-      <q-input label="Nombre" v-model="name" />
+      <q-input
+        v-model="name"
+        :label="t('common.name')"
+        lazy-rule
+        :rules="[(val) => val?.length > 0 || t('common.required_field')]"
+      />
 
       <div class="input-row--md">
         <q-input label="Codigo" v-model="code" />
@@ -78,12 +101,26 @@ const submit = () => {
 
       <div class="input-row--md">
         <q-input label="Stock" type="number" v-model.number="stock" />
-        <q-input label="Advertencia de stock bajo" type="number" v-model.number="stockWarning" />
+        <q-input
+          label="Advertencia de stock bajo"
+          type="number"
+          v-model.number="stockWarning"
+        />
       </div>
 
-      <q-select label="Proveedor" v-model="supplier" map-options emit-value :options="suppliersOptions" />
+      <q-select
+        label="Proveedor"
+        v-model="supplier"
+        map-options
+        emit-value
+        :options="suppliersOptions"
+      />
 
-      <toggle-grid label="Categorías" :options="categoriesOptions" v-model="categories" />
+      <toggle-grid
+        label="Categorías"
+        :options="categoriesOptions"
+        v-model="categories"
+      />
 
       <q-btn color="primary" @click="submit">Crear</q-btn>
     </div>

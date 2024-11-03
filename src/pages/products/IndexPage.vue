@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, computed } from 'vue'
 import { useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
 import { useProductsStore } from '../../stores/products'
 import { byProduct } from '../../utils/filters'
@@ -9,9 +10,12 @@ import PageWithAdd from '../../components/pages/PageWithActions.vue'
 import FilterableList from '../../components/filterable/FilterableList.vue'
 import ProductItem from '../../components/listItems/ProductItem.vue'
 
+const { t } = useI18n()
 const productsStore = useProductsStore()
 const quasar = useQuasar()
-const codePadding = computed(() => Math.max(...productsStore.products.map(x => x.code.length)))
+const codePadding = computed(() =>
+  Math.max(...productsStore.products.map((x) => x.code.length))
+)
 
 onMounted(() => {
   quasar.loading.show()
@@ -25,8 +29,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <page-with-add title="Productos" :to="{ name: 'products create'}">
-    <filterable-list :items="productsStore.products" :filter-fn="byProduct" :items-per-page="50">
+  <page-with-add
+    :title="t('products.Products')"
+    :to="{ name: 'products create' }"
+  >
+    <filterable-list
+      :items="productsStore.products"
+      :filter-fn="byProduct"
+      :items-per-page="50"
+    >
       <template #default="{ item }">
         <product-item :product="item" :code-padding="codePadding" />
       </template>

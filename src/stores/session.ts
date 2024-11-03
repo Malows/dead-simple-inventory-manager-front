@@ -6,14 +6,14 @@ import SessionService from '../services/SessionService'
 import { mapSession, setStorage, getStorage, removeStorage } from '../services/interceptors/session.interceptors'
 import { RawSession, User } from 'src/types/session.interfaces'
 
-const PREFIX = process.env.STORAGE_PREFIX || 'session'
+const PREFIX = process.env.STORAGE_PREFIX
 
 const service = new SessionService({
-  clientSecret: process.env.CLIENT_SECRET || '',
-  clientID: process.env.CLIENT_ID || '',
-  url: process.env.API_URL || '',
-  oauthURI: process.env.OAUTH_URI || '',
-  profileURI: process.env.PROFILE_URI || ''
+  clientSecret: process.env.CLIENT_SECRET,
+  clientID: process.env.CLIENT_ID,
+  url: process.env.HOST,
+  oauthURI: 'oauth/token',
+  profileURI: 'api/user'
 })
 
 export const useSessionStore = defineStore('session', () => {

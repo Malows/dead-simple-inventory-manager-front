@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
 import { useCategoriesStore } from '../../stores/categories'
 
@@ -10,6 +11,7 @@ import CategoryItem from '../../components/listItems/CategoryItem.vue'
 
 const categoriesStore = useCategoriesStore()
 const quasar = useQuasar()
+const { t } = useI18n()
 
 onMounted(() => {
   quasar.loading.show()
@@ -24,13 +26,10 @@ onMounted(() => {
 
 <template>
   <page-with-add
-    title="Categorías"
-    :to="{ name: 'categories create'}"
+    :title="t('categories.Categories')"
+    :to="{ name: 'categories create' }"
   >
-    <filterable-list
-      :items="categoriesStore.categories"
-      :items-per-page="50"
-    >
+    <filterable-list :items="categoriesStore.categories" :items-per-page="50">
       <template #default="{ item }">
         <category-item :category="item" />
       </template>

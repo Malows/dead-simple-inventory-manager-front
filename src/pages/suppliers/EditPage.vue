@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
 import { useSuppliersStore } from '../../stores/suppliers'
 import { Supplier } from '../../types/supplier.interfaces'
@@ -10,6 +11,7 @@ const route = useRoute()
 const router = useRouter()
 const quasar = useQuasar()
 const suppliersStore = useSuppliersStore()
+const { t } = useI18n()
 
 const name = ref('')
 const address = ref('')
@@ -17,9 +19,17 @@ const phone = ref('')
 const email = ref('')
 const web = ref('')
 
-const uuid = computed(() => Array.isArray(route.params.supplierId) ? route.params.supplierId[0] : route.params.supplierId)
+const uuid = computed(() =>
+  Array.isArray(route.params.supplierId)
+    ? route.params.supplierId[0]
+    : route.params.supplierId
+)
 
-const supplier = computed(() => suppliersStore.suppliers.find((supplier: Supplier) => supplier.uuid === uuid.value))
+const supplier = computed(() =>
+  suppliersStore.suppliers.find(
+    (supplier: Supplier) => supplier.uuid === uuid.value
+  )
+)
 
 onMounted(async () => {
   await suppliersStore.getSupplier(uuid.value)
@@ -34,16 +44,20 @@ onMounted(async () => {
 })
 
 const submit = () => {
-  suppliersStore.updateSupplier({
-    ...supplier.value!,
-    name: name.value,
-    address: address.value,
-    phone: phone.value,
-    email: email.value,
-    web: web.value
-  })
+  suppliersStore
+    .updateSupplier({
+      ...supplier.value!,
+      name: name.value,
+      address: address.value,
+      phone: phone.value,
+      email: email.value,
+      web: web.value
+    })
     .then(() => {
-      quasar.notify('Proveedor editado')
+      quasar.notify({
+        color: 'positive',
+        message: t('suppliers.updated')
+      })
       return router.push({
         name: 'suppliers show',
         params: route.params
@@ -55,10 +69,15 @@ const submit = () => {
 
 <template>
   <q-page padding>
-    <h4>Editar proveedor</h4>
+    <h4>{{ t("suppliers.update") }}</h4>
 
     <div class="q-gutter-md">
-      <q-input v-model="name" label="Nombre" lazy-rule :rules="[val => val?.length > 0 || 'Campo requerido']" />
+      <q-input
+        v-model="name"
+        label="Nombre"
+        lazy-rule
+        :rules="[(val) => val?.length > 0 || 'Campo requerido']"
+      />
       <q-input v-model="address" label="Direccion" />
       <q-input v-model="phone" label="Telefono" />
       <q-input v-model="email" label="Email" />

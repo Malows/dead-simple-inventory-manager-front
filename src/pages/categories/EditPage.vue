@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
 import { useCategoriesStore } from '../../stores/categories'
 import { Category } from '../../types/category.interfaces'
@@ -12,9 +13,18 @@ const quasar = useQuasar()
 const router = useRouter()
 const route = useRoute()
 const categoriesStore = useCategoriesStore()
+const { t } = useI18n()
 
-const uuid = computed(() => Array.isArray(route.params.categoryId) ? route.params.categoryId[0] : route.params.categoryId)
-const category = computed(() => categoriesStore.categories.find((category: Category) => category.uuid === uuid.value))
+const uuid = computed(() =>
+  Array.isArray(route.params.categoryId)
+    ? route.params.categoryId[0]
+    : route.params.categoryId
+)
+const category = computed(() =>
+  categoriesStore.categories.find(
+    (category: Category) => category.uuid === uuid.value
+  )
+)
 
 onMounted(async () => {
   quasar.loading.show()
@@ -31,7 +41,10 @@ const submit = () => {
   categoriesStore
     .updateCategory({ ...category.value!, name: name.value })
     .then(() => {
-      quasar.notify('Categoría editada')
+      quasar.notify({
+        color: 'positive',
+        message: t('categories.updated')
+      })
       return router.push({
         name: 'categories show',
         params: route.params
@@ -48,10 +61,15 @@ const submit = () => {
 
 <template>
   <q-page padding>
-    <h4>Editar categoría</h4>
+    <h4>{{ t("categories.update") }}</h4>
 
     <div class="q-gutter-md">
-      <q-input v-model="name" label="Nombre" lazy-rule :rules="[val => val?.length > 0 || 'Campo requerido']" />
+      <q-input
+        v-model="name"
+        :label="t('common.name')"
+        lazy-rule
+        :rules="[(val) => val?.length > 0 || t('common.required_field')]"
+      />
 
       <q-btn color="primary" @click="submit">Editar</q-btn>
     </div>

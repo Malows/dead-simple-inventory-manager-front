@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
 import { useSuppliersStore } from '../../stores/suppliers'
 
@@ -14,6 +15,7 @@ const web = ref('')
 const store = useSuppliersStore()
 const quasar = useQuasar()
 const router = useRouter()
+const { t } = useI18n()
 
 const createSupplier = () => {
   quasar.loading.show()
@@ -26,7 +28,10 @@ const createSupplier = () => {
       web: web.value
     })
     .then(() => {
-      quasar.notify('Proveedor creado')
+      quasar.notify({
+        color: 'positive',
+        message: t('suppliers.created')
+      })
       return router.push({ name: 'suppliers index' })
     })
     .catch(console.error)
@@ -35,17 +40,22 @@ const createSupplier = () => {
 </script>
 
 <template>
-<q-page padding>
-  <h4>Crear proveedor</h4>
+  <q-page padding>
+    <h4>{{ t("suppliers.create") }}</h4>
 
-  <div class="q-gutter-md">
-    <q-input v-model="name" label="Nombre" lazy-rule :rules="[val => val?.length > 0 || 'Campo requerido']" />
-    <q-input v-model="address" label="Direccion" />
-    <q-input v-model="phone" label="Telefono" />
-    <q-input v-model="email" label="Email" />
-    <q-input v-model="web" label="Web" />
+    <div class="q-gutter-md">
+      <q-input
+        v-model="name"
+        label="Nombre"
+        lazy-rule
+        :rules="[(val) => val?.length > 0 || 'Campo requerido']"
+      />
+      <q-input v-model="address" label="Direccion" />
+      <q-input v-model="phone" label="Telefono" />
+      <q-input v-model="email" label="Email" />
+      <q-input v-model="web" label="Web" />
 
-    <q-btn color="primary" @click="createSupplier">Crear</q-btn>
-  </div>
+      <q-btn color="primary" @click="createSupplier">Crear</q-btn>
+    </div>
   </q-page>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
 import { useSuppliersStore } from '../../stores/suppliers'
 
@@ -10,6 +11,7 @@ import SupplierItem from '../../components/listItems/SupplierItem.vue'
 
 const suppliersStore = useSuppliersStore()
 const quasar = useQuasar()
+const { t } = useI18n()
 
 onMounted(() => {
   quasar.loading.show()
@@ -28,7 +30,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <page-with-add title="Proveedores" :to="{ name: 'suppliers create' }">
+  <page-with-add
+    :title="t('suppliers.Suppliers')"
+    :to="{ name: 'suppliers create' }"
+  >
     <filterable-list :items="suppliersStore.suppliers" :items-per-page="50">
       <template #default="{ item }">
         <supplier-item :supplier="item" />

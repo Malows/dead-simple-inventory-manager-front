@@ -2,6 +2,7 @@
 import { onMounted, computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
 import { useSuppliersStore } from '../../stores/suppliers'
 import { Supplier } from '../../types/supplier.interfaces'
@@ -15,10 +16,19 @@ const route = useRoute()
 const router = useRouter()
 const quasar = useQuasar()
 const suppliersStore = useSuppliersStore()
+const { t } = useI18n()
 
-const uuid = computed(() => Array.isArray(route.params.supplierId) ? route.params.supplierId[0] : route.params.supplierId)
+const uuid = computed(() =>
+  Array.isArray(route.params.supplierId)
+    ? route.params.supplierId[0]
+    : route.params.supplierId
+)
 
-const supplier = computed(() => suppliersStore.suppliers.find((supplier: Supplier) => supplier.uuid === uuid.value))
+const supplier = computed(() =>
+  suppliersStore.suppliers.find(
+    (supplier: Supplier) => supplier.uuid === uuid.value
+  )
+)
 
 onMounted(() => {
   quasar.loading.show()
@@ -38,14 +48,23 @@ onMounted(() => {
 })
 
 const showDeleteDialog = ref(false)
-const editRoute = computed(() => ({ name: 'suppliers edit', params: route.params }))
+const editRoute = computed(() => ({
+  name: 'suppliers edit',
+  params: route.params
+}))
 </script>
 
 <template>
-  <page-with-actions v-if="supplier" title="Ver proveedor">
+  <page-with-actions v-if="supplier" :title="t('suppliers.show')">
     <template #actions>
       <q-btn round color="primary" size="md" icon="edit" :to="editRoute" />
-      <q-btn round color="negative" size="md" icon="delete" @click="showDeleteDialog = true" />
+      <q-btn
+        round
+        color="negative"
+        size="md"
+        icon="delete"
+        @click="showDeleteDialog = true"
+      />
     </template>
 
     <inline-data label="Nombre">{{ supplier.name }}</inline-data>
