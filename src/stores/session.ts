@@ -26,7 +26,7 @@ export const useSessionStore = defineStore('session', () => {
   async function login (payload: { username: string, password: string }) {
     const response = await service.login<RawSession>(payload)
 
-    if (response.data) {
+    if (response.isOk && response.data) {
       const parsed = mapSession(response.data)
 
       accessToken.value = parsed.accessToken

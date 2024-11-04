@@ -64,7 +64,9 @@ const submit = () => {
       supplier_id: supplier.value,
       categories: categories.value
     })
-    .then(() => {
+    .then(({ isOk, error }) => {
+      if (!isOk) throw error
+
       quasar.notify({
         color: 'positive',
         message: t('products.updated')

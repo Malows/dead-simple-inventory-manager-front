@@ -70,7 +70,7 @@ const price = computed(() => product.value?.price ? parsePrice(product.value.pri
     <inline-data :label="t('common.name')">
       {{ product.name }}
     </inline-data>
-    <inline-data label="Descripcion">
+    <inline-data :label="t('products.Description')">
       {{ product.description }}
     </inline-data>
 

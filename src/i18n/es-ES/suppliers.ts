@@ -4,14 +4,23 @@ export default {
   Supplier: '@.capitalize:suppliers.supplier',
   Suppliers: '@.capitalize:suppliers.suppliers',
   count: 'sin @:suppliers.suppliers | un @:suppliers.supplier | {count} @:suppliers.suppliers',
+
+  // page titles
   create: 'Crear @:suppliers.supplier',
+  update: 'Editar @:suppliers.supplier',
+  show: 'Ver @:suppliers.supplier',
+
+  // notify
   created: 'Nuevo @:suppliers.supplier creado',
   error_creating: 'Error creando @:suppliers.supplier',
-  update: 'Editar @:suppliers.supplier',
   updated: '@:suppliers.Supplier actualizado',
   error_updating: 'Error actualizando @:suppliers.supplier',
   deleted: '@:suppliers.Supplier eliminado',
-  show: 'Ver @:suppliers.supplier',
+  error_deleting: 'Error eliminando @:suppliers.supplier',
+
+  // dialogs titles
+  confirm_delete: '¿Está seguro de que desea eliminar el @:suppliers.supplier {name}?',
+
   Address: 'Dirección',
   Phone: 'Teléfono',
   Email: 'Email',

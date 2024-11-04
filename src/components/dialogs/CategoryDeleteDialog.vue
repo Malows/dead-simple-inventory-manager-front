@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 import { useCategoriesStore } from '../../stores/categories'
 import { Category } from '../../types/category.interfaces'
@@ -8,6 +9,7 @@ import { Category } from '../../types/category.interfaces'
 const categoriesStore = useCategoriesStore()
 const router = useRouter()
 const quasar = useQuasar()
+const { t } = useI18n()
 
 const props = defineProps<{ category: Category | null }>()
 
@@ -22,11 +24,22 @@ const destroy = () => {
   quasar.loading.show()
   categoriesStore
     .deleteCategory(props.category)
-    .then(() => {
-      quasar.notify('Categoría eliminada')
-      router.push({ name: 'categories index' })
+    .then(({ isOk }) => {
+      const color = isOk ? 'positive' : 'negative'
+      const message = isOk ? t('categories.deleted') : t('categories.error_deleting')
+      quasar.notify({ color, message })
+
+      if (isOk) {
+        router.push({ name: 'categories index' })
+      }
     })
-    .catch(console.error)
+    .catch((error) => {
+      quasar.notify({
+        color: 'negative',
+        message: t('categories.error_deleting')
+      })
+      console.error(error)
+    })
     .finally(() => {
       quasar.loading.hide()
     })
@@ -37,12 +50,14 @@ const destroy = () => {
   <q-dialog v-model="show">
     <q-card>
       <q-card-section>
-        <div class="text-h6 q-mb-sm">Confirmar</div>
+        <div class="text-h6 q-mb-sm">
+          {{ t('common.confirm') }}
+        </div>
       </q-card-section>
 
       <q-card-section class="row items-center">
         <div class="text-body1">
-          Esta seguro de que desea eliminar la categoría {{ category?.name }}?
+          {{ t('categories.confirm_delete', { name: category?.name}) }}
         </div>
       </q-card-section>
 
@@ -54,15 +69,15 @@ const destroy = () => {
         <q-btn
           v-close-popup
           flat
-          label="Eliminar"
           color="red"
+          :label="t('common.delete')"
           @click="destroy"
         />
         <q-btn
           v-close-popup
           flat
-          label="Cancelar"
           color="primary"
+          :label="t('common.cancel')"
         />
       </q-card-actions>
     </q-card>

@@ -20,7 +20,6 @@ const codePadding = computed(() => Math.max(...productsStore.products.map(x => x
 
 onMounted(() => {
   quasar.loading.show()
-
   productsStore
     .getProducts()
     .catch(console.error)

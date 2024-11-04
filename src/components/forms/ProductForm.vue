@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useCategoriesStore } from '../../stores/categories'
 import { useSuppliersStore } from '../../stores/suppliers'
 
-import ToggleGrid from 'src/components/ToggleGrid.vue'
+import ToggleGrid from '../ToggleGrid.vue'
 
 const { t } = useI18n()
 const categoriesStore = useCategoriesStore()

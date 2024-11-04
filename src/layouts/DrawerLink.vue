@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
 import { Link } from '../types'
 
 defineProps<{ link: Link }>()
+
+const { t } = useI18n()
 </script>
 
 <template>
@@ -11,7 +15,7 @@ defineProps<{ link: Link }>()
     </q-item-section>
 
     <q-item-section>
-      <q-item-label>{{ link.label }}</q-item-label>
+      <q-item-label>{{ t(link.label) }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>

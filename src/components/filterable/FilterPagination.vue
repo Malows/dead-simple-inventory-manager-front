@@ -11,7 +11,7 @@ const model = defineModel({
   <div class="row justify-center">
     <q-pagination
       v-model="model"
-      class=".q-mt-md.col-auto"
+      class="q-mt-md col-auto"
       :max
       :max-pages="5"
       boundary-numbers

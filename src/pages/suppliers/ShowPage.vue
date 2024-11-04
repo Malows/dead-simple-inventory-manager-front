@@ -55,7 +55,10 @@ const editRoute = computed(() => ({
 </script>
 
 <template>
-  <page-with-actions v-if="supplier" :title="t('suppliers.show')">
+  <page-with-actions
+    v-if="supplier"
+    :title="t('suppliers.show')"
+  >
     <template #actions>
       <q-btn
         round

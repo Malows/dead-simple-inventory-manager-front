@@ -55,12 +55,14 @@ const submit = () => {
       email: email.value,
       web: web.value
     })
-    .then(() => {
+    .then(({ isOk, error }) => {
+      if (!isOk) throw error
+
       quasar.notify({
         color: 'positive',
         message: t('suppliers.updated')
       })
-      return router.push({
+      router.push({
         name: 'suppliers show',
         params: route.params
       })

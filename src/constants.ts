@@ -3,22 +3,22 @@ import { Link } from './types'
 export const DRAWER_ITEMS: Link[] = [
   {
     to: '/home',
-    label: 'Inicio',
+    label: 'common.Home',
     icon: 'home'
   },
   {
     to: '/products',
-    label: 'Productos',
+    label: 'products.Products',
     icon: 'bubble_chart'
   },
   {
     to: '/categories',
-    label: 'Categorías',
+    label: 'categories.Categories',
     icon: 'local_offer'
   },
   {
     to: '/suppliers',
-    label: 'Proveedores',
+    label: 'suppliers.Suppliers',
     icon: 'people_alt'
   }
 ]

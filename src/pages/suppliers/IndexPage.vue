@@ -23,9 +23,7 @@ onMounted(() => {
         message: 'No se pudieron cargar los proveedores'
       })
     })
-    .finally(() => {
-      quasar.loading.hide()
-    })
+    .finally(() => quasar.loading.hide())
 })
 </script>
 
@@ -34,7 +32,10 @@ onMounted(() => {
     :title="t('suppliers.Suppliers')"
     :to="{ name: 'suppliers create' }"
   >
-    <filterable-list :items="suppliersStore.suppliers" :items-per-page="50">
+    <filterable-list
+      :items="suppliersStore.suppliers"
+      :items-per-page="50"
+    >
       <template #default="{ item }">
         <supplier-item :supplier="item" />
       </template>

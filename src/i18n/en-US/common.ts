@@ -1,8 +1,21 @@
 export default {
+  // fields
   required_field: 'This field is required',
   name: 'Name',
-  failed: 'Action failed',
-  success: 'Action was successful',
+  Email: 'Email',
+  Password: 'Password',
+
+  // rotues
+  Home: 'Home',
+
+  // actions
   create: 'Create',
-  update: 'Update'
+  update: 'Update',
+  delete: 'Delete',
+  confirm: 'Confirm',
+  cancel: 'Cancel',
+  sign_in: 'Sign In',
+
+  // messages
+  error_login: 'Wrong credentials'
 }

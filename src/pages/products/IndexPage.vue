@@ -22,9 +22,7 @@ onMounted(() => {
   productsStore
     .getProducts()
     .catch(console.error)
-    .finally(() => {
-      quasar.loading.hide()
-    })
+    .finally(() => quasar.loading.hide())
 })
 </script>
 

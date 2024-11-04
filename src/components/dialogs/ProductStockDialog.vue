@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
 import { useProductsStore } from '../../stores/products'
 import { Product } from '../../types/product.interfaces'
 
+const { t } = useI18n()
 const props = defineProps<{ product: Product }>()
 const show = defineModel({ type: Boolean, default: false })
 
@@ -28,13 +30,16 @@ const reduce = () => {
       categories: props.product.categories.map((category) => category.id),
       stock: props.product.stock - stock.value
     })
-    .then(() => {
-      quasar.notify('Stock reducido')
+    .then(({ isOk }) => {
+      const color = isOk ? 'positive' : 'negative'
+      const message = isOk ? t('products.stock_reduced') : t('products.error_reducing_stock')
+      quasar.notify({ color, message })
     })
-    .catch(() => {
+    .catch((error) => {
+      console.error(error)
       quasar.notify({
-        message: 'Error al restar stock',
-        type: 'negative'
+        color: 'negative',
+        message: t('products.error_reducing_stock')
       })
     })
     .finally(() => {
@@ -47,17 +52,19 @@ const reduce = () => {
   <q-dialog v-model="show">
     <q-card>
       <q-card-section>
-        <div class="text-h6 q-mb-sm">Restar unidades de stock</div>
+        <div class="text-h6 q-mb-sm">
+          {{ t('products.reduce_stock') }}
+        </div>
       </q-card-section>
 
       <q-card-section>
         <q-input
           v-model.number="stock"
           type="number"
-          label="Stock"
-          :hint="`Stock disponible ${product.stock}`"
+          :label="t('products.stock')"
+          :hint="t('products.available_stock', { stock: product.stock })"
           :error="stockCheck"
-          error-message="No existe suficiente stock"
+          :error-message="t('products.insufficient_stock')"
           bottom-slots
         />
       </q-card-section>
@@ -70,13 +77,13 @@ const reduce = () => {
         <q-btn
           v-close-popup
           flat
-          label="Cancelar"
+          :label="t('common.cancel')"
           color="primary"
         />
         <q-btn
           v-close-popup
           flat
-          label="Restar"
+          :label="t('products.reduce')"
           color="primary"
           @click="reduce"
         />

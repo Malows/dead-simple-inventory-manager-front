@@ -18,9 +18,7 @@ onMounted(() => {
   categoriesStore
     .getCategories()
     .catch(console.error)
-    .finally(() => {
-      quasar.loading.hide()
-    })
+    .finally(() => quasar.loading.hide())
 })
 </script>
 
@@ -29,7 +27,10 @@ onMounted(() => {
     :title="t('categories.Categories')"
     :to="{ name: 'categories create' }"
   >
-    <filterable-list :items="categoriesStore.categories" :items-per-page="50">
+    <filterable-list
+      :items="categoriesStore.categories"
+      :items-per-page="50"
+    >
       <template #default="{ item }">
         <category-item :category="item" />
       </template>

@@ -34,16 +34,20 @@ const editRoute = computed(() => ({
   params: route.params
 }))
 
-onMounted(async () => {
+onMounted(() => {
   quasar.loading.show()
-  await categoriesStore
+  categoriesStore
     .getCategory(uuid.value)
+    .catch(console.error)
     .finally(() => quasar.loading.hide())
 })
 </script>
 
 <template>
-  <page-with-actions v-if="category" :title="t('categories.show')">
+  <page-with-actions
+    v-if="category"
+    :title="t('categories.show')"
+  >
     <template #actions>
       <q-btn round color="primary" size="md" icon="edit" :to="editRoute" />
       <q-btn
@@ -55,8 +59,13 @@ onMounted(async () => {
       />
     </template>
 
-    <inline-data :label="t('common.name')">{{ category.name }}</inline-data>
+    <inline-data :label="t('common.name')">
+      {{ category.name }}
+    </inline-data>
 
-    <category-delete-dialog v-model="showDeleteDialog" :category />
+    <category-delete-dialog
+      v-model="showDeleteDialog"
+      :category
+    />
   </page-with-actions>
 </template>

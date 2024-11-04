@@ -1,8 +1,21 @@
 export default {
+  // fields
   required_field: 'Este campo es obligatorio',
   name: 'Nombre',
-  failed: 'Acción fallida',
-  success: 'Acción exitosa',
+  Email: 'Correo Electrónico',
+  Password: 'Contraseña',
+
+  // routes
+  Home: 'Inicio',
+
+  // actions
   create: 'Crear',
-  update: 'Editar'
+  update: 'Editar',
+  delete: 'Eliminar',
+  confirm: 'Confirmar',
+  cancel: 'Cancelar',
+  sign_in: 'Iniciar Sesión',
+
+  // messages
+  error_login: 'Credenciales incorrectas'
 }

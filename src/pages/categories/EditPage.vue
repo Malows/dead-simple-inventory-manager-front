@@ -30,6 +30,7 @@ onMounted(async () => {
   quasar.loading.show()
   await categoriesStore
     .getCategory(uuid.value)
+    .catch(console.error)
     .finally(() => quasar.loading.hide())
 
   if (category.value) {
@@ -40,12 +41,14 @@ onMounted(async () => {
 const submit = () => {
   categoriesStore
     .updateCategory({ ...category.value!, name: name.value })
-    .then(() => {
+    .then(({ isOk, error }) => {
+      if (!isOk) throw error
+
       quasar.notify({
         color: 'positive',
         message: t('categories.updated')
       })
-      return router.push({
+      router.push({
         name: 'categories show',
         params: route.params
       })

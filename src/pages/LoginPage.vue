@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
 
 import { useSessionStore } from '../stores/session'
@@ -8,6 +9,7 @@ import { useSessionStore } from '../stores/session'
 const router = useRouter()
 const sessionStore = useSessionStore()
 const quasar = useQuasar()
+const { t } = useI18n()
 
 const username = ref('')
 const password = ref('')
@@ -27,7 +29,16 @@ function submitLogin () {
   quasar.loading.show()
   sessionStore
     .login(payload)
-    .then(() => router.push({ name: 'index' }))
+    .then(({ isOk }) => {
+      if (!isOk) {
+        quasar.notify({
+          message: t('common.error_login'),
+          color: 'negative'
+        })
+        return
+      }
+      router.push({ name: 'index' })
+    })
     .catch(console.error)
     .finally(() => quasar.loading.hide())
 }
@@ -43,23 +54,33 @@ function submitLogin () {
         <q-form @submit="submitLogin">
           <q-input
             v-model="username"
-            label="E-mail"
+            :label="t('common.Email')"
             lazy-rules
-            :rules="[val => val?.length > 0 || 'Campo obligatorio']"
+            :rules="[val => val?.length > 0 || t('common.required_field')]"
           />
           <q-input
             v-model="password"
             :type="passwordType"
-            label="Contraseña"
+            :label="t('common.Password')"
             lazy-rules
-            :rules="[val => val?.length > 0 || 'Campo obligatorio']"
+            :rules="[val => val?.length > 0 || t('common.required_field')]"
           >
             <template #append>
-              <q-icon class="cursor-pointer" :name="passwordIcon" @click="isPassword = !isPassword" />
+              <q-icon
+                class="cursor-pointer"
+                :name="passwordIcon"
+                @click="isPassword = !isPassword"
+              />
             </template>
           </q-input>
           <div class="text-center q-mt-lg">
-            <q-btn class="full-width" label="Ingresar" type="submit" size="lg" color="primary" />
+            <q-btn
+              class="full-width"
+              :label="t('common.sign_in')"
+              type="submit"
+              size="lg"
+              color="primary"
+            />
           </div>
         </q-form>
       </q-card-section>
@@ -67,7 +88,7 @@ function submitLogin () {
   </q-page>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .center-card {
   display: grid;
   place-items: center;

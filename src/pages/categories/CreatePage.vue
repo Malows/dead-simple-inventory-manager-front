@@ -17,12 +17,14 @@ const submit = () => {
 
   categoriesStore
     .createCategory({ name: name.value })
-    .then(() => {
+    .then(({ isOk, error }) => {
+      if (!isOk) throw error
+
       quasar.notify({
         color: 'positive',
         message: t('categories.created')
       })
-      return router.push({ name: 'categories index' })
+      router.push({ name: 'categories index' })
     })
     .catch((error) => {
       quasar.notify({

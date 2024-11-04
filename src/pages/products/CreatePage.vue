@@ -23,8 +23,6 @@ const supplier = ref(null)
 const categories = ref<number[]>([])
 
 const submit = () => {
-  quasar.loading.show()
-
   productsStore
     .createProduct({
       name: name.value,
@@ -36,12 +34,14 @@ const submit = () => {
       supplier_id: supplier.value,
       categories: categories.value
     })
-    .then(() => {
+    .then(({ isOk, error }) => {
+      if (!isOk) throw error
+
       quasar.notify({
         color: 'positive',
         message: t('products.created')
       })
-      return router.push({ name: 'products index' })
+      router.push({ name: 'products index' })
     })
     .catch((error) => {
       quasar.notify({
@@ -50,7 +50,6 @@ const submit = () => {
       })
       console.error(error)
     })
-    .finally(() => quasar.loading.hide())
 }
 </script>
 

@@ -29,12 +29,14 @@ const createSupplier = () => {
       email: email.value,
       web: web.value
     })
-    .then(() => {
+    .then(({ isOk, error }) => {
+      if (!isOk) throw error
+
       quasar.notify({
         color: 'positive',
         message: t('suppliers.created')
       })
-      return router.push({ name: 'suppliers index' })
+      router.push({ name: 'suppliers index' })
     })
     .catch((error) => {
       quasar.notify({
