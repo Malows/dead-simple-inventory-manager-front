@@ -1,0 +1,83 @@
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+import { useCategoriesStore } from '../../stores/categories'
+import { useSuppliersStore } from '../../stores/suppliers'
+
+import ToggleGrid from 'src/components/ToggleGrid.vue'
+
+const { t } = useI18n()
+const categoriesStore = useCategoriesStore()
+const suppliersStore = useSuppliersStore()
+
+const name = defineModel<string>('name', { default: '' })
+const code = defineModel<string>('code', { default: '' })
+const description = defineModel<string>('description', { default: '' })
+const price = defineModel<number>('price', { default: 0 })
+const stock = defineModel<number>('stock', { default: 0 })
+const stockWarning = defineModel<number>('stockWarning', { default: 0 })
+const supplier = defineModel<number | null>('supplier', { default: null })
+const categories = defineModel<number[]>('categories', { default: [] })
+
+onMounted(() => {
+  categoriesStore.getCategories()
+  suppliersStore.getSuppliers()
+})
+</script>
+
+<template>
+  <q-input
+    v-model="name"
+    :label="t('common.name')"
+    lazy-rule
+    :rules="[(val) => val?.length > 0 || t('common.required_field')]"
+  />
+
+  <div class="input-row--md">
+    <q-input
+      v-model="code"
+      :label="t('products.Code')"
+    />
+    <q-input
+      v-model.number="price"
+      :label="t('products.Price')"
+    >
+      <template #prepend>
+        <q-icon name="attach_money" />
+      </template>
+    </q-input>
+  </div>
+
+  <q-input
+    v-model="description"
+    :label="t('products.Description')"
+  />
+
+  <div class="input-row--md">
+    <q-input
+      v-model.number="stock"
+      type="number"
+      label="Stock"
+    />
+    <q-input
+      v-model.number="stockWarning"
+      type="number"
+      :label="t('products.lower_stock_warning')"
+    />
+  </div>
+
+  <q-select
+    v-model="supplier"
+    :label="t('suppliers.Supplier')"
+    map-options
+    emit-value
+    :options="suppliersStore.suppliersOptions"
+  />
+
+  <toggle-grid
+    v-model="categories"
+    :label="t('categories.Categories')"
+    :options="categoriesStore.categoriesOptions"
+  />
+</template>

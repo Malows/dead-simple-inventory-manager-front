@@ -42,15 +42,22 @@ const editRoute = computed(() => ({
   name: 'products edit',
   params: route.params
 }))
-const price = computed(() =>
-  product.value?.price ? parsePrice(product.value.price) : ''
-)
+const price = computed(() => product.value?.price ? parsePrice(product.value.price) : '')
 </script>
 
 <template>
-  <page-with-actions v-if="product" :title="t('products.show')">
+  <page-with-actions
+    v-if="product"
+    :title="t('products.show')"
+  >
     <template #actions>
-      <q-btn round color="primary" size="md" icon="edit" :to="editRoute" />
+      <q-btn
+        round
+        color="primary"
+        size="md"
+        icon="edit"
+        :to="editRoute"
+      />
       <q-btn
         round
         color="negative"
@@ -60,19 +67,32 @@ const price = computed(() =>
       />
     </template>
 
-    <inline-data :label="t('common.name')">{{ product.name }}</inline-data>
-    <inline-data label="Descripcion">{{ product.description }}</inline-data>
+    <inline-data :label="t('common.name')">
+      {{ product.name }}
+    </inline-data>
+    <inline-data label="Descripcion">
+      {{ product.description }}
+    </inline-data>
 
     <div class="input-row--md">
-      <inline-data label="Código">{{ product.code }}</inline-data>
-      <inline-data label="Precio">{{ price }}</inline-data>
-      <inline-data label="Stock">{{ product.stock }}</inline-data>
-      <inline-data label="Advertencia de stock bajo">{{
-        product.min_stock_warning
-      }}</inline-data>
+      <inline-data :label="t('products.Code')">
+        {{ product.code }}
+      </inline-data>
+      <inline-data :label="t('products.Price')">
+        {{ price }}
+      </inline-data>
+      <inline-data label="Stock">
+        {{ product.stock }}
+      </inline-data>
+      <inline-data :label="t('products.lower_stock_warning')">
+        {{ product.min_stock_warning }}
+      </inline-data>
     </div>
 
-    <inline-data v-if="product.supplier" label="Proveedor">
+    <inline-data
+      v-if="product.supplier"
+      :label="t('suppliers.Supplier')"
+    >
       <router-link
         :to="{
           name: 'suppliers show',
@@ -83,7 +103,10 @@ const price = computed(() =>
       </router-link>
     </inline-data>
 
-    <q-page-sticky position="bottom-right" :offset="[32, 32]">
+    <q-page-sticky
+      position="bottom-right"
+      :offset="[32, 32]"
+    >
       <q-btn
         round
         color="positive"
@@ -93,7 +116,13 @@ const price = computed(() =>
       />
     </q-page-sticky>
 
-    <product-delete-dialog v-model="showDeleteDialog" :product="product" />
-    <product-stock-dialog v-model="showStockDialog" :product="product" />
+    <product-delete-dialog
+      v-model="showDeleteDialog"
+      :product
+    />
+    <product-stock-dialog
+      v-model="showStockDialog"
+      :product
+    />
   </page-with-actions>
 </template>

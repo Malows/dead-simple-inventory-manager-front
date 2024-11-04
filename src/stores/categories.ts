@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 import { categoryService } from '../services/Crud'
 import { mapCategory } from '../services/interceptors/category.interceptors'
 import { Category, CategoryDTO } from '../types/category.interfaces'
+import { SelectOption } from '../types'
 import { useRequests } from '../composition/useRequests'
 
 export const useCategoriesStore = defineStore('categories', () => {
@@ -78,11 +79,13 @@ export const useCategoriesStore = defineStore('categories', () => {
   }
 
   const categoriesMap = computed(() => new Map(categories.value.map((category) => [category.id, category])))
+  const categoriesOptions = computed(() => categories.value.map((category) => ({ label: category.name, value: category.id }) as SelectOption<number>))
 
   return {
     categories,
     categoriesRequest: requestStatus,
     categoriesMap,
+    categoriesOptions,
 
     getCategories,
     getCategory,

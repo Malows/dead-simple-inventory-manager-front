@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n'
 import { useProductsStore } from '../../stores/products'
 import { byProduct } from '../../utils/filters'
 
-import PageWithAdd from '../../components/pages/PageWithActions.vue'
+import PageWithAdd from '../../components/pages/PageWithAdd.vue'
 import FilterableList from '../../components/filterable/FilterableList.vue'
 import ProductItem from '../../components/listItems/ProductItem.vue'
 

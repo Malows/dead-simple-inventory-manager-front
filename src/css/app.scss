@@ -1,1 +1,27 @@
 // app global css in SCSS form
+.common-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+
+  @media (min-width: $breakpoint-md-min) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: $breakpoint-lg-min) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: $breakpoint-xl-min) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.input-row--md {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(1, 1fr);
+
+  @media only screen and (min-width: $breakpoint-sm-min) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

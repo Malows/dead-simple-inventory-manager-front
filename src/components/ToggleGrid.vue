@@ -1,10 +1,10 @@
 <script setup lang="ts" generic="T">
 import { ref, computed } from 'vue'
 
-import { SelectOption, WithId } from '../types'
+import { SelectOption } from '../types'
 
 const props = withDefaults(defineProps<{
-  options: WithId<SelectOption<T>>[]
+  options: SelectOption<T>[]
   label?: string
 }>(), {
   label: ''
@@ -35,8 +35,8 @@ const filteredOptions = computed(() =>
 
     <div class="common-grid">
       <q-toggle
-        v-for="x in filteredOptions"
-        :key="x.id"
+        v-for="(x, index) in filteredOptions"
+        :key="index"
         v-model="model"
         :val="x.value"
         :label="x.label"

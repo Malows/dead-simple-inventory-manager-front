@@ -4,20 +4,15 @@ import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
 
-import { useCategoriesStore } from '../../stores/categories'
 import { useProductsStore } from '../../stores/products'
-import { useSuppliersStore } from '../../stores/suppliers'
-import { SelectOption, WithId } from '../../types/index'
 
-import ToggleGrid from 'src/components/ToggleGrid.vue'
+import ProductForm from 'src/components/forms/ProductForm.vue'
 
 const route = useRoute()
 const router = useRouter()
 const quasar = useQuasar()
 const { t } = useI18n()
-const categoriesStore = useCategoriesStore()
 const productsStore = useProductsStore()
-const suppliersStore = useSuppliersStore()
 
 const name = ref('')
 const code = ref('')
@@ -40,11 +35,7 @@ const product = computed(() =>
 onMounted(async () => {
   quasar.loading.show()
 
-  await Promise.all([
-    productsStore.getProduct(uuid.value),
-    categoriesStore.getCategories(),
-    suppliersStore.getSuppliers()
-  ])
+  await productsStore.getProduct(uuid.value)
     .catch(console.error)
     .finally(() => quasar.loading.hide())
 
@@ -59,21 +50,6 @@ onMounted(async () => {
     categories.value = product.value.categories?.map((x) => x.id) ?? []
   }
 })
-
-const categoriesOptions = computed(() =>
-  categoriesStore.categories.map(
-    (category) =>
-      ({ label: category.name, value: category.id, id: category.id } as WithId<
-        SelectOption<number>
-      >)
-  )
-)
-const suppliersOptions = computed(() =>
-  suppliersStore.suppliers.map(
-    (supplier) =>
-      ({ label: supplier.name, value: supplier.id } as SelectOption<number>)
-  )
-)
 
 const submit = () => {
   productsStore
@@ -95,7 +71,13 @@ const submit = () => {
       })
       return router.push({ name: 'products index' })
     })
-    .catch(console.error)
+    .catch((error) => {
+      quasar.notify({
+        color: 'negative',
+        message: t('products.error_updating')
+      })
+      console.error(error)
+    })
 }
 </script>
 
@@ -104,48 +86,23 @@ const submit = () => {
     <h4>{{ t("products.update") }}</h4>
 
     <div class="q-gutter-md">
-      <q-input
-        v-model="name"
-        :label="t('common.name')"
-        lazy-rule
-        :rules="[(val) => val?.length > 0 || t('common.required_field')]"
+      <product-form
+        v-model:name="name"
+        v-model:code="code"
+        v-model:description="description"
+        v-model:price.number="price"
+        v-model:stock.number="stock"
+        v-model:stock-warning.number="stockWarning"
+        v-model:supplier="supplier"
+        v-model:categories="categories"
       />
 
-      <div class="input-row--md">
-        <q-input label="Codigo" v-model="code" />
-        <q-input label="Precio" v-model="price">
-          <template #prepend>
-            <q-icon name="attach_money" />
-          </template>
-        </q-input>
-      </div>
-
-      <q-input label="Descripcion" v-model="description" />
-
-      <div class="input-row--md">
-        <q-input label="Stock" type="number" v-model.number="stock" />
-        <q-input
-          label="Advertencia de stock bajo"
-          type="number"
-          v-model.number="stockWarning"
-        />
-      </div>
-
-      <q-select
-        label="Proveedor"
-        v-model="supplier"
-        map-options
-        emit-value
-        :options="suppliersOptions"
+      <q-btn
+        color="primary"
+        :label="t('common.update')"
+        :loading="productsStore.productsRequest.fetching"
+        @click="submit"
       />
-
-      <toggle-grid
-        label="Categorías"
-        :options="categoriesOptions"
-        v-model="categories"
-      />
-
-      <q-btn color="primary" @click="submit">Editar</q-btn>
     </div>
   </q-page>
 </template>

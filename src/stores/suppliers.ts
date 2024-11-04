@@ -1,9 +1,10 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
 import { supplierService } from '../services/Crud'
 import { mapSupplier } from '../services/interceptors/supplier.interceptors'
 import { Supplier, SupplierDTO } from '../types/supplier.interfaces'
+import { SelectOption } from '../types'
 import { useRequests } from '../composition/useRequests'
 
 export const useSuppliersStore = defineStore('suppliers', () => {
@@ -77,9 +78,12 @@ export const useSuppliersStore = defineStore('suppliers', () => {
     return response
   }
 
+  const suppliersOptions = computed(() => suppliers.value.map((supplier) => ({ label: supplier.name, value: supplier.id }) as SelectOption<number>))
+
   return {
     suppliers,
     suppliersRequest: requestStatus,
+    suppliersOptions,
 
     getSuppliers,
     getSupplier,
