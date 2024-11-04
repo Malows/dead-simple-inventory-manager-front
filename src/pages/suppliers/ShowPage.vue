@@ -57,7 +57,13 @@ const editRoute = computed(() => ({
 <template>
   <page-with-actions v-if="supplier" :title="t('suppliers.show')">
     <template #actions>
-      <q-btn round color="primary" size="md" icon="edit" :to="editRoute" />
+      <q-btn
+        round
+        color="primary"
+        size="md"
+        icon="edit"
+        :to="editRoute"
+      />
       <q-btn
         round
         color="negative"
@@ -67,17 +73,30 @@ const editRoute = computed(() => ({
       />
     </template>
 
-    <inline-data label="Nombre">{{ supplier.name }}</inline-data>
-    <inline-data label="Telefono">{{ supplier.phone }}</inline-data>
-    <inline-data label="Direccion">{{ supplier.address }}</inline-data>
-    <inline-data label="Email">{{ supplier.email }}</inline-data>
-    <inline-data label="Web">{{ supplier.web }}</inline-data>
+    <inline-data :label="t('common.name')">
+      {{ supplier.name }}
+    </inline-data>
+    <inline-data :label="t('suppliers.Address')">
+      {{ supplier.phone }}
+    </inline-data>
+    <inline-data :label="t('suppliers.Phone')">
+      {{ supplier.address }}
+    </inline-data>
+    <inline-data :label="t('suppliers.Email')">
+      {{ supplier.email }}
+    </inline-data>
+    <inline-data :label="t('suppliers.Web')">
+      {{ supplier.web }}
+    </inline-data>
 
     <q-separator class="q-mt-lg" />
 
     <h5>Productos</h5>
     <product-list :products="supplier.products" />
 
-    <supplier-delete-dialog v-model="showDeleteDialog" :supplier="supplier" />
+    <supplier-delete-dialog
+      v-model="showDeleteDialog"
+      :supplier
+    />
   </page-with-actions>
 </template>

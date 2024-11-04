@@ -7,6 +7,8 @@ import { useI18n } from 'vue-i18n'
 import { useSuppliersStore } from '../../stores/suppliers'
 import { Supplier } from '../../types/supplier.interfaces'
 
+import SupplierForm from '../../components/forms/SupplierForm.vue'
+
 const route = useRoute()
 const router = useRouter()
 const quasar = useQuasar()
@@ -63,7 +65,13 @@ const submit = () => {
         params: route.params
       })
     })
-    .catch(console.error)
+    .catch((error) => {
+      quasar.notify({
+        color: 'negative',
+        message: t('suppliers.error_creating')
+      })
+      console.error(error)
+    })
 }
 </script>
 
@@ -72,18 +80,20 @@ const submit = () => {
     <h4>{{ t("suppliers.update") }}</h4>
 
     <div class="q-gutter-md">
-      <q-input
-        v-model="name"
-        label="Nombre"
-        lazy-rule
-        :rules="[(val) => val?.length > 0 || 'Campo requerido']"
+      <supplier-form
+        v-model:name="name"
+        v-model:address="address"
+        v-model:phone="phone"
+        v-model:email="email"
+        v-model:web="web"
       />
-      <q-input v-model="address" label="Direccion" />
-      <q-input v-model="phone" label="Telefono" />
-      <q-input v-model="email" label="Email" />
-      <q-input v-model="web" label="Web" />
 
-      <q-btn color="primary" @click="submit">Editar</q-btn>
+      <q-btn
+        color="primary"
+        :label="t('common.update')"
+        :loading="suppliersStore.suppliersRequest.fetching"
+        @click="submit"
+      />
     </div>
   </q-page>
 </template>

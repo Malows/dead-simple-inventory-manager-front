@@ -6,20 +6,22 @@ import { useI18n } from 'vue-i18n'
 
 import { useSuppliersStore } from '../../stores/suppliers'
 
+import SupplierForm from '../../components/forms/SupplierForm.vue'
+
+const suppliersStore = useSuppliersStore()
+const quasar = useQuasar()
+const router = useRouter()
+const { t } = useI18n()
+
 const name = ref('')
 const address = ref('')
 const phone = ref('')
 const email = ref('')
 const web = ref('')
 
-const store = useSuppliersStore()
-const quasar = useQuasar()
-const router = useRouter()
-const { t } = useI18n()
-
 const createSupplier = () => {
   quasar.loading.show()
-  store
+  suppliersStore
     .createSupplier({
       name: name.value,
       address: address.value,
@@ -34,7 +36,13 @@ const createSupplier = () => {
       })
       return router.push({ name: 'suppliers index' })
     })
-    .catch(console.error)
+    .catch((error) => {
+      quasar.notify({
+        color: 'negative',
+        message: t('suppliers.error_creating')
+      })
+      console.error(error)
+    })
     .finally(() => quasar.loading.hide())
 }
 </script>
@@ -44,18 +52,20 @@ const createSupplier = () => {
     <h4>{{ t("suppliers.create") }}</h4>
 
     <div class="q-gutter-md">
-      <q-input
-        v-model="name"
-        label="Nombre"
-        lazy-rule
-        :rules="[(val) => val?.length > 0 || 'Campo requerido']"
+      <supplier-form
+        v-model:name="name"
+        v-model:address="address"
+        v-model:phone="phone"
+        v-model:email="email"
+        v-model:web="web"
       />
-      <q-input v-model="address" label="Direccion" />
-      <q-input v-model="phone" label="Telefono" />
-      <q-input v-model="email" label="Email" />
-      <q-input v-model="web" label="Web" />
 
-      <q-btn color="primary" @click="createSupplier">Crear</q-btn>
+      <q-btn
+        color="primary"
+        :label="t('common.create')"
+        :loading="suppliersStore.suppliersRequest.fetching"
+        @click="createSupplier"
+      />
     </div>
   </q-page>
 </template>
