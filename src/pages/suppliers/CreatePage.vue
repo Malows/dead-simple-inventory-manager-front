@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useQuasar } from 'quasar'
 import { useI18n } from 'vue-i18n'
 
 import { useSuppliersStore } from '../../stores/suppliers'
+import { useNotify } from '../../composition/useNotify'
 
 import SupplierForm from '../../components/forms/SupplierForm.vue'
 
 const suppliersStore = useSuppliersStore()
-const quasar = useQuasar()
-const router = useRouter()
 const { t } = useI18n()
+const { errorNotify, goodNotify } = useNotify()
 
 const name = ref('')
 const address = ref('')
@@ -20,7 +18,6 @@ const email = ref('')
 const web = ref('')
 
 const createSupplier = () => {
-  quasar.loading.show()
   suppliersStore
     .createSupplier({
       name: name.value,
@@ -29,23 +26,8 @@ const createSupplier = () => {
       email: email.value,
       web: web.value
     })
-    .then(({ isOk, error }) => {
-      if (!isOk) throw error
-
-      quasar.notify({
-        color: 'positive',
-        message: t('suppliers.created')
-      })
-      router.push({ name: 'suppliers index' })
-    })
-    .catch((error) => {
-      quasar.notify({
-        color: 'negative',
-        message: t('suppliers.error_creating')
-      })
-      console.error(error)
-    })
-    .finally(() => quasar.loading.hide())
+    .then(goodNotify('suppliers.created', { name: 'suppliers index' }))
+    .catch(errorNotify('suppliers.error_creating'))
 }
 </script>
 

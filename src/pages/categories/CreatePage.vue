@@ -1,38 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useQuasar } from 'quasar'
 import { useI18n } from 'vue-i18n'
 
 import { useCategoriesStore } from '../../stores/categories'
+import { useNotify } from '../../composition/useNotify'
+
+const categoriesStore = useCategoriesStore()
+const { t } = useI18n()
+const { errorNotify, goodNotify } = useNotify()
 
 const name = ref('')
-const categoriesStore = useCategoriesStore()
-const quasar = useQuasar()
-const router = useRouter()
-const { t } = useI18n()
 
 const submit = () => {
   if (!name.value) return
 
   categoriesStore
     .createCategory({ name: name.value })
-    .then(({ isOk, error }) => {
-      if (!isOk) throw error
-
-      quasar.notify({
-        color: 'positive',
-        message: t('categories.created')
-      })
-      router.push({ name: 'categories index' })
-    })
-    .catch((error) => {
-      quasar.notify({
-        color: 'negative',
-        message: t('categories.error_creating')
-      })
-      console.error(error)
-    })
+    .then(goodNotify('categories.created', { name: 'categories index' }))
+    .catch(errorNotify('categories.error_creating'))
 }
 </script>
 

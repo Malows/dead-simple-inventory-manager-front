@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useQuasar } from 'quasar'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 import { useSuppliersStore } from '../../stores/suppliers'
 import { Supplier } from '../../types/supplier.interfaces'
+import { useNotify } from '../../composition/useNotify'
 
 import SupplierForm from '../../components/forms/SupplierForm.vue'
 
 const route = useRoute()
-const router = useRouter()
-const quasar = useQuasar()
 const suppliersStore = useSuppliersStore()
 const { t } = useI18n()
+const { errorNotify, goodNotify } = useNotify()
 
 const name = ref('')
 const address = ref('')
@@ -34,7 +33,9 @@ const supplier = computed(() =>
 )
 
 onMounted(async () => {
-  await suppliersStore.getSupplier(uuid.value)
+  await suppliersStore
+    .getSupplier(uuid.value)
+    .catch(errorNotify('suppliers.error_getting', { name: 'suppliers index' }))
 
   if (supplier.value) {
     name.value = supplier.value.name
@@ -46,6 +47,8 @@ onMounted(async () => {
 })
 
 const submit = () => {
+  const backRoute = { name: 'suppliers show', params: route.params }
+
   suppliersStore
     .updateSupplier({
       ...supplier.value!,
@@ -55,25 +58,8 @@ const submit = () => {
       email: email.value,
       web: web.value
     })
-    .then(({ isOk, error }) => {
-      if (!isOk) throw error
-
-      quasar.notify({
-        color: 'positive',
-        message: t('suppliers.updated')
-      })
-      router.push({
-        name: 'suppliers show',
-        params: route.params
-      })
-    })
-    .catch((error) => {
-      quasar.notify({
-        color: 'negative',
-        message: t('suppliers.error_creating')
-      })
-      console.error(error)
-    })
+    .then(goodNotify('suppliers.updated', backRoute))
+    .catch(errorNotify('suppliers.error_updating', backRoute))
 }
 </script>
 

@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useSuppliersStore } from '../../stores/suppliers'
 import { Supplier } from '../../types/supplier.interfaces'
-import { useErrorRequest } from '../../composition/useRequests'
+import { useNotify } from '../../composition/useNotify'
 
 import PageWithActions from '../../components/pages/PageWithActions.vue'
 import InlineData from '../../components/InlineData.vue'
@@ -17,7 +17,7 @@ const suppliersStore = useSuppliersStore()
 const route = useRoute()
 const quasar = useQuasar()
 const { t } = useI18n()
-const { errorNotify } = useErrorRequest()
+const { errorNotify } = useNotify()
 
 const uuid = computed(() =>
   Array.isArray(route.params.supplierId)

@@ -4,7 +4,7 @@ import { useQuasar } from 'quasar'
 import { useI18n } from 'vue-i18n'
 
 import { useSuppliersStore } from '../../stores/suppliers'
-import { useErrorRequest } from '../../composition/useRequests'
+import { useNotify } from '../../composition/useNotify'
 
 import PageWithAdd from '../../components/pages/PageWithAdd.vue'
 import FilterableList from '../../components/filterable/FilterableList.vue'
@@ -13,7 +13,7 @@ import SupplierItem from '../../components/listItems/SupplierItem.vue'
 const suppliersStore = useSuppliersStore()
 const quasar = useQuasar()
 const { t } = useI18n()
-const { errorNotify } = useErrorRequest()
+const { errorNotify } = useNotify()
 
 onMounted(() => {
   quasar.loading.show()

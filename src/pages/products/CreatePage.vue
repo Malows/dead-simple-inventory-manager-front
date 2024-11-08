@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useQuasar } from 'quasar'
 
 import { useProductsStore } from '../../stores/products'
+import { useNotify } from '../../composition/useNotify'
 
-import ProductForm from 'src/components/forms/ProductForm.vue'
+import ProductForm from '../../components/forms/ProductForm.vue'
 
-const router = useRouter()
-const quasar = useQuasar()
-const { t } = useI18n()
 const productsStore = useProductsStore()
+const { t } = useI18n()
+const { errorNotify, goodNotify } = useNotify()
 
 const name = ref('')
 const code = ref('')
@@ -34,22 +32,8 @@ const submit = () => {
       supplier_id: supplier.value,
       categories: categories.value
     })
-    .then(({ isOk, error }) => {
-      if (!isOk) throw error
-
-      quasar.notify({
-        color: 'positive',
-        message: t('products.created')
-      })
-      router.push({ name: 'products index' })
-    })
-    .catch((error) => {
-      quasar.notify({
-        color: 'negative',
-        message: t('products.error_creating')
-      })
-      console.error(error)
-    })
+    .then(goodNotify('products.created', { name: 'products index' }))
+    .catch(errorNotify('products.error_creating'))
 }
 </script>
 

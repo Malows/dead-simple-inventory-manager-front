@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useProductsStore } from '../../stores/products'
 import { parsePrice } from '../../utils/text'
-import { useErrorRequest } from '../../composition/useRequests'
+import { useNotify } from '../../composition/useNotify'
 
 import PageWithActions from '../../components/pages/PageWithActions.vue'
 import InlineData from '../../components/InlineData.vue'
@@ -17,7 +17,7 @@ const productsStore = useProductsStore()
 const route = useRoute()
 const quasar = useQuasar()
 const { t } = useI18n()
-const { errorNotify } = useErrorRequest()
+const { errorNotify } = useNotify()
 
 const uuid = computed(() =>
   Array.isArray(route.params.productId)
