@@ -5,13 +5,15 @@ import { useQuasar } from 'quasar'
 import { Product } from '../types/product.interfaces'
 import { useProductsStore } from '../stores/products'
 import { byProduct } from '../utils/filters'
+import { useNotify } from '../composition/useNotify'
 
 import HomeItem from '../components/listItems/HomeItem.vue'
 import FilterableList from '../components/filterable/FilterableList.vue'
 import ProductStockDialog from '../components/dialogs/ProductStockDialog.vue'
 
-const quasar = useQuasar()
 const productsStore = useProductsStore()
+const quasar = useQuasar()
+const { errorNotify } = useNotify()
 
 const selected = ref<Product | null>(null)
 const showStock = ref(false)
@@ -22,7 +24,7 @@ onMounted(() => {
   quasar.loading.show()
   productsStore
     .getProducts()
-    .catch(console.error)
+    .catch(errorNotify('products.error_fetching'))
     .finally(() => quasar.loading.hide())
 })
 </script>

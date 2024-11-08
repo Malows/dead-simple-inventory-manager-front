@@ -5,5 +5,6 @@ export default {
   'en-US': enUS,
   en: enUS,
   'es-ES': esES,
+  'en-ES': esES,
   es: esES
 }
