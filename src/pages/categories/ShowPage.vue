@@ -6,15 +6,17 @@ import { useI18n } from 'vue-i18n'
 
 import { useCategoriesStore } from '../../stores/categories'
 import { Category } from '../../types/category.interfaces'
+import { useErrorRequest } from '../../composition/useRequests'
 
 import PageWithActions from '../../components/pages/PageWithActions.vue'
 import InlineData from '../../components/InlineData.vue'
 import CategoryDeleteDialog from '../../components/dialogs/CategoryDeleteDialog.vue'
 
+const categoriesStore = useCategoriesStore()
 const route = useRoute()
 const quasar = useQuasar()
-const categoriesStore = useCategoriesStore()
 const { t } = useI18n()
+const { errorNotify } = useErrorRequest()
 
 const showDeleteDialog = ref(false)
 
@@ -38,7 +40,7 @@ onMounted(() => {
   quasar.loading.show()
   categoriesStore
     .getCategory(uuid.value)
-    .catch(console.error)
+    .catch(errorNotify('categories.error_getting', { name: 'categories index' }))
     .finally(() => quasar.loading.hide())
 })
 </script>

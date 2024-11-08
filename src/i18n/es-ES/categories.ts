@@ -11,6 +11,8 @@ export default {
   show: 'Ver @:categories.category',
 
   // notify
+  error_fetching: 'Error obteniendo todas las @:categories.categories',
+  error_getting: 'Error obteniendo la @:categories.category',
   created: 'Nueva @:categories.category creada',
   error_creating: 'Error creando @:categories.category',
   updated: '@:categories.Category actualizada',

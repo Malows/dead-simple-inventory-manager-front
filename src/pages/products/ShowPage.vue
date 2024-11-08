@@ -6,16 +6,18 @@ import { useI18n } from 'vue-i18n'
 
 import { useProductsStore } from '../../stores/products'
 import { parsePrice } from '../../utils/text'
+import { useErrorRequest } from '../../composition/useRequests'
 
 import PageWithActions from '../../components/pages/PageWithActions.vue'
 import InlineData from '../../components/InlineData.vue'
 import ProductDeleteDialog from '../../components/dialogs/ProductDeleteDialog.vue'
 import ProductStockDialog from '../../components/dialogs/ProductStockDialog.vue'
 
+const productsStore = useProductsStore()
 const route = useRoute()
 const quasar = useQuasar()
 const { t } = useI18n()
-const productsStore = useProductsStore()
+const { errorNotify } = useErrorRequest()
 
 const uuid = computed(() =>
   Array.isArray(route.params.productId)
@@ -26,12 +28,11 @@ const product = computed(() =>
   productsStore.products.find((product) => product.uuid === uuid.value)
 )
 
-onMounted(async () => {
+onMounted(() => {
   quasar.loading.show()
-
   productsStore
     .getProduct(uuid.value)
-    .catch(console.error)
+    .catch(errorNotify('products.error_getting', { name: 'products index' }))
     .finally(() => quasar.loading.hide())
 })
 

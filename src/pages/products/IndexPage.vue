@@ -5,14 +5,17 @@ import { useI18n } from 'vue-i18n'
 
 import { useProductsStore } from '../../stores/products'
 import { byProduct } from '../../utils/filters'
+import { useErrorRequest } from '../../composition/useRequests'
 
 import PageWithAdd from '../../components/pages/PageWithAdd.vue'
 import FilterableList from '../../components/filterable/FilterableList.vue'
 import ProductItem from '../../components/listItems/ProductItem.vue'
 
-const { t } = useI18n()
 const productsStore = useProductsStore()
 const quasar = useQuasar()
+const { t } = useI18n()
+const { errorNotify } = useErrorRequest()
+
 const codePadding = computed(() =>
   Math.max(...productsStore.products.map((x) => x.code.length))
 )
@@ -21,7 +24,7 @@ onMounted(() => {
   quasar.loading.show()
   productsStore
     .getProducts()
-    .catch(console.error)
+    .catch(errorNotify('products.error_fetching'))
     .finally(() => quasar.loading.hide())
 })
 </script>

@@ -11,6 +11,8 @@ export default {
   show: 'Show @:suppliers.supplier',
 
   // notify
+  error_fetching: 'Error getting all the @:suppliers.suppliers',
+  error_getting: 'Error getting the @:suppliers.supplier',
   created: 'New @:suppliers.supplier created',
   error_creating: 'Error creating @:suppliers.supplier',
   updated: '@:suppliers.Supplier updated',

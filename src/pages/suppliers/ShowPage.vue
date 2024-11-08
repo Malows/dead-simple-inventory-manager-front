@@ -1,22 +1,23 @@
 <script setup lang="ts">
 import { onMounted, computed, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { useI18n } from 'vue-i18n'
 
 import { useSuppliersStore } from '../../stores/suppliers'
 import { Supplier } from '../../types/supplier.interfaces'
+import { useErrorRequest } from '../../composition/useRequests'
 
 import PageWithActions from '../../components/pages/PageWithActions.vue'
 import InlineData from '../../components/InlineData.vue'
 import ProductList from '../../components/ProductList.vue'
 import SupplierDeleteDialog from '../../components/dialogs/SupplierDeleteDialog.vue'
 
-const route = useRoute()
-const router = useRouter()
-const quasar = useQuasar()
 const suppliersStore = useSuppliersStore()
+const route = useRoute()
+const quasar = useQuasar()
 const { t } = useI18n()
+const { errorNotify } = useErrorRequest()
 
 const uuid = computed(() =>
   Array.isArray(route.params.supplierId)
@@ -34,17 +35,8 @@ onMounted(() => {
   quasar.loading.show()
   suppliersStore
     .getSupplier(uuid.value)
-    .catch(() => {
-      quasar.notify({
-        type: 'negative',
-        message: 'No se pudieron cargar los proveedores'
-      })
-
-      router.push({ name: 'suppliers index' })
-    })
-    .finally(() => {
-      quasar.loading.hide()
-    })
+    .catch(errorNotify('suppliers.error_fetching', { name: 'suppliers index' }))
+    .finally(() => quasar.loading.hide())
 })
 
 const showDeleteDialog = ref(false)

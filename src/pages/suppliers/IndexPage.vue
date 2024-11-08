@@ -4,6 +4,7 @@ import { useQuasar } from 'quasar'
 import { useI18n } from 'vue-i18n'
 
 import { useSuppliersStore } from '../../stores/suppliers'
+import { useErrorRequest } from '../../composition/useRequests'
 
 import PageWithAdd from '../../components/pages/PageWithAdd.vue'
 import FilterableList from '../../components/filterable/FilterableList.vue'
@@ -12,17 +13,13 @@ import SupplierItem from '../../components/listItems/SupplierItem.vue'
 const suppliersStore = useSuppliersStore()
 const quasar = useQuasar()
 const { t } = useI18n()
+const { errorNotify } = useErrorRequest()
 
 onMounted(() => {
   quasar.loading.show()
   suppliersStore
     .getSuppliers()
-    .catch(() => {
-      quasar.notify({
-        type: 'negative',
-        message: 'No se pudieron cargar los proveedores'
-      })
-    })
+    .catch(errorNotify('suppliers.error_fetching'))
     .finally(() => quasar.loading.hide())
 })
 </script>

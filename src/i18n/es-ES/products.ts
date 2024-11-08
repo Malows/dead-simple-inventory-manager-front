@@ -11,6 +11,8 @@ export default {
   show: 'Ver @:products.product',
 
   // notify
+  error_fetching: 'Error obteniendo todos los @:products.products',
+  error_getting: 'Error obteniendo el @:products.product',
   created: 'Nuevo @:products.product creado',
   error_creating: 'Error creando @:products.product',
   updated: '@:products.Product actualizado',
