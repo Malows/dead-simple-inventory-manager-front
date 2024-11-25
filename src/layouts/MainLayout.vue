@@ -46,7 +46,7 @@ onMounted(async () => {
   ])
     .finally(() => quasar.loading.hide())
 
-  if (responses.some((x) => x.code === 401)) {
+  if (responses.some((x) => x?.code === 401)) {
     logout()
   }
 })

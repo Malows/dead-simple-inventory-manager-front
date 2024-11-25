@@ -6,9 +6,9 @@ export const useCacheStore = defineStore('cache', () => {
   const categories = ref<Set<string>>(new Set())
   const suppliers = ref<Set<string>>(new Set())
 
-  const getAllCategories = computed(() => categories.value.has('all') || categories.value.size === 0)
-  const getAllProducts = computed(() => products.value.has('all') || products.value.size === 0)
-  const getAllSuppliers = computed(() => suppliers.value.has('all') || suppliers.value.size === 0)
+  const getAllCategories = computed(() => categories.value.has('all'))
+  const getAllProducts = computed(() => products.value.has('all'))
+  const getAllSuppliers = computed(() => suppliers.value.has('all'))
 
   const flushCategories = (uuid?: string) => {
     if (!uuid) {
