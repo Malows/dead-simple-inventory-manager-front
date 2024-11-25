@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 import { supplierService } from '../services/Crud'
@@ -6,17 +6,27 @@ import { mapSupplier } from '../services/interceptors/supplier.interceptors'
 import { Supplier, SupplierDTO } from '../types/supplier.interfaces'
 import { SelectOption } from '../types'
 import { useRequests } from '../composition/useRequests'
+import { useCacheStore } from './cache.store'
 
 export const useSuppliersStore = defineStore('suppliers', () => {
+  const cache = useCacheStore()
   const suppliers = ref<Supplier[]>([])
 
   const { requestStatus, request } = useRequests()
 
   async function getSuppliers () {
+    const notEmpty = suppliers.value.length > 0
+    const notIdle = !requestStatus.value.idle
+
+    if (notIdle && notEmpty && !cache.getAllSuppliers) {
+      return
+    }
+
     const response = await request(supplierService.fetch())
 
     if (response.data) {
       suppliers.value = response.data.map(mapSupplier)
+      cache.flushSuppliers()
     }
 
     return response
@@ -26,20 +36,24 @@ export const useSuppliersStore = defineStore('suppliers', () => {
     const response = await request(supplierService.get(uuid))
 
     if (response.data) {
-      const index = suppliers.value.findIndex((supplier) => supplier.uuid === uuid)
+      const index = suppliers.value.findIndex((supplier: Supplier) => supplier.uuid === uuid)
+
+      const supplier = mapSupplier(response.data)
 
       if (index !== -1) {
-        suppliers.value.splice(index, 1, mapSupplier(response.data))
+        suppliers.value.splice(index, 1, supplier)
       } else {
-        suppliers.value.push(mapSupplier(response.data))
+        suppliers.value.push(supplier)
       }
+
+      cache.flushSuppliers(supplier.uuid)
     }
 
     return response
   }
 
-  async function createSupplier (supplier: SupplierDTO) {
-    const response = await request(supplierService.create(supplier))
+  async function createSupplier (payload: SupplierDTO) {
+    const response = await request(supplierService.create(payload))
 
     if (response.data) {
       suppliers.value.push(mapSupplier(response.data))
@@ -48,17 +62,21 @@ export const useSuppliersStore = defineStore('suppliers', () => {
     return response
   }
 
-  async function updateSupplier (supplier: Supplier) {
-    const response = await request(supplierService.update(supplier.uuid, supplier))
+  async function updateSupplier (payload: Supplier) {
+    const response = await request(supplierService.update(payload.uuid, payload))
 
     if (response.data) {
-      const index = suppliers.value.findIndex((s) => s.uuid === supplier.uuid)
+      const index = suppliers.value.findIndex((s) => s.uuid === payload.uuid)
+
+      const supplier = mapSupplier(response.data)
 
       if (index !== -1) {
-        suppliers.value.splice(index, 1, mapSupplier(response.data))
+        suppliers.value.splice(index, 1, supplier)
       } else {
-        suppliers.value.push(mapSupplier(response.data))
+        suppliers.value.push(supplier)
       }
+
+      cache.flushSuppliers(supplier.uuid)
     }
 
     return response
@@ -72,6 +90,7 @@ export const useSuppliersStore = defineStore('suppliers', () => {
 
       if (index !== -1) {
         suppliers.value.splice(index, 1)
+        cache.flushSuppliers(supplier.uuid)
       }
     }
 

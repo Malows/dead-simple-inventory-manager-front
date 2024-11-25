@@ -1,10 +1,10 @@
-import enUS from './en-US'
-import esES from './es-ES'
+import en from './en-US'
+import es from './es-ES'
 
 export default {
-  'en-US': enUS,
-  en: enUS,
-  'es-ES': esES,
-  'en-ES': esES,
-  es: esES
+  en,
+  es,
+  'en-US': en,
+  'es-ES': es,
+  'en-ES': es
 }
