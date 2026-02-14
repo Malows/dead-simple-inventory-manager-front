@@ -11,11 +11,6 @@ export interface SupplierDTO {
 export interface SupplierEntity extends SupplierDTO {
   id: number;
   uuid: string;
-  name: string;
-  email: string | null;
-  phone: string | null;
-  address: string | null;
-  web: string | null;
 }
 
 export interface RawSupplier extends SupplierEntity {
