@@ -4,7 +4,7 @@ import { isPast } from 'date-fns'
 
 import SessionService from '../services/SessionService'
 import { mapSession, setStorage, getStorage, removeStorage } from '../services/interceptors/session.interceptors'
-import { RawSession, User } from 'src/types/session.interfaces'
+import { RawSession, User } from '../types/session.interfaces'
 
 const PREFIX = process.env.STORAGE_PREFIX
 
@@ -13,7 +13,7 @@ const service = new SessionService({
   clientID: process.env.CLIENT_ID,
   url: process.env.HOST,
   oauthURI: 'oauth/token',
-  profileURI: 'api/user'
+  profileURI: 'api/profile'
 })
 
 export const useSessionStore = defineStore('session', () => {
@@ -22,6 +22,8 @@ export const useSessionStore = defineStore('session', () => {
   const loginAt = ref<Date | null>(null)
   const expirationAt = ref<Date | null>(null)
   const refreshExpirationAt = ref<Date | null>(null)
+
+  const user = ref<User | null>(null)
 
   async function login (payload: { username: string, password: string }) {
     const response = await service.login<RawSession>(payload)
@@ -72,7 +74,6 @@ export const useSessionStore = defineStore('session', () => {
     return fetchUserData()
   }
 
-  const user = ref<User | null>(null)
   async function fetchUserData () {
     const response = await service.fetchUserData<User>()
 
