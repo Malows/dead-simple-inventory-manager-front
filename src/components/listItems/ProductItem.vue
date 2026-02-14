@@ -3,6 +3,7 @@ import { computed } from 'vue'
 
 import { ProductEntity } from '../../types/product.interfaces'
 import { parsePrice } from '../../utils/text'
+import ProductAvatar from '../products/ProductAvatar.vue'
 
 const props = withDefaults(
   defineProps<{ product: ProductEntity; codePadding?: number; }>(),
@@ -31,10 +32,14 @@ const to = computed(() => ({ name: 'products show', params: { productId: props.p
 <template>
   <q-item clickable :to>
     <q-item-section avatar>
-      <q-icon
+     <q-icon
         :name="iconData.name"
         :color="iconData.color"
       />
+    </q-item-section>
+
+    <q-item-section avatar>
+      <product-avatar :product="product"/>
     </q-item-section>
 
     <q-item-section>

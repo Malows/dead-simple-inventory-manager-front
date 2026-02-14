@@ -3,6 +3,7 @@ import { computed } from 'vue'
 
 import { Product } from '../../types/product.interfaces'
 import { parsePrice } from '../../utils/text'
+import ProductAvatar from '../products/ProductAvatar.vue'
 
 const props = withDefaults(
   defineProps<{ product: Product; codePadding?: number; }>(),
@@ -44,6 +45,10 @@ const clickOnItem = () => {
         size="xs"
         :color="iconColor"
       />
+    </q-item-section>
+
+    <q-item-section avatar>
+      <product-avatar :product="product"/>
     </q-item-section>
 
     <q-item-section>

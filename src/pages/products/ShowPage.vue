@@ -12,6 +12,7 @@ import PageWithActions from '../../components/pages/PageWithActions.vue'
 import InlineData from '../../components/InlineData.vue'
 import ProductDeleteDialog from '../../components/dialogs/ProductDeleteDialog.vue'
 import ProductStockDialog from '../../components/dialogs/ProductStockDialog.vue'
+import ProductPhotoDialog from '../../components/dialogs/ProductPhotoDialog.vue'
 
 const productsStore = useProductsStore()
 const route = useRoute()
@@ -38,6 +39,7 @@ onMounted(() => {
 
 const showDeleteDialog = ref(false)
 const showStockDialog = ref(false)
+const showPhotoDialog = ref(false)
 
 const editRoute = computed(() => ({
   name: 'products edit',
@@ -61,12 +63,36 @@ const price = computed(() => product.value?.price ? parsePrice(product.value.pri
       />
       <q-btn
         round
+        color="primary"
+        size="md"
+        icon="photo"
+        @click="showPhotoDialog = true"
+      />
+      <q-btn
+        round
         color="negative"
         size="md"
         icon="delete"
         @click="showDeleteDialog = true"
       />
     </template>
+
+    <!-- Product Image -->
+    <div v-if="product.image_url" class="q-mb-md">
+      <q-img
+        :src="product.image_url"
+        fit="contain"
+        class="product-image-card"
+        spinner-color="primary"
+        loading="lazy"
+      >
+        <template #error>
+          <div class="absolute-full flex flex-center bg-grey-3 text-grey-7">
+            <q-icon name="broken_image" size="64px" />
+          </div>
+        </template>
+      </q-img>
+    </div>
 
     <inline-data :label="t('common.name')">
       {{ product.name }}
@@ -125,5 +151,16 @@ const price = computed(() => product.value?.price ? parsePrice(product.value.pri
       v-model="showStockDialog"
       :product
     />
+    <product-photo-dialog
+      v-model="showPhotoDialog"
+      :product
+    />
   </page-with-actions>
 </template>
+
+<style scoped>
+.product-image-card {
+  border-radius: 8px;
+  max-height: 400px
+}
+</style>
