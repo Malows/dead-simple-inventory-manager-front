@@ -98,6 +98,26 @@ export const useProductsStore = defineStore('products', () => {
     return response
   }
 
+  async function uploadProductImage (uuid: string, file: File) {
+    const response = await request(productService.uploadImage(uuid, file))
+
+    if (response.data) {
+      const index = products.value.findIndex((c) => c.uuid === uuid)
+
+      const product = mapProduct(response.data)
+
+      if (index !== -1) {
+        products.value.splice(index, 1, product)
+      } else {
+        products.value.push(product)
+      }
+
+      cache.flushProducts(product.uuid)
+    }
+
+    return response
+  }
+
   async function deleteProduct (product: Product) {
     const response = await request(productService.remove(product.uuid))
 
@@ -124,6 +144,7 @@ export const useProductsStore = defineStore('products', () => {
     getProduct,
     createProduct,
     updateProduct,
+    uploadProductImage,
     deleteProduct,
 
     moneyInvested

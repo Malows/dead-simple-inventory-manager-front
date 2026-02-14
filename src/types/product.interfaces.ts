@@ -10,6 +10,7 @@ export interface ProductDTO {
   price: number | null;
   supplier_id: number | null;
   categories?: number[];
+  image_url?: string | null;
 }
 
 export interface ProductEntity {
@@ -22,6 +23,7 @@ export interface ProductEntity {
   description: string | null;
   price: number | null;
   supplier_id: number | null;
+  image_url: string | null;
 }
 
 export interface RawProduct extends ProductEntity {
