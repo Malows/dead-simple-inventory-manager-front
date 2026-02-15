@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { Product } from '../../types/product.interfaces'
-import { parsePrice } from '../../utils/text'
-import ProductAvatar from '../products/ProductAvatar.vue'
+import type { Product } from '../../types/product.interfaces'
 
-const props = withDefaults(
-  defineProps<{ product: Product; codePadding?: number; }>(),
-  { codePadding: 0 }
-)
+import ImagePart from './products/ImagePart.vue'
+import PricePart from './products/PricePart.vue'
+import NamePart from './products/NamePart.vue'
+import CodePart from './products/CodePart.vue'
 
-const selected = defineModel<Product | null>({ default: null })
+const props = defineProps<{ product: Product; codePadding?: number; }>()
+
+const selected = defineModel<Product | null>('selected', { default: null })
 
 const iconColor = computed(() => {
   const { stock, min_stock_warning: stockWarning } = props.product
@@ -18,12 +18,6 @@ const iconColor = computed(() => {
   if (stock > stockWarning) return 'positive'
   if (stock > 0) return 'warning'
   return 'negative'
-})
-
-const price = computed(() => props.product.price ? parsePrice(props.product.price) : 'no asignado')
-const code = computed(() => {
-  const value = props.product.code || 'no asignado'
-  return `cod: ${value.padStart(props.codePadding, ' ')}`
 })
 
 const isSelected = computed(() => props.product.id === selected.value?.id)
@@ -42,29 +36,18 @@ const clickOnItem = () => {
     <q-item-section avatar>
       <q-icon
         name="stop_circle"
-        size="xs"
+        size="sm"
         :color="iconColor"
       />
     </q-item-section>
 
-    <q-item-section avatar>
-      <product-avatar :product="product"/>
-    </q-item-section>
-
-    <q-item-section>
-      <q-item-label>{{ product.name }}</q-item-label>
-      <q-item-label caption>stock: {{ product.stock }}</q-item-label>
-    </q-item-section>
-
-    <q-item-section avatar>
-      <q-item-label>{{ price }}</q-item-label>
-    </q-item-section>
+    <image-part :product size="64px"/>
+    <name-part :product />
+    <price-part :product />
 
     <q-separator class="q-mx-md" vertical/>
 
-    <q-item-section avatar>
-      <q-item-label>{{ code }}</q-item-label>
-    </q-item-section>
+    <code-part :product :padding="codePadding" />
   </q-item>
 </template>
 
