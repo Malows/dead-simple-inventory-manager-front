@@ -39,8 +39,8 @@ onMounted(() => {
     >
       <template #default="{ item }">
         <home-item
-          :product="item"
           v-model:selected="selected"
+          :product="item"
           :code-padding="codePadding"
         />
       </template>

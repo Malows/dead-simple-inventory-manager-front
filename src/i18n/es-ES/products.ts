@@ -21,10 +21,22 @@ export default {
   error_deleting: 'Error eliminando @:products.product',
   stock_reduced: 'Stock reducido',
   error_reducing_stock: 'Error al restar stock',
+  photo_uploaded: 'Foto subida exitosamente',
+  error_uploading: 'Error al subir la foto',
+  error_processing_image: 'Error al procesar la imagen',
+  uploading_photo: 'Subiendo foto...',
 
   // dialogs titles
   confirm_delete: '¿Está seguro de que desea eliminar el @products.product {name} ({code})?',
   reduce_stock: 'Restar unidades de stock',
+  upload_photo: 'Subir foto del producto',
+
+  // photo dialog
+  choose_photo: 'Elegir del dispositivo',
+  take_photo: 'Tomar foto',
+  accepted_formats: 'JPG, PNG o WebP (máx. 2MB)',
+  preview: 'Vista previa',
+  compressing: 'Comprimiendo imagen...',
 
   Code: 'Código',
   Price: 'Precio',

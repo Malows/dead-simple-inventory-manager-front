@@ -14,6 +14,7 @@ export default {
   delete: 'Eliminar',
   confirm: 'Confirmar',
   cancel: 'Cancelar',
+  upload: 'Subir',
   sign_in: 'Iniciar Sesión',
 
   // messages

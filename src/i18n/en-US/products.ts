@@ -21,10 +21,22 @@ export default {
   error_deleting: 'Error deleting @:products.product',
   stock_reduced: 'Stock reduced',
   error_reducing_stock: 'Error reducing stock',
+  photo_uploaded: 'Photo uploaded successfully',
+  error_uploading: 'Error uploading photo',
+  error_processing_image: 'Error processing image',
+  uploading_photo: 'Uploading photo...',
 
   // dialogs titles
   confirm_delete: 'Are you sure you want to delete the @:products.product {name} ({code})?',
   reduce_stock: 'Reduce stock units',
+  upload_photo: 'Upload product photo',
+
+  // photo dialog
+  choose_photo: 'Choose from device',
+  take_photo: 'Take photo',
+  accepted_formats: 'JPG, PNG or WebP (max. 2MB)',
+  preview: 'Preview',
+  compressing: 'Compressing image...',
 
   Code: 'Code',
   Price: 'Price',

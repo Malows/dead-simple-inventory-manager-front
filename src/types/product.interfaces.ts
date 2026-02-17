@@ -10,6 +10,7 @@ export interface ProductDTO {
   price: number | null;
   supplier_id: number | null;
   categories?: number[];
+  image_url?: string | null;
 }
 
 export interface ProductEntity {
@@ -22,18 +23,26 @@ export interface ProductEntity {
   description: string | null;
   price: number | null;
   supplier_id: number | null;
+  image_url: string | null;
 }
 
 export interface RawProduct extends ProductEntity {
   supplier?: SupplierEntity | null;
   categories?: CategoryEntity[] | null;
+  last_price_update: string | null;
+  last_stock_update: string | null;
   created_at: string | null;
   updated_at: string | null;
+  deleted_at: string | null;
 }
 
 export interface Product extends ProductEntity {
   supplier: SupplierEntity | null;
   categories: CategoryEntity[];
+  last_price_update: Date | null;
+  last_stock_update: Date | null;
   created_at: Date | null;
   updated_at: Date | null;
+  deleted_at: Date | null;
+
 }
