@@ -10,6 +10,7 @@ import { useNotify } from '../../composition/useNotify'
 
 import PageWithActions from '../../components/pages/PageWithActions.vue'
 import InlineData from '../../components/InlineData.vue'
+import ProductList from '../../components/ProductList.vue'
 import BrandDeleteDialog from '../../components/dialogs/BrandDeleteDialog.vue'
 
 const brandsStore = useBrandsStore()
@@ -64,6 +65,11 @@ onMounted(() => {
     <inline-data :label="t('common.name')">
       {{ brand.name }}
     </inline-data>
+
+    <q-separator class="q-mt-lg" />
+
+    <h5>{{ t('products.Products') }}</h5>
+    <product-list :products="brand.products" />
 
     <brand-delete-dialog
       v-model="showDeleteDialog"
