@@ -16,6 +16,32 @@ const routes: RouteRecordRaw[] = [
         redirect: '/home'
       },
 
+      // BRANDS
+      {
+        path: 'brands',
+        name: 'brands index',
+        component: () => import('pages/brands/IndexPage.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'brands/create',
+        name: 'brands create',
+        component: () => import('pages/brands/CreatePage.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'brands/:brandId',
+        name: 'brands show',
+        component: () => import('pages/brands/ShowPage.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'brands/:brandId/edit',
+        name: 'brands edit',
+        component: () => import('pages/brands/EditPage.vue'),
+        meta: { requiresAuth: true }
+      },
+
       // CATEGORIES
       {
         path: 'categories',

@@ -4,11 +4,14 @@ import { useI18n } from 'vue-i18n'
 
 import { useCategoriesStore } from '../../stores/categories'
 import { useSuppliersStore } from '../../stores/suppliers'
+import { useBrandsStore } from '../../stores/brands'
 
+import FilterableSelect from '../FilterableSelect.vue'
 import ToggleGrid from '../ToggleGrid.vue'
 
 const { t } = useI18n()
 const categoriesStore = useCategoriesStore()
+const brandsStore = useBrandsStore()
 const suppliersStore = useSuppliersStore()
 
 const name = defineModel<string>('name', { default: '' })
@@ -18,9 +21,11 @@ const price = defineModel<number>('price', { default: 0 })
 const stock = defineModel<number>('stock', { default: 0 })
 const stockWarning = defineModel<number>('stockWarning', { default: 0 })
 const supplier = defineModel<number | null>('supplier', { default: null })
+const brand = defineModel<number | null>('brand', { default: null })
 const categories = defineModel<number[]>('categories', { default: [] })
 
 onMounted(() => {
+  brandsStore.getBrands()
   categoriesStore.getCategories()
   suppliersStore.getSuppliers()
 })
@@ -67,13 +72,18 @@ onMounted(() => {
     />
   </div>
 
-  <q-select
-    v-model="supplier"
-    :label="t('suppliers.Supplier')"
-    map-options
-    emit-value
-    :options="suppliersStore.suppliersOptions"
-  />
+  <div class="input-row--md">
+    <filterable-select
+      v-model="brand"
+      :label="t('brands.Brand')"
+      :options="brandsStore.brandsOptions"
+    />
+    <filterable-select
+      v-model="supplier"
+      :label="t('suppliers.Supplier')"
+      :options="suppliersStore.suppliersOptions"
+    />
+  </div>
 
   <toggle-grid
     v-model="categories"

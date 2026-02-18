@@ -12,6 +12,11 @@ export const DRAWER_ITEMS: Link[] = [
     icon: 'bubble_chart'
   },
   {
+    to: '/brands',
+    label: 'brands.Brands',
+    icon: 'branding_watermark'
+  },
+  {
     to: '/categories',
     label: 'categories.Categories',
     icon: 'local_offer'

@@ -5,6 +5,8 @@ import { useI18n } from 'vue-i18n'
 import { useCategoriesStore } from '../../stores/categories'
 import { useNotify } from '../../composition/useNotify'
 
+import CategoryForm from '../../components/forms/CategoryForm.vue'
+
 const categoriesStore = useCategoriesStore()
 const { t } = useI18n()
 const { errorNotify, goodNotify } = useNotify()
@@ -26,12 +28,7 @@ const submit = () => {
     <h4>{{ t("categories.create") }}</h4>
 
     <div class="q-gutter-md">
-      <q-input
-        v-model="name"
-        :label="t('common.name')"
-        lazy-rule
-        :rules="[(val) => val?.length > 0 || t('common.required_field')]"
-      />
+      <category-form v-model:name="name" />
 
       <q-btn
         color="primary"

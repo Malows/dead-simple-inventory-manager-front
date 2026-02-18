@@ -17,7 +17,8 @@ const price = ref(0.0)
 const description = ref('')
 const stock = ref(0)
 const stockWarning = ref(0)
-const supplier = ref(null)
+const brand = ref<number | null>(null)
+const supplier = ref<number | null>(null)
 const categories = ref<number[]>([])
 
 const submit = () => {
@@ -29,6 +30,7 @@ const submit = () => {
       description: description.value,
       stock: stock.value,
       min_stock_warning: stockWarning.value,
+      brand_id: brand.value,
       supplier_id: supplier.value,
       categories: categories.value
     })
@@ -49,6 +51,7 @@ const submit = () => {
         v-model:price.number="price"
         v-model:stock.number="stock"
         v-model:stock-warning.number="stockWarning"
+        v-model:brand="brand"
         v-model:supplier="supplier"
         v-model:categories="categories"
       />

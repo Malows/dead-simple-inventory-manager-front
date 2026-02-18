@@ -7,6 +7,8 @@ import { useCategoriesStore } from '../../stores/categories'
 import { Category } from '../../types/category.interfaces'
 import { useNotify } from '../../composition/useNotify'
 
+import CategoryForm from '../../components/forms/CategoryForm.vue'
+
 const categoriesStore = useCategoriesStore()
 const route = useRoute()
 const { t } = useI18n()
@@ -50,12 +52,7 @@ const submit = () => {
     <h4>{{ t("categories.update") }}</h4>
 
     <div class="q-gutter-md">
-      <q-input
-        v-model="name"
-        :label="t('common.name')"
-        lazy-rule
-        :rules="[(val) => val?.length > 0 || t('common.required_field')]"
-      />
+      <category-form v-model:name="name" />
 
       <q-btn
         color="primary"

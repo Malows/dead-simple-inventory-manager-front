@@ -1,3 +1,4 @@
+import { BrandEntity } from './brand.interfaces'
 import type { CategoryEntity } from './category.interfaces'
 import type { SupplierEntity } from './supplier.interfaces'
 
@@ -8,6 +9,7 @@ export interface ProductDTO {
   min_stock_warning: number;
   description: string | null;
   price: number | null;
+  brand_id: number | null;
   supplier_id: number | null;
   categories?: number[];
   image_url?: string | null;
@@ -22,12 +24,14 @@ export interface ProductEntity {
   min_stock_warning: number;
   description: string | null;
   price: number | null;
+  brand_id: number | null;
   supplier_id: number | null;
   image_url: string | null;
 }
 
 export interface RawProduct extends ProductEntity {
   supplier?: SupplierEntity | null;
+  brand?: BrandEntity | null;
   categories?: CategoryEntity[] | null;
   last_price_update: string | null;
   last_stock_update: string | null;
