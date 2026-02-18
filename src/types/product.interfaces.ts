@@ -1,4 +1,4 @@
-import { BrandEntity } from './brand.interfaces'
+import type { BrandEntity } from './brand.interfaces'
 import type { CategoryEntity } from './category.interfaces'
 import type { SupplierEntity } from './supplier.interfaces'
 
@@ -41,6 +41,7 @@ export interface RawProduct extends ProductEntity {
 }
 
 export interface Product extends ProductEntity {
+  brand: BrandEntity | null;
   supplier: SupplierEntity | null;
   categories: CategoryEntity[];
   last_price_update: Date | null;
