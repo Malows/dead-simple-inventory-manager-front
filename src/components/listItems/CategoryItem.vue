@@ -4,12 +4,12 @@ import { useI18n } from 'vue-i18n'
 
 import { Category } from '../../types/category.interfaces'
 
-const props = defineProps<{ category: Category }>()
+const { category } = defineProps<{ category: Category }>()
 const { t } = useI18n()
 
-const amount = computed(() => (props.category.products?.length ?? 0))
+const amount = computed(() => (category.products?.length ?? 0))
 
-const to = computed(() => ({ name: 'categories show', params: { categoryId: props.category.uuid } }))
+const to = computed(() => ({ name: 'categories show', params: { categoryId: category.uuid } }))
 </script>
 
 <template>

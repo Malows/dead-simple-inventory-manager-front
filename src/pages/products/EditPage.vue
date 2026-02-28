@@ -20,6 +20,7 @@ const description = ref('')
 const stock = ref(0)
 const stockWarning = ref(0)
 const supplier = ref<number | null>(null)
+const brand = ref<number | null>(null)
 const categories = ref<number[]>([])
 
 const uuid = computed(() =>
@@ -43,6 +44,7 @@ onMounted(async () => {
     description.value = product.value.description ?? ''
     stock.value = product.value.stock
     stockWarning.value = product.value.min_stock_warning
+    brand.value = product.value.brand_id
     supplier.value = product.value.supplier_id
     categories.value = product.value.categories?.map((x) => x.id) ?? []
   }
@@ -60,6 +62,7 @@ const submit = () => {
       description: description.value,
       stock: stock.value,
       min_stock_warning: stockWarning.value,
+      brand_id: brand.value,
       supplier_id: supplier.value,
       categories: categories.value
     })
@@ -80,6 +83,7 @@ const submit = () => {
         v-model:price.number="price"
         v-model:stock.number="stock"
         v-model:stock-warning.number="stockWarning"
+        v-model:brand="brand"
         v-model:supplier="supplier"
         v-model:categories="categories"
       />

@@ -117,6 +117,20 @@ const price = computed(() => product.value?.price ? parsePrice(product.value.pri
     </div>
 
     <inline-data
+      v-if="product.brand"
+      :label="t('brands.Brand')"
+    >
+      <router-link
+        :to="{
+          name: 'brands show',
+          params: { brandId: product.brand.uuid },
+        }"
+      >
+        {{ product.brand.name }}
+      </router-link>
+    </inline-data>
+
+    <inline-data
       v-if="product.supplier"
       :label="t('suppliers.Supplier')"
     >

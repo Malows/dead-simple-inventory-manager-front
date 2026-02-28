@@ -86,7 +86,7 @@ const editRoute = computed(() => ({
 
     <q-separator class="q-mt-lg" />
 
-    <h5>Productos</h5>
+    <h5>{{ t('products.Products') }}</h5>
     <product-list :products="supplier.products" />
 
     <supplier-delete-dialog

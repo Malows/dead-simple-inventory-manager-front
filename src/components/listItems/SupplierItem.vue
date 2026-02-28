@@ -4,11 +4,11 @@ import { useI18n } from 'vue-i18n'
 
 import { Supplier } from '../../types/supplier.interfaces'
 
-const props = defineProps<{ supplier: Supplier}>()
+const { supplier } = defineProps<{ supplier: Supplier}>()
 const { t } = useI18n()
 
-const amount = computed(() => (props.supplier.products?.length ?? 0))
-const to = computed(() => ({ name: 'suppliers show', params: { supplierId: props.supplier.uuid } }))
+const amount = computed(() => (supplier.products?.length ?? 0))
+const to = computed(() => ({ name: 'suppliers show', params: { supplierId: supplier.uuid } }))
 </script>
 
 <template>

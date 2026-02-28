@@ -4,16 +4,16 @@ import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { useI18n } from 'vue-i18n'
 
-import { useCategoriesStore } from '../../stores/categories'
-import { Category } from '../../types/category.interfaces'
+import { useBrandsStore } from '../../stores/brands'
+import { Brand } from '../../types/brand.interfaces'
 import { useNotify } from '../../composition/useNotify'
 
 import PageWithActions from '../../components/pages/PageWithActions.vue'
 import InlineData from '../../components/InlineData.vue'
 import ProductList from '../../components/ProductList.vue'
-import CategoryDeleteDialog from '../../components/dialogs/CategoryDeleteDialog.vue'
+import BrandDeleteDialog from '../../components/dialogs/BrandDeleteDialog.vue'
 
-const categoriesStore = useCategoriesStore()
+const brandsStore = useBrandsStore()
 const route = useRoute()
 const quasar = useQuasar()
 const { t } = useI18n()
@@ -22,34 +22,34 @@ const { errorNotify } = useNotify()
 const showDeleteDialog = ref(false)
 
 const uuid = computed(() =>
-  Array.isArray(route.params.categoryId)
-    ? route.params.categoryId[0]
-    : route.params.categoryId
+  Array.isArray(route.params.brandId)
+    ? route.params.brandId[0]
+    : route.params.brandId
 )
-const category = computed(() =>
-  categoriesStore.categories.find(
-    (category: Category) => category.uuid === uuid.value
+const brand = computed(() =>
+  brandsStore.brands.find(
+    (brand: Brand) => brand.uuid === uuid.value
   )
 )
 
 const editRoute = computed(() => ({
-  name: 'categories edit',
+  name: 'brands edit',
   params: route.params
 }))
 
 onMounted(() => {
   quasar.loading.show()
-  categoriesStore
-    .getCategory(uuid.value)
-    .catch(errorNotify('categories.error_getting', { name: 'categories index' }))
+  brandsStore
+    .getBrand(uuid.value)
+    .catch(errorNotify('brands.error_getting', { name: 'brands index' }))
     .finally(() => quasar.loading.hide())
 })
 </script>
 
 <template>
   <page-with-actions
-    v-if="category"
-    :title="t('categories.show')"
+    v-if="brand"
+    :title="t('brands.show')"
   >
     <template #actions>
       <q-btn round color="primary" size="md" icon="edit" :to="editRoute" />
@@ -63,17 +63,17 @@ onMounted(() => {
     </template>
 
     <inline-data :label="t('common.name')">
-      {{ category.name }}
+      {{ brand.name }}
     </inline-data>
 
     <q-separator class="q-mt-lg" />
 
     <h5>{{ t('products.Products') }}</h5>
-    <product-list :products="category.products" />
+    <product-list :products="brand.products" />
 
-    <category-delete-dialog
+    <brand-delete-dialog
       v-model="showDeleteDialog"
-      :category
+      :brand
     />
   </page-with-actions>
 </template>
