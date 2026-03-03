@@ -6,7 +6,7 @@ import { toPlainString } from '../../../utils/date'
 import { parsePrice } from '../../../utils/text'
 
 const { product } = defineProps<{ product: Product }>()
-const price = computed(() => product.price ? parsePrice(product.price) : 'no asignado')
+const price = computed(() => (product.price ? parsePrice(product.price) : 'no asignado'))
 </script>
 
 <template>

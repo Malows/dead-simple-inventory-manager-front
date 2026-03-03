@@ -8,9 +8,9 @@ import FilterPagination from './FilterPagination.vue'
 
 const props = withDefaults(
   defineProps<{
-    items: T[],
-    filterFn?:(search: string) => (item: T) => boolean,
-    itemsPerPage?: number,
+    items: T[];
+    filterFn?:(search: string) => (item: T) => boolean;
+    itemsPerPage?: number;
   }>(),
   {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -34,10 +34,12 @@ const filtered = computed(() => {
 
 const numberOfPages = computed(() => Math.ceil(filtered.value.length / props.itemsPerPage))
 
-const sliced = computed(() => filtered.value.slice(
-  (currentPage.value - 1) * props.itemsPerPage,
-  currentPage.value * props.itemsPerPage
-))
+const sliced = computed(() =>
+  filtered.value.slice(
+    (currentPage.value - 1) * props.itemsPerPage,
+    currentPage.value * props.itemsPerPage
+  )
+)
 
 const changeOfSearchValue = (newValue: string) => {
   currentPage.value = 1
@@ -47,10 +49,7 @@ const changeOfSearchValue = (newValue: string) => {
 
 <template>
   <div>
-    <filter-input
-      v-model="searchField"
-      @update:model-value="changeOfSearchValue"
-    />
+    <filter-input v-model="searchField" @update:model-value="changeOfSearchValue" />
 
     <q-list>
       <template v-for="item in sliced">

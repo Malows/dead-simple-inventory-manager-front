@@ -6,8 +6,8 @@ import StickyBtn from '../stickyButtons/StickyBtn.vue'
 
 withDefaults(
   defineProps<{
-    title?: string
-    to?: RouteLocationRaw | null
+    title?: string;
+    to?: RouteLocationRaw | null;
   }>(),
   {
     title: '',
@@ -22,17 +22,9 @@ defineEmits<{ click: [void] }>()
   <q-page padding>
     <h4>{{ title }}</h4>
 
-    <sticky-path
-      v-if="to"
-      icon="add"
-      :to
-    />
-    <sticky-btn
-      v-else
-      icon="add"
-      @click="$emit('click')"
-    />
+    <sticky-path v-if="to" icon="add" :to />
+    <sticky-btn v-else icon="add" @click="$emit('click')" />
 
     <slot></slot>
   </q-page>
-  </template>
+</template>

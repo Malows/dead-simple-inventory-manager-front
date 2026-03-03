@@ -4,11 +4,12 @@ import { useStickyButton } from '../../composition/components/stickyButtons'
 
 withDefaults(
   defineProps<{
-    icon?: string
-    to?: RouteLocationRaw
-    size?: string
-    color?: string
-  }>(), {
+    icon?: string;
+    to?: RouteLocationRaw;
+    size?: string;
+    color?: string;
+  }>(),
+  {
     icon: 'add',
     to: '/',
     size: 'md',

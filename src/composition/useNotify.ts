@@ -19,17 +19,19 @@ export function useNotify () {
     }
   }
 
-  const goodNotify = (message: string | number, route?: RouteLocationRaw) => <T>(httpResponse: HttpResponse<T>) => {
-    if (!httpResponse.isOk) throw httpResponse.error
+  const goodNotify =
+    (message: string | number, route?: RouteLocationRaw) =>
+    <T>(httpResponse: HttpResponse<T>) => {
+      if (!httpResponse.isOk) throw httpResponse.error
 
-    $q.notify({
-      color: 'positive',
-      message: t(message)
-    })
-    if (route) {
-      router.push(route)
+      $q.notify({
+        color: 'positive',
+        message: t(message)
+      })
+      if (route) {
+        router.push(route)
+      }
     }
-  }
 
   return {
     errorNotify,

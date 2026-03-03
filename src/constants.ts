@@ -25,5 +25,10 @@ export const DRAWER_ITEMS: Link[] = [
     to: '/suppliers',
     label: 'suppliers.Suppliers',
     icon: 'people_alt'
+  },
+  {
+    to: '/operations',
+    label: 'operations.Operations',
+    icon: 'swap_vert'
   }
 ]

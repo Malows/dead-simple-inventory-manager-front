@@ -9,7 +9,6 @@ const data = defineModel({
   <q-input
     class="q-my-md"
     type="search"
-    outlined
     clearable
     v-model="data"
     :debounce="300"

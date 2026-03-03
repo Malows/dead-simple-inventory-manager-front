@@ -4,13 +4,7 @@ defineEmits<{ logout: [void] }>()
 </script>
 
 <template>
-  <q-btn
-    flat
-    icon="account_box"
-    :label="user.name"
-    :ripple="false"
-    aria-label="User"
-  >
+  <q-btn flat icon="account_box" :label="user.name" :ripple="false" aria-label="User">
     <q-menu class="q-pa-md">
       <div class="row">
         <p class="text-subtitle1 q-ma-md">{{ user.name }}</p>

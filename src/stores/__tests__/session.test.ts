@@ -16,7 +16,7 @@ vi.mock('../../services/SessionService', () => {
 })
 
 vi.mock('../../services/interceptors/session.interceptors', () => ({
-  mapSession: vi.fn((raw: Record<string, unknown>) => ({
+  mapSession: vi.fn(() => ({
     accessToken: 'tok-mapped',
     refreshToken: 'ref-mapped',
     loginAt: new Date('2024-06-01T00:00:00Z'),

@@ -12,4 +12,4 @@ const { position, offset, direction, icon } = useStickyButton()
       <slot></slot>
     </q-fab>
   </q-page-sticky>
-  </template>
+</template>

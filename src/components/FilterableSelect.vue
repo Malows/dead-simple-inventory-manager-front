@@ -4,8 +4,8 @@ import { ref } from 'vue'
 import { SelectOption } from '../types/index'
 
 const props = defineProps<{
-  label: string
-  options: SelectOption<T>[]
+  label: string;
+  options: SelectOption<T>[];
 }>()
 
 const model = defineModel<T>()
@@ -17,7 +17,7 @@ function filterFn (val: string, update: (callback: () => void) => void) {
     const needle = val.toLowerCase()
     filteredOptions.value = !needle
       ? props.options
-      : props.options.filter(v => v.label.toLowerCase().includes(needle))
+      : props.options.filter((v) => v.label.toLowerCase().includes(needle))
   })
 }
 
@@ -43,9 +43,7 @@ function abortFilterFn () {
   >
     <template v-slot:no-option>
       <q-item>
-        <q-item-section class="text-grey">
-          No results
-        </q-item-section>
+        <q-item-section class="text-grey">No results</q-item-section>
       </q-item>
     </template>
   </q-select>

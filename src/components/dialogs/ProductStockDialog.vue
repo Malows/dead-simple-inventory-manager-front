@@ -53,7 +53,7 @@ const reduce = () => {
     <q-card>
       <q-card-section>
         <div class="text-h6 q-mb-sm">
-          {{ t('products.reduce_stock') }}
+          {{ t("products.reduce_stock") }}
         </div>
       </q-card-section>
 
@@ -74,19 +74,8 @@ const reduce = () => {
       </q-card-section>
 
       <q-card-actions class="q-mt-sm" align="right">
-        <q-btn
-          v-close-popup
-          flat
-          :label="t('common.cancel')"
-          color="primary"
-        />
-        <q-btn
-          v-close-popup
-          flat
-          :label="t('products.reduce')"
-          color="primary"
-          @click="reduce"
-        />
+        <q-btn v-close-popup flat :label="t('common.cancel')" color="primary" />
+        <q-btn v-close-popup flat :label="t('products.reduce')" color="primary" @click="reduce" />
       </q-card-actions>
     </q-card>
   </q-dialog>

@@ -40,31 +40,18 @@ onMounted(() => {
   />
 
   <div class="input-row--md">
-    <q-input
-      v-model="code"
-      :label="t('products.Code')"
-    />
-    <q-input
-      v-model.number="price"
-      :label="t('products.Price')"
-    >
+    <q-input v-model="code" :label="t('products.Code')" />
+    <q-input v-model.number="price" :label="t('products.Price')">
       <template #prepend>
         <q-icon name="attach_money" />
       </template>
     </q-input>
   </div>
 
-  <q-input
-    v-model="description"
-    :label="t('products.Description')"
-  />
+  <q-input v-model="description" :label="t('products.Description')" />
 
   <div class="input-row--md">
-    <q-input
-      v-model.number="stock"
-      type="number"
-      label="Stock"
-    />
+    <q-input v-model.number="stock" type="number" label="Stock" />
     <q-input
       v-model.number="stockWarning"
       type="number"

@@ -26,10 +26,7 @@ const to = computed(() => ({ name: 'products show', params: { productId: props.p
 <template>
   <q-item clickable :to>
     <q-item-section avatar>
-     <q-icon
-        :name="iconData.name"
-        :color="iconData.color"
-      />
+      <q-icon :name="iconData.name" :color="iconData.color" />
     </q-item-section>
 
     <image-part :product />

@@ -88,16 +88,11 @@ async function uploadImage () {
   })
 
   try {
-    const { isOk } = await productsStore.uploadProductImage(
-      product.uuid,
-      selectedFile.value
-    )
+    const { isOk } = await productsStore.uploadProductImage(product.uuid, selectedFile.value)
 
     quasar.notify({
       color: isOk ? 'positive' : 'negative',
-      message: isOk
-        ? t('products.photo_uploaded')
-        : t('products.error_uploading'),
+      message: isOk ? t('products.photo_uploaded') : t('products.error_uploading'),
       icon: isOk ? 'check_circle' : 'error',
       position: 'top'
     })
@@ -119,7 +114,6 @@ async function uploadImage () {
     quasar.loading.hide()
   }
 }
-
 </script>
 
 <template>
@@ -127,7 +121,7 @@ async function uploadImage () {
     <q-card style="min-width: 350px; max-width: 500px">
       <q-card-section>
         <div class="text-h6">
-          {{ t('products.upload_photo') }}
+          {{ t("products.upload_photo") }}
         </div>
         <div class="text-caption text-grey-7">
           {{ product.name }}
@@ -149,7 +143,7 @@ async function uploadImage () {
             <q-icon name="attach_file" />
           </template>
           <template #hint>
-            {{ t('products.accepted_formats') }}
+            {{ t("products.accepted_formats") }}
           </template>
         </q-file>
 
@@ -177,14 +171,14 @@ async function uploadImage () {
         <div v-if="isCompressing" class="q-mt-md text-center">
           <q-spinner color="primary" size="40px" />
           <div class="text-caption q-mt-sm">
-            {{ t('products.compressing') }}
+            {{ t("products.compressing") }}
           </div>
         </div>
 
         <!-- Preview -->
         <div v-if="previewUrl && !isCompressing" class="q-mt-md">
           <div class="text-subtitle2 q-mb-sm">
-            {{ t('products.preview') }}
+            {{ t("products.preview") }}
           </div>
           <div class="preview-container">
             <q-img
@@ -204,12 +198,7 @@ async function uploadImage () {
       <q-separator />
 
       <q-card-actions align="right">
-        <q-btn
-          v-close-popup
-          flat
-          :label="t('common.cancel')"
-          color="primary"
-        />
+        <q-btn v-close-popup flat :label="t('common.cancel')" color="primary" />
         <q-btn
           flat
           :label="t('common.upload')"

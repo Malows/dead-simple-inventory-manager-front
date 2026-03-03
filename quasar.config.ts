@@ -4,7 +4,7 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
 import { configure } from 'quasar/wrappers'
-import { fileURLToPath } from 'node:url'
+// import { fileURLToPath } from 'node:url'
 
 export default configure((/* ctx */) => {
   return {

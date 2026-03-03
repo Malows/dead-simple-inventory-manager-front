@@ -6,7 +6,7 @@ import {
   getStorage,
   removeStorage
 } from '../session.interceptors'
-import type { RawSession, Session } from '../../../types/session.interfaces'
+import type { RawSession } from '../../../types/session.interfaces'
 
 const makeRawSession = (): RawSession => ({
   token_type: 'Bearer',

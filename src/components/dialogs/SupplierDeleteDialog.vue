@@ -50,13 +50,13 @@ const destroy = () => {
     <q-card>
       <q-card-section>
         <div class="text-h6 q-mb-sm">
-          {{ t('common.confirm') }}
+          {{ t("common.confirm") }}
         </div>
       </q-card-section>
 
       <q-card-section class="row items-center">
         <div class="text-body1">
-          {{ t('suppliers.confirm_delete', { name: supplier?.name }) }}
+          {{ t("suppliers.confirm_delete", { name: supplier?.name }) }}
         </div>
       </q-card-section>
 
@@ -65,19 +65,8 @@ const destroy = () => {
       </q-card-section>
 
       <q-card-actions class="q-mt-sm" align="right">
-        <q-btn
-          v-close-popup
-          flat
-          :label="t('common.delete')"
-          color="red"
-          @click="destroy"
-        />
-        <q-btn
-          v-close-popup
-          flat
-          :label="t('common.cancel')"
-          color="primary"
-        />
+        <q-btn v-close-popup flat :label="t('common.delete')" color="red" @click="destroy" />
+        <q-btn v-close-popup flat :label="t('common.cancel')" color="primary" />
       </q-card-actions>
     </q-card>
   </q-dialog>

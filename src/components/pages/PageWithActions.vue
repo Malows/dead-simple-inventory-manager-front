@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import StickyActions from '../stickyButtons/StickyActions.vue'
 
-withDefaults(
-  defineProps<{ title?: string }>(),
-  { title: '' }
-)
+withDefaults(defineProps<{ title?: string }>(), { title: '' })
 </script>
 
 <template>

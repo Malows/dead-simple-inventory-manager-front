@@ -43,8 +43,7 @@ onMounted(async () => {
   const responses = await Promise.all([
     categoriesStore.getCategories(),
     suppliersStore.getSuppliers()
-  ])
-    .finally(() => quasar.loading.hide())
+  ]).finally(() => quasar.loading.hide())
 
   if (responses.some((x) => x?.code === 401)) {
     logout()
@@ -56,14 +55,7 @@ onMounted(async () => {
   <q-layout v-if="sessionStore.user" view="hHh LpR fFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleDrawer"
-        />
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleDrawer" />
         <q-toolbar-title>{{ NAME }}</q-toolbar-title>
 
         <user-menu :user="sessionStore.user" @logout="logout" />
