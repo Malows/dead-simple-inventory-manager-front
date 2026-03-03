@@ -54,9 +54,7 @@ onMounted(() => {
       <q-tab name="prices" :label="t('operations.prices_by_group')" />
     </q-tabs>
 
-    <q-separator />
-
-    <q-tab-panels v-model="activeTab" animated class="q-mt-md">
+    <q-tab-panels v-model="activeTab" animated>
       <q-tab-panel name="stock">
         <stock-tab />
       </q-tab-panel>

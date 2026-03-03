@@ -4,42 +4,49 @@ import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
 
 import { useProductsStore } from '../../stores/products'
-import { useBrandsStore } from '../../stores/brands'
-import { useCategoriesStore } from '../../stores/categories'
-import { useSuppliersStore } from '../../stores/suppliers'
 import { bulkOperationService } from '../../services/BulkOperationService'
 import type { Product } from '../../types/product.interfaces'
 import type { StockMovementType, StockChange } from '../../types/operations.interfaces'
 
-import OperationsControls from './OperationsControls.vue'
-import TransferList from './TransferList.vue'
+import StockMovementStep from './steps/StockMovementStep.vue'
+import StockProductsStep from './steps/StockProductsStep.vue'
+import StockReviewStep from './steps/StockReviewStep.vue'
 
 const { t } = useI18n()
 const quasar = useQuasar()
-
 const productsStore = useProductsStore()
-const brandsStore = useBrandsStore()
-const categoriesStore = useCategoriesStore()
-const suppliersStore = useSuppliersStore()
 
+// Stepper state
+const step = ref(1)
+
+// Step 1
+const movementType = ref<StockMovementType | null>(null)
+const movementStepRef = ref<InstanceType<typeof StockMovementStep> | null>(null)
+
+// Step 2
 const selectedProducts = ref<Product[]>([])
 const quantities = ref<Record<string, number>>({})
 
-// Filters for left list
-const movementType = ref<StockMovementType | null>(null)
-const searchText = ref('')
-const filterBrand = ref<number | null>(null)
-const filterSupplier = ref<number | null>(null)
-const filterCategory = ref<number | null>(null)
-
-const canSubmit = computed(() => {
+// Review helpers
+const canConfirm = computed(() => {
   if (!movementType.value) return false
   if (selectedProducts.value.length === 0) return false
   return selectedProducts.value.every((p) => (quantities.value[p.uuid] ?? 0) > 0)
 })
 
+const selectedMovement = computed(() =>
+  movementStepRef.value?.movementOptions.find((m) => m.value === movementType.value)
+)
+
+function resetAll () {
+  step.value = 1
+  movementType.value = null
+  selectedProducts.value = []
+  quantities.value = {}
+}
+
 async function submit () {
-  if (!canSubmit.value || !movementType.value) return
+  if (!canConfirm.value || !movementType.value) return
 
   const changes: StockChange[] = selectedProducts.value.map((p) => ({
     id: p.id,
@@ -59,9 +66,7 @@ async function submit () {
         color: 'positive',
         message: t('operations.stock_updated')
       })
-      selectedProducts.value = []
-      quantities.value = {}
-      movementType.value = null
+      resetAll()
       await productsStore.forceGetProducts()
     } else {
       quasar.notify({
@@ -81,60 +86,53 @@ async function submit () {
 </script>
 
 <template>
-  <div>
-    <operations-controls
-      :brands-options="brandsStore.brandsOptions"
-      :suppliers-options="suppliersStore.suppliersOptions"
-      :categories-options="categoriesStore.categoriesOptions"
-      v-model:type="movementType"
-      v-model:search="searchText"
-      v-model:brand="filterBrand"
-      v-model:supplier="filterSupplier"
-      v-model:category="filterCategory"
-    />
-
-    <transfer-list
-      v-model="selectedProducts"
-      :items="productsStore.products"
-      :search-text="searchText"
-      :filter-brand="filterBrand"
-      :filter-supplier="filterSupplier"
-      :filter-category="filterCategory"
-    />
-
-    <div v-if="selectedProducts.length > 0" class="q-mt-md">
-      <div class="text-subtitle1 q-mb-sm">
-        {{ t("operations.quantity") }}
-      </div>
-
-      <q-list bordered separator class="rounded-borders">
-        <q-item v-for="product in selectedProducts" :key="product.uuid">
-          <q-item-section>
-            <q-item-label>{{ product.name }}</q-item-label>
-            <q-item-label caption> {{ product.code }} — Stock: {{ product.stock }} </q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <q-input
-              v-model.number="quantities[product.uuid]"
-              type="number"
-              dense
-              outlined
-              style="width: 120px"
-              :min="0"
-              :label="t('operations.quantity')"
-            />
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </div>
-
-    <div class="row justify-end q-mt-md">
-      <q-btn
-        color="primary"
-        :label="t('operations.execute')"
-        :disable="!canSubmit"
-        @click="submit"
+  <q-stepper
+    v-model="step"
+    animated
+    color="primary"
+    flat
+    bordered
+  >
+    <q-step
+      :name="1"
+      :title="t('operations.step_movement_type')"
+      icon="swap_vert"
+      :done="step > 1"
+    >
+      <stock-movement-step
+        ref="movementStepRef"
+        v-model="movementType"
+        @next="step = 2"
       />
-    </div>
-  </div>
+    </q-step>
+
+    <q-step
+      :name="2"
+      :title="t('operations.step_select_products')"
+      icon="inventory_2"
+      :done="step > 2"
+    >
+      <stock-products-step
+        v-model="selectedProducts"
+        v-model:quantities="quantities"
+        @next="step = 3"
+        @back="step = 1"
+      />
+    </q-step>
+
+    <q-step
+      :name="3"
+      :title="t('operations.step_review')"
+      icon="checklist"
+    >
+      <stock-review-step
+        :movement="selectedMovement"
+        :products="selectedProducts"
+        :quantities="quantities"
+        :can-confirm="canConfirm"
+        @confirm="submit"
+        @back="step = 2"
+      />
+    </q-step>
+  </q-stepper>
 </template>

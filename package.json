@@ -6,6 +6,7 @@
   "author": "Juan Manuel Cruz <cruz.jm.stafe@gmail.com>",
   "type": "module",
   "scripts": {
+    "check": "vue-tsc --noEmit",
     "fmt": "oxfmt",
     "lint": "eslint --ext .js,.ts,.vue ./",
     "lint:fix": "eslint --ext .js,.ts,.vue ./ --fix",

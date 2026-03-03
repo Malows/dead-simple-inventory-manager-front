@@ -8,11 +8,24 @@ export default {
   stock: 'Stock',
   prices_by_group: 'Prices by group',
 
+  // stepper
+  step_movement_type: 'Movement type',
+  step_select_products: 'Select products',
+  step_review: 'Review',
+
   // stock movement types
   purchase: 'Purchase',
+  purchase_desc: 'Add products received from suppliers into inventory.',
+  purchase_action: 'Increases stock',
   sale: 'Sale',
+  sale_desc: 'Register products sold to customers.',
+  sale_action: 'Decreases stock',
   adjustment: 'Adjustment',
+  adjustment_desc: 'Correct stock discrepancies found during audits or counts.',
+  adjustment_action: 'Sets exact stock',
   return: 'Return',
+  return_desc: 'Process products returned by customers back into inventory.',
+  return_action: 'Increases stock',
   movement_type: 'Movement type',
 
   // price adjustment types
@@ -57,6 +70,17 @@ export default {
   value_required: 'Enter a value',
   quantity_required: 'Quantity must be greater than 0',
   no_products: 'No products available',
+
+  // review
+  review_movement_type: 'Movement type',
+  review_products: 'Products to modify',
+  review_empty: 'No products selected',
+  review_confirm: 'Confirm and execute',
+  review_total_products: '{count} product | {count} products',
+
+  // navigation
+  next: 'Next',
+  back: 'Back',
 
   // transfer list
   filter_by_name: 'Filter by name or code',

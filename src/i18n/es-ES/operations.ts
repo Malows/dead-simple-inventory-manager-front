@@ -8,11 +8,24 @@ export default {
   stock: 'Stock',
   prices_by_group: 'Precios por grupo',
 
+  // stepper
+  step_movement_type: 'Tipo de movimiento',
+  step_select_products: 'Seleccionar productos',
+  step_review: 'Revisión',
+
   // stock movement types
   purchase: 'Compra',
+  purchase_desc: 'Agregar productos recibidos de proveedores al inventario.',
+  purchase_action: 'Aumenta stock',
   sale: 'Venta',
+  sale_desc: 'Registrar productos vendidos a clientes.',
+  sale_action: 'Disminuye stock',
   adjustment: 'Ajuste',
+  adjustment_desc: 'Corregir discrepancias de stock encontradas durante auditorías o conteos.',
+  adjustment_action: 'Establece stock exacto',
   return: 'Devolución',
+  return_desc: 'Procesar productos devueltos por clientes de vuelta al inventario.',
+  return_action: 'Aumenta stock',
   movement_type: 'Tipo de movimiento',
 
   // price adjustment types
@@ -57,6 +70,17 @@ export default {
   value_required: 'Ingrese un valor',
   quantity_required: 'La cantidad debe ser mayor a 0',
   no_products: 'No hay productos disponibles',
+
+  // review
+  review_movement_type: 'Tipo de movimiento',
+  review_products: 'Productos a modificar',
+  review_empty: 'No hay productos seleccionados',
+  review_confirm: 'Confirmar y ejecutar',
+  review_total_products: '{count} producto | {count} productos',
+
+  // navigation
+  next: 'Siguiente',
+  back: 'Volver',
 
   // transfer list
   filter_by_name: 'Filtrar por nombre o código',

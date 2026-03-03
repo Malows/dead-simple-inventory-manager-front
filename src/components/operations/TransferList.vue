@@ -15,9 +15,11 @@ const props = defineProps<{
   filterBrand: number | null
   filterSupplier: number | null
   filterCategory: number | null
+  showQuantities?: boolean
 }>()
 
 const model = defineModel<Product[]>({ default: () => [] })
+const quantities = defineModel<Record<string, number>>('quantities', { default: () => ({}) })
 
 // Selection state
 const leftChecked = ref<Set<string>>(new Set())
@@ -230,7 +232,20 @@ watch([() => props.searchText, () => props.filterBrand, () => props.filterSuppli
             </q-item-section>
             <q-item-section>
               <q-item-label>{{ product.name }}</q-item-label>
-              <q-item-label caption>{{ product.code }}</q-item-label>
+              <q-item-label caption>{{ product.code }} — Stock: {{ product.stock }}</q-item-label>
+            </q-item-section>
+            <q-item-section v-if="showQuantities" side>
+              <q-input
+                :model-value="quantities[product.uuid] ?? 0"
+                @update:model-value="(v: string | number | null) => quantities[product.uuid] = Number(v) || 0"
+                type="number"
+                dense
+                outlined
+                style="width: 100px"
+                :min="0"
+                :label="t('operations.quantity')"
+                @click.stop
+              />
             </q-item-section>
           </q-item>
 
