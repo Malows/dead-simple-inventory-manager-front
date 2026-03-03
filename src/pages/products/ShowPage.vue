@@ -21,9 +21,7 @@ const { t } = useI18n()
 const { errorNotify } = useNotify()
 
 const uuid = computed(() =>
-  Array.isArray(route.params.productId)
-    ? route.params.productId[0]
-    : route.params.productId
+  Array.isArray(route.params.productId) ? route.params.productId[0] : route.params.productId
 )
 const product = computed(() =>
   productsStore.products.find((product) => product.uuid === uuid.value)
@@ -45,36 +43,15 @@ const editRoute = computed(() => ({
   name: 'products edit',
   params: route.params
 }))
-const price = computed(() => product.value?.price ? parsePrice(product.value.price) : '')
+const price = computed(() => (product.value?.price ? parsePrice(product.value.price) : ''))
 </script>
 
 <template>
-  <page-with-actions
-    v-if="product"
-    :title="t('products.show')"
-  >
+  <page-with-actions v-if="product" :title="t('products.show')">
     <template #actions>
-      <q-btn
-        round
-        color="primary"
-        size="md"
-        icon="edit"
-        :to="editRoute"
-      />
-      <q-btn
-        round
-        color="primary"
-        size="md"
-        icon="photo"
-        @click="showPhotoDialog = true"
-      />
-      <q-btn
-        round
-        color="negative"
-        size="md"
-        icon="delete"
-        @click="showDeleteDialog = true"
-      />
+      <q-btn round color="primary" size="md" icon="edit" :to="editRoute" />
+      <q-btn round color="primary" size="md" icon="photo" @click="showPhotoDialog = true" />
+      <q-btn round color="negative" size="md" icon="delete" @click="showDeleteDialog = true" />
     </template>
 
     <!-- Product Image -->
@@ -116,10 +93,7 @@ const price = computed(() => product.value?.price ? parsePrice(product.value.pri
       </inline-data>
     </div>
 
-    <inline-data
-      v-if="product.brand"
-      :label="t('brands.Brand')"
-    >
+    <inline-data v-if="product.brand" :label="t('brands.Brand')">
       <router-link
         :to="{
           name: 'brands show',
@@ -130,10 +104,7 @@ const price = computed(() => product.value?.price ? parsePrice(product.value.pri
       </router-link>
     </inline-data>
 
-    <inline-data
-      v-if="product.supplier"
-      :label="t('suppliers.Supplier')"
-    >
+    <inline-data v-if="product.supplier" :label="t('suppliers.Supplier')">
       <router-link
         :to="{
           name: 'suppliers show',
@@ -144,37 +115,19 @@ const price = computed(() => product.value?.price ? parsePrice(product.value.pri
       </router-link>
     </inline-data>
 
-    <q-page-sticky
-      position="bottom-right"
-      :offset="[32, 32]"
-    >
-      <q-btn
-        round
-        color="positive"
-        size="xl"
-        icon="assignment"
-        @click="showStockDialog = true"
-      />
+    <q-page-sticky position="bottom-right" :offset="[32, 32]">
+      <q-btn round color="positive" size="xl" icon="assignment" @click="showStockDialog = true" />
     </q-page-sticky>
 
-    <product-delete-dialog
-      v-model="showDeleteDialog"
-      :product
-    />
-    <product-stock-dialog
-      v-model="showStockDialog"
-      :product
-    />
-    <product-photo-dialog
-      v-model="showPhotoDialog"
-      :product
-    />
+    <product-delete-dialog v-model="showDeleteDialog" :product />
+    <product-stock-dialog v-model="showStockDialog" :product />
+    <product-photo-dialog v-model="showPhotoDialog" :product />
   </page-with-actions>
 </template>
 
 <style scoped>
 .product-image-card {
   border-radius: 8px;
-  max-height: 400px
+  max-height: 400px;
 }
 </style>

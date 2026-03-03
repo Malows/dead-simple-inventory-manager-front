@@ -20,15 +20,11 @@ const { t } = useI18n()
 const { errorNotify } = useNotify()
 
 const uuid = computed(() =>
-  Array.isArray(route.params.supplierId)
-    ? route.params.supplierId[0]
-    : route.params.supplierId
+  Array.isArray(route.params.supplierId) ? route.params.supplierId[0] : route.params.supplierId
 )
 
 const supplier = computed(() =>
-  suppliersStore.suppliers.find(
-    (supplier: Supplier) => supplier.uuid === uuid.value
-  )
+  suppliersStore.suppliers.find((supplier: Supplier) => supplier.uuid === uuid.value)
 )
 
 onMounted(() => {
@@ -47,25 +43,10 @@ const editRoute = computed(() => ({
 </script>
 
 <template>
-  <page-with-actions
-    v-if="supplier"
-    :title="t('suppliers.show')"
-  >
+  <page-with-actions v-if="supplier" :title="t('suppliers.show')">
     <template #actions>
-      <q-btn
-        round
-        color="primary"
-        size="md"
-        icon="edit"
-        :to="editRoute"
-      />
-      <q-btn
-        round
-        color="negative"
-        size="md"
-        icon="delete"
-        @click="showDeleteDialog = true"
-      />
+      <q-btn round color="primary" size="md" icon="edit" :to="editRoute" />
+      <q-btn round color="negative" size="md" icon="delete" @click="showDeleteDialog = true" />
     </template>
 
     <inline-data :label="t('common.name')">
@@ -86,12 +67,9 @@ const editRoute = computed(() => ({
 
     <q-separator class="q-mt-lg" />
 
-    <h5>{{ t('products.Products') }}</h5>
+    <h5>{{ t("products.Products") }}</h5>
     <product-list :products="supplier.products" />
 
-    <supplier-delete-dialog
-      v-model="showDeleteDialog"
-      :supplier
-    />
+    <supplier-delete-dialog v-model="showDeleteDialog" :supplier />
   </page-with-actions>
 </template>

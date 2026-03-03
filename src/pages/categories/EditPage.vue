@@ -17,14 +17,10 @@ const { errorNotify, goodNotify } = useNotify()
 const name = ref('')
 
 const uuid = computed(() =>
-  Array.isArray(route.params.categoryId)
-    ? route.params.categoryId[0]
-    : route.params.categoryId
+  Array.isArray(route.params.categoryId) ? route.params.categoryId[0] : route.params.categoryId
 )
 const category = computed(() =>
-  categoriesStore.categories.find(
-    (category: Category) => category.uuid === uuid.value
-  )
+  categoriesStore.categories.find((category: Category) => category.uuid === uuid.value)
 )
 
 onMounted(async () => {

@@ -17,16 +17,10 @@ const { errorNotify, goodNotify } = useNotify()
 const name = ref('')
 
 const uuid = computed(() =>
-  Array.isArray(route.params.brandId)
-    ? route.params.brandId[0]
-    : route.params.brandId
+  Array.isArray(route.params.brandId) ? route.params.brandId[0] : route.params.brandId
 )
 
-const brand = computed(() =>
-  brandsStore.brands.find(
-    (brand: Brand) => brand.uuid === uuid.value
-  )
-)
+const brand = computed(() => brandsStore.brands.find((brand: Brand) => brand.uuid === uuid.value))
 
 onMounted(async () => {
   await brandsStore

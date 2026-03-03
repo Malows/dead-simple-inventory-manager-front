@@ -16,9 +16,7 @@ const quasar = useQuasar()
 const { t } = useI18n()
 const { errorNotify } = useNotify()
 
-const codePadding = computed(() =>
-  Math.max(...productsStore.products.map((x) => x.code.length))
-)
+const codePadding = computed(() => Math.max(...productsStore.products.map((x) => x.code.length)))
 
 onMounted(() => {
   quasar.loading.show()
@@ -30,15 +28,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <page-with-add
-    :title="t('products.Products')"
-    :to="{ name: 'products create' }"
-  >
-    <filterable-list
-      :items="productsStore.products"
-      :filter-fn="byProduct"
-      :items-per-page="50"
-    >
+  <page-with-add :title="t('products.Products')" :to="{ name: 'products create' }">
+    <filterable-list :items="productsStore.products" :filter-fn="byProduct" :items-per-page="50">
       <template #default="{ item }">
         <product-item :product="item" :code-padding="codePadding" />
       </template>

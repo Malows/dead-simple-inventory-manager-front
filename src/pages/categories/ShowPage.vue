@@ -22,14 +22,10 @@ const { errorNotify } = useNotify()
 const showDeleteDialog = ref(false)
 
 const uuid = computed(() =>
-  Array.isArray(route.params.categoryId)
-    ? route.params.categoryId[0]
-    : route.params.categoryId
+  Array.isArray(route.params.categoryId) ? route.params.categoryId[0] : route.params.categoryId
 )
 const category = computed(() =>
-  categoriesStore.categories.find(
-    (category: Category) => category.uuid === uuid.value
-  )
+  categoriesStore.categories.find((category: Category) => category.uuid === uuid.value)
 )
 
 const editRoute = computed(() => ({
@@ -47,19 +43,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <page-with-actions
-    v-if="category"
-    :title="t('categories.show')"
-  >
+  <page-with-actions v-if="category" :title="t('categories.show')">
     <template #actions>
       <q-btn round color="primary" size="md" icon="edit" :to="editRoute" />
-      <q-btn
-        round
-        color="negative"
-        size="md"
-        icon="delete"
-        @click="showDeleteDialog = true"
-      />
+      <q-btn round color="negative" size="md" icon="delete" @click="showDeleteDialog = true" />
     </template>
 
     <inline-data :label="t('common.name')">
@@ -68,12 +55,9 @@ onMounted(() => {
 
     <q-separator class="q-mt-lg" />
 
-    <h5>{{ t('products.Products') }}</h5>
+    <h5>{{ t("products.Products") }}</h5>
     <product-list :products="category.products" />
 
-    <category-delete-dialog
-      v-model="showDeleteDialog"
-      :category
-    />
+    <category-delete-dialog v-model="showDeleteDialog" :category />
   </page-with-actions>
 </template>

@@ -15,8 +15,8 @@ const username = ref('')
 const password = ref('')
 
 const isPassword = ref(true)
-const passwordIcon = computed(() => isPassword.value ? 'visibility' : 'visibility_off')
-const passwordType = computed(() => isPassword.value ? 'password' : 'text')
+const passwordIcon = computed(() => (isPassword.value ? 'visibility' : 'visibility_off'))
+const passwordType = computed(() => (isPassword.value ? 'password' : 'text'))
 
 const NAME = process.env.NAME
 
@@ -56,14 +56,14 @@ function submitLogin () {
             v-model="username"
             :label="t('common.Email')"
             lazy-rules
-            :rules="[val => val?.length > 0 || t('common.required_field')]"
+            :rules="[(val) => val?.length > 0 || t('common.required_field')]"
           />
           <q-input
             v-model="password"
             :type="passwordType"
             :label="t('common.Password')"
             lazy-rules
-            :rules="[val => val?.length > 0 || t('common.required_field')]"
+            :rules="[(val) => val?.length > 0 || t('common.required_field')]"
           >
             <template #append>
               <q-icon
