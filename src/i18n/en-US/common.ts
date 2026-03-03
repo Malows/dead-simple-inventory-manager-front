@@ -13,7 +13,9 @@ export default {
   update: 'Update',
   delete: 'Delete',
   confirm: 'Confirm',
-  cancel: 'Cancel',  upload: 'Upload',  sign_in: 'Sign In',
+  cancel: 'Cancel',
+  upload: 'Upload',
+  sign_in: 'Sign In',
 
   // messages
   error_login: 'Wrong credentials'
