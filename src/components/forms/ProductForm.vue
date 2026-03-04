@@ -51,7 +51,7 @@ onMounted(() => {
   <q-input v-model="description" :label="t('products.Description')" />
 
   <div class="input-row--md">
-    <q-input v-model.number="stock" type="number" label="Stock" />
+    <q-input v-model.number="stock" type="number" :label="t('products.Stock')" />
     <q-input
       v-model.number="stockWarning"
       type="number"

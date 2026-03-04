@@ -49,9 +49,9 @@ const price = computed(() => (product.value?.price ? parsePrice(product.value.pr
 <template>
   <page-with-actions v-if="product" :title="t('products.show')">
     <template #actions>
-      <q-btn round color="primary" size="md" icon="edit" :to="editRoute" />
-      <q-btn round color="primary" size="md" icon="photo" @click="showPhotoDialog = true" />
-      <q-btn round color="negative" size="md" icon="delete" @click="showDeleteDialog = true" />
+      <q-btn round color="primary" size="md" icon="edit" :aria-label="t('common.edit')" :to="editRoute" />
+      <q-btn round color="primary" size="md" icon="photo" :aria-label="t('products.photo')" @click="showPhotoDialog = true" />
+      <q-btn round color="negative" size="md" icon="delete" :aria-label="t('common.delete')" @click="showDeleteDialog = true" />
     </template>
 
     <!-- Product Image -->
@@ -116,7 +116,7 @@ const price = computed(() => (product.value?.price ? parsePrice(product.value.pr
     </inline-data>
 
     <q-page-sticky position="bottom-right" :offset="[32, 32]">
-      <q-btn round color="positive" size="xl" icon="assignment" @click="showStockDialog = true" />
+      <q-btn round color="positive" size="xl" icon="assignment" :aria-label="t('products.manage_stock')" @click="showStockDialog = true" />
     </q-page-sticky>
 
     <product-delete-dialog v-model="showDeleteDialog" :product />

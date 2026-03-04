@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 
+import { useWebVitals } from '../composition/useWebVitals'
 import { useSessionStore } from '../stores/session'
 import { useCategoriesStore } from '../stores/categories'
 import { useSuppliersStore } from '../stores/suppliers'
@@ -23,6 +24,9 @@ const toggleDrawer = () => {
 const sessionStore = useSessionStore()
 const categoriesStore = useCategoriesStore()
 const suppliersStore = useSuppliersStore()
+
+// Initialize Core Web Vitals tracking
+useWebVitals()
 
 const logout = () => {
   sessionStore.logout()
