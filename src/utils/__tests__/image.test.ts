@@ -163,14 +163,14 @@ describe('compressImage', () => {
   it('rejects when image fails to load', async () => {
     const origImage = globalThis.Image
     function MockImage (this: Record<string, unknown>) {
-      const self = this
-      self.onload = null
-      self.onerror = null
-      self.width = 0
-      self.height = 0
-      Object.defineProperty(self, 'src', {
+      this.onload = null
+      this.onerror = null
+      this.width = 0
+      this.height = 0
+      Object.defineProperty(this, 'src', {
+        get: () => undefined,
         set () {
-          setTimeout(() => (self.onerror as (() => void) | null)?.(), 0)
+          setTimeout(() => (this.onerror as (() => void) | null)?.(), 0)
         },
         configurable: true
       })
@@ -201,14 +201,14 @@ describe('compressImage', () => {
   function createImageMock (width: number, height: number) {
     const origImage = globalThis.Image
     function MockImage (this: Record<string, unknown>) {
-      const self = this
-      self.onload = null
-      self.onerror = null
-      self.width = width
-      self.height = height
-      Object.defineProperty(self, 'src', {
+      this.onload = null
+      this.onerror = null
+      this.width = width
+      this.height = height
+      Object.defineProperty(this, 'src', {
+        get: () => undefined,
         set () {
-          setTimeout(() => (self.onload as (() => void) | null)?.(), 0)
+          setTimeout(() => (this.onload as (() => void) | null)?.(), 0)
         },
         configurable: true
       })
@@ -225,7 +225,7 @@ describe('compressImage', () => {
         vi.spyOn(canvas, 'getContext').mockReturnValue({
           drawImage: vi.fn()
         } as unknown as CanvasRenderingContext2D)
-        vi.spyOn(canvas, 'toBlob').mockImplementation((cb: BlobCallback) => {
+        vi.spyOn(canvas, 'toBlob').mockImplementation((cb: (blob: Blob | null) => void) => {
           cb(blobResult)
         })
         return canvas

@@ -44,8 +44,10 @@ module.exports = {
 
     // https://eslint.vuejs.org/user-guide/#why-doesn-t-it-work-on-vue-files
     // required to lint *.vue files
-    'vue'
+    'vue',
     
+    // accessibility plugin
+    'vuejs-accessibility'
   ],
 
   globals: {
@@ -99,6 +101,14 @@ module.exports = {
     'no-unused-vars': 'off',
 
     // allow debugger during development only
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+
+    // accessibility rules
+    'vuejs-accessibility/alt-text': 'error',
+    'vuejs-accessibility/aria-role': 'error',
+    'vuejs-accessibility/click-events-have-key-events': 'error',
+    'vuejs-accessibility/form-control-has-label': 'error',
+    'vuejs-accessibility/heading-has-content': 'error',
+    'vuejs-accessibility/mouse-events-have-key-events': 'error'
   }
 }

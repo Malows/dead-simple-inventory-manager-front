@@ -4,7 +4,8 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
 import { configure } from 'quasar/wrappers'
-// import { fileURLToPath } from 'node:url'
+import { fileURLToPath } from 'node:url'
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 
 export default configure((/* ctx */) => {
   return {
@@ -60,9 +61,9 @@ export default configure((/* ctx */) => {
       // viteVuePluginOptions: {},
 
       vitePlugins: [
-        // ['@intlify/vite-plugin-vue-i18n', {
-        //   include: [fileURLToPath(new URL('./src/i18n', import.meta.url))]
-        // }]
+        VueI18nPlugin({
+          include: [fileURLToPath(new URL('./src/i18n', import.meta.url))]
+        })
       ]
     },
 
