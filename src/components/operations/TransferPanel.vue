@@ -33,14 +33,6 @@ defineEmits<{
 
 <template>
   <q-card class="col" flat bordered>
-    <q-card-section class="q-pb-none">
-      <div class="text-subtitle1 text-weight-medium">
-        {{ title }} ({{ totalCount }})
-      </div>
-    </q-card-section>
-
-    <q-separator />
-
     <q-card-section class="q-pa-none">
       <q-item dense clickable @click="$emit('selectAll')">
         <q-item-section side>
@@ -50,10 +42,16 @@ defineEmits<{
             @click.stop="$emit('selectAll')"
           />
         </q-item-section>
-        <q-item-section>
+        <q-item-section avatar>
           <q-item-label caption>
             {{ checkedCount }} / {{ totalCount }}
           </q-item-label>
+        </q-item-section>
+
+        <q-item-section>
+          <div class="text-subtitle1 text-weight-medium">
+            {{ title }} ({{ totalCount }})
+          </div>
         </q-item-section>
       </q-item>
 
@@ -87,9 +85,9 @@ defineEmits<{
               :model-value="quantities[product.uuid] ?? 0"
               type="number"
               dense
-              outlined
               style="width: 100px"
               :min="0"
+              :max="product.stock"
               :label="t('operations.quantity')"
               @update:model-value="(v: string | number | null) => $emit('update:quantity', product.uuid, Number(v) || 0)"
               @click.stop
