@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
 import { useWebVitals } from '../composition/useWebVitals'
 import { useSessionStore } from '../stores/session'
@@ -15,6 +16,7 @@ const NAME = process.env.NAME
 
 const router = useRouter()
 const quasar = useQuasar()
+const { t } = useI18n()
 
 const drawer = ref(false)
 const toggleDrawer = () => {
@@ -59,7 +61,7 @@ onMounted(async () => {
   <q-layout v-if="sessionStore.user" view="hHh LpR fFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleDrawer" />
+        <q-btn flat dense round icon="menu" :aria-label="t('common.aria_menu')" @click="toggleDrawer" />
         <q-toolbar-title>{{ NAME }}</q-toolbar-title>
 
         <user-menu :user="sessionStore.user" @logout="logout" />

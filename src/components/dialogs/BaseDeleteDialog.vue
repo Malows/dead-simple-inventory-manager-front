@@ -3,42 +3,41 @@ import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
-import { useBrandsStore } from '../../stores/brands'
-import { Brand } from '../../types/brand.interfaces'
+interface DeleteResult { isOk?: boolean }
+type DeleteAction = () => Promise<DeleteResult>
 
-const brandsStore = useBrandsStore()
+const props = defineProps<{
+  confirmMessage: string
+  deleteAction: DeleteAction
+  successRoute: string
+  successMessageKey: string
+  errorMessageKey: string
+}>()
+
+const show = defineModel<boolean>({ default: false })
+
 const router = useRouter()
 const quasar = useQuasar()
 const { t } = useI18n()
 
-const props = defineProps<{ brand: Brand | null }>()
-
-const show = defineModel({ type: Boolean, default: false })
-
 const destroy = () => {
-  if (!props.brand) {
-    console.error('Brand is not valid', props.brand)
-    return
-  }
-
   quasar.loading.show()
-  brandsStore
-    .deleteBrand(props.brand)
+  props
+    .deleteAction()
     .then(({ isOk }) => {
       const color = isOk ? 'positive' : 'negative'
-      const message = isOk ? t('brands.deleted') : t('brands.error_deleting')
+      const message = isOk ? t(props.successMessageKey) : t(props.errorMessageKey)
       quasar.notify({ color, message })
 
       if (isOk) {
-        router.push({ name: 'brands index' })
+        router.push({ name: props.successRoute })
       }
     })
-    .catch((error) => {
+    .catch(() => {
       quasar.notify({
         color: 'negative',
-        message: t('brands.error_deleting')
+        message: t(props.errorMessageKey)
       })
-      console.error(error)
     })
     .finally(() => {
       quasar.loading.hide()
@@ -57,7 +56,7 @@ const destroy = () => {
 
       <q-card-section class="row items-center">
         <div class="text-body1">
-          {{ t("brands.confirm_delete", { name: brand?.name }) }}
+          {{ confirmMessage }}
         </div>
       </q-card-section>
 

@@ -7,7 +7,7 @@ import { useCategoriesStore } from '../../stores/categories'
 import { Category } from '../../types/category.interfaces'
 import { useNotify } from '../../composition/useNotify'
 
-import CategoryForm from '../../components/forms/CategoryForm.vue'
+import NameOnlyForm from '../../components/forms/NameOnlyForm.vue'
 
 const categoriesStore = useCategoriesStore()
 const route = useRoute()
@@ -48,7 +48,7 @@ const submit = () => {
     <h4>{{ t("categories.update") }}</h4>
 
     <div class="q-gutter-md">
-      <category-form v-model:name="name" />
+      <name-only-form v-model:name="name" />
 
       <q-btn
         color="primary"

@@ -7,7 +7,7 @@ import { useBrandsStore } from '../../stores/brands'
 import { Brand } from '../../types/brand.interfaces'
 import { useNotify } from '../../composition/useNotify'
 
-import BrandForm from '../../components/forms/BrandForm.vue'
+import NameOnlyForm from '../../components/forms/NameOnlyForm.vue'
 
 const route = useRoute()
 const brandsStore = useBrandsStore()
@@ -50,7 +50,7 @@ const submit = () => {
     <h4>{{ t("brands.update") }}</h4>
 
     <div class="q-gutter-md">
-      <brand-form v-model:name="name" />
+      <name-only-form v-model:name="name" />
 
       <q-btn
         color="primary"

@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useQuasar } from 'quasar'
 
-import { useProductsStore } from '../../stores/products'
 import { bulkOperationService } from '../../services/BulkOperationService'
 import type { Product } from '../../types/product.interfaces'
 import type { StockMovementType, StockChange } from '../../types/operations.interfaces'
+
+import { useBulkSubmit } from '../../composition/components/useBulkSubmit'
 
 import StockMovementStep from './steps/StockMovementStep.vue'
 import StockProductsStep from './steps/StockProductsStep.vue'
 import StockReviewStep from './steps/StockReviewStep.vue'
 
 const { t } = useI18n()
-const quasar = useQuasar()
-const productsStore = useProductsStore()
+const { execute } = useBulkSubmit()
 
 // Stepper state
 const step = ref(1)
@@ -53,35 +52,12 @@ async function submit () {
     value: quantities.value[p.uuid] ?? 0
   }))
 
-  quasar.loading.show()
-
-  try {
-    const response = await bulkOperationService.adjustStock({
-      type: movementType.value,
-      changes
-    })
-
-    if (response.isOk) {
-      quasar.notify({
-        color: 'positive',
-        message: t('operations.stock_updated')
-      })
-      resetAll()
-      await productsStore.forceGetProducts()
-    } else {
-      quasar.notify({
-        color: 'negative',
-        message: t('operations.error_stock')
-      })
-    }
-  } catch {
-    quasar.notify({
-      color: 'negative',
-      message: t('operations.error_stock')
-    })
-  } finally {
-    quasar.loading.hide()
-  }
+  await execute(
+    () => bulkOperationService.adjustStock({ type: movementType.value!, changes }),
+    'operations.stock_updated',
+    'operations.error_stock',
+    resetAll
+  )
 }
 </script>
 

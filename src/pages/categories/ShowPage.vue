@@ -11,7 +11,7 @@ import { useNotify } from '../../composition/useNotify'
 import PageWithActions from '../../components/pages/PageWithActions.vue'
 import InlineData from '../../components/InlineData.vue'
 import ProductList from '../../components/ProductList.vue'
-import CategoryDeleteDialog from '../../components/dialogs/CategoryDeleteDialog.vue'
+import BaseDeleteDialog from '../../components/dialogs/BaseDeleteDialog.vue'
 
 const categoriesStore = useCategoriesStore()
 const route = useRoute()
@@ -58,6 +58,13 @@ onMounted(() => {
     <h5>{{ t("products.Products") }}</h5>
     <product-list :products="category.products" />
 
-    <category-delete-dialog v-model="showDeleteDialog" :category />
+    <base-delete-dialog
+      v-model="showDeleteDialog"
+      :confirm-message="t('categories.confirm_delete', { name: category?.name })"
+      :delete-action="() => categoriesStore.deleteCategory(category!)"
+      success-route="categories index"
+      success-message-key="categories.deleted"
+      error-message-key="categories.error_deleting"
+    />
   </page-with-actions>
 </template>

@@ -10,7 +10,7 @@ import { useNotify } from '../../composition/useNotify'
 
 import PageWithActions from '../../components/pages/PageWithActions.vue'
 import InlineData from '../../components/InlineData.vue'
-import ProductDeleteDialog from '../../components/dialogs/ProductDeleteDialog.vue'
+import BaseDeleteDialog from '../../components/dialogs/BaseDeleteDialog.vue'
 import ProductStockDialog from '../../components/dialogs/ProductStockDialog.vue'
 import ProductPhotoDialog from '../../components/dialogs/ProductPhotoDialog.vue'
 
@@ -85,7 +85,7 @@ const price = computed(() => (product.value?.price ? parsePrice(product.value.pr
       <inline-data :label="t('products.Price')">
         {{ price }}
       </inline-data>
-      <inline-data label="Stock">
+      <inline-data :label="t('products.stock')">
         {{ product.stock }}
       </inline-data>
       <inline-data :label="t('products.lower_stock_warning')">
@@ -119,7 +119,14 @@ const price = computed(() => (product.value?.price ? parsePrice(product.value.pr
       <q-btn round color="positive" size="xl" icon="assignment" :aria-label="t('products.manage_stock')" @click="showStockDialog = true" />
     </q-page-sticky>
 
-    <product-delete-dialog v-model="showDeleteDialog" :product />
+    <base-delete-dialog
+      v-model="showDeleteDialog"
+      :confirm-message="t('products.confirm_delete', { name: product.name, code: product.code })"
+      :delete-action="() => productsStore.deleteProduct(product!)"
+      success-route="products index"
+      success-message-key="products.deleted"
+      error-message-key="products.error_deleting"
+    />
     <product-stock-dialog v-model="showStockDialog" :product />
     <product-photo-dialog v-model="showPhotoDialog" :product />
   </page-with-actions>

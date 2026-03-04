@@ -1,16 +1,11 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useQuasar, QFile } from 'quasar'
 import { useI18n } from 'vue-i18n'
 
 import { useProductsStore } from '../../stores/products'
+import { useImageUpload } from '../../composition/components/useImageUpload'
 import { Product } from '../../types/product.interfaces'
-import {
-  validateImageFile,
-  createImagePreview,
-  compressImage,
-  formatFileSize
-} from '../../utils/image'
 
 const { t } = useI18n()
 const { product } = defineProps<{ product: Product }>()
@@ -18,63 +13,9 @@ const show = defineModel<boolean>({ default: false })
 
 const productsStore = useProductsStore()
 const quasar = useQuasar()
-
-const selectedFile = ref<File | null>(null)
-const previewUrl = ref<string | null>(null)
-const isCompressing = ref(false)
 const cameraInput = ref<QFile | null>(null)
 
-const fileInfo = computed(() => {
-  if (!selectedFile.value) return null
-  return {
-    name: selectedFile.value.name,
-    size: formatFileSize(selectedFile.value.size)
-  }
-})
-
-async function onFileSelected (file: File | null) {
-  if (!file) {
-    selectedFile.value = null
-    previewUrl.value = null
-    return
-  }
-
-  // Validate file
-  const error = validateImageFile(file)
-  if (error) {
-    quasar.notify({
-      color: 'negative',
-      message: error,
-      icon: 'error',
-      position: 'top'
-    })
-    selectedFile.value = null
-    previewUrl.value = null
-    return
-  }
-
-  // Compress image
-  try {
-    isCompressing.value = true
-    const compressedFile = await compressImage(file)
-    selectedFile.value = compressedFile
-
-    // Create preview
-    previewUrl.value = await createImagePreview(compressedFile)
-  } catch (err) {
-    console.error('Error processing image:', err)
-    quasar.notify({
-      color: 'negative',
-      message: t('products.error_processing_image'),
-      icon: 'error',
-      position: 'top'
-    })
-    selectedFile.value = null
-    previewUrl.value = null
-  } finally {
-    isCompressing.value = false
-  }
-}
+const { selectedFile, previewUrl, isCompressing, fileInfo, onFileSelected, reset } = useImageUpload()
 
 function openCamera () {
   cameraInput.value?.pickFiles()
@@ -99,11 +40,9 @@ async function uploadImage () {
 
     if (isOk) {
       show.value = false
-      selectedFile.value = null
-      previewUrl.value = null
+      reset()
     }
-  } catch (error) {
-    console.error('Upload error:', error)
+  } catch {
     quasar.notify({
       color: 'negative',
       message: t('products.error_uploading'),

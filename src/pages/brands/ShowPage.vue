@@ -11,7 +11,7 @@ import { useNotify } from '../../composition/useNotify'
 import PageWithActions from '../../components/pages/PageWithActions.vue'
 import InlineData from '../../components/InlineData.vue'
 import ProductList from '../../components/ProductList.vue'
-import BrandDeleteDialog from '../../components/dialogs/BrandDeleteDialog.vue'
+import BaseDeleteDialog from '../../components/dialogs/BaseDeleteDialog.vue'
 
 const brandsStore = useBrandsStore()
 const route = useRoute()
@@ -56,6 +56,13 @@ onMounted(() => {
     <h5>{{ t("products.Products") }}</h5>
     <product-list :products="brand.products" />
 
-    <brand-delete-dialog v-model="showDeleteDialog" :brand />
+    <base-delete-dialog
+      v-model="showDeleteDialog"
+      :confirm-message="t('brands.confirm_delete', { name: brand?.name })"
+      :delete-action="() => brandsStore.deleteBrand(brand!)"
+      success-route="brands index"
+      success-message-key="brands.deleted"
+      error-message-key="brands.error_deleting"
+    />
   </page-with-actions>
 </template>
