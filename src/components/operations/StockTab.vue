@@ -89,6 +89,7 @@ async function submit () {
   <q-stepper
     v-model="step"
     animated
+    header-nav
     color="primary"
     flat
     bordered

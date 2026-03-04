@@ -4,6 +4,8 @@ import { useI18n } from 'vue-i18n'
 
 import type { StockMovementType } from '../../../types/operations.interfaces'
 
+import SelectableCard from '../../SelectableCard.vue'
+
 export interface MovementOption {
   value: StockMovementType
   label: string
@@ -61,42 +63,17 @@ defineExpose({ movementOptions })
 
 <template>
   <div class="row q-gutter-md">
-    <q-card
+    <selectable-card
       v-for="option in movementOptions"
+      v-model="movementType"
       :key="option.value"
-      class="col-12 col-sm-5 cursor-pointer movement-card"
-      :class="{ 'selected-card': movementType === option.value }"
-      flat
-      bordered
-      @click="movementType = option.value"
-    >
-      <q-card-section horizontal>
-        <q-card-section class="flex items-center q-pa-md">
-          <q-icon
-            :name="option.icon"
-            :color="option.color"
-            size="40px"
-          />
-        </q-card-section>
-        <q-card-section class="col">
-          <div class="text-subtitle1 text-weight-bold">
-            {{ option.label }}
-          </div>
-          <div class="text-body2 text-grey-7 q-mt-xs">
-            {{ option.description }}
-          </div>
-          <q-badge
-            :color="option.color"
-            :label="option.action"
-            class="q-mt-sm"
-            outline
-          />
-        </q-card-section>
-        <q-card-section v-if="movementType === option.value" class="flex items-center">
-          <q-icon name="check_circle" color="primary" size="24px" />
-        </q-card-section>
-      </q-card-section>
-    </q-card>
+      :title="option.label"
+      :description="option.description"
+      :icon="option.icon"
+      :color="option.color"
+      :action="option.action"
+      :value="option.value"
+    />
   </div>
 
   <q-stepper-navigation>
@@ -108,17 +85,3 @@ defineExpose({ movementOptions })
     />
   </q-stepper-navigation>
 </template>
-
-<style scoped lang="scss">
-.movement-card {
-  transition: all 0.2s ease;
-  &:hover {
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  }
-}
-
-.selected-card {
-  border-color: var(--q-primary);
-  background: rgba(var(--q-primary-rgb), 0.04);
-}
-</style>
