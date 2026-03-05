@@ -1,23 +1,11 @@
 import { vi } from 'vitest'
 import { config } from '@vue/test-utils'
 import { createI18n } from 'vue-i18n'
+import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-vitest'
 
 import enUS from '../src/i18n/en-US'
 
-// Mock quasar – preserve real component exports but stub composables
-vi.mock('quasar', async (importOriginal) => {
-  const actual = (await importOriginal()) as Record<string, unknown>
-  return {
-    ...actual,
-    useQuasar: () => ({
-      loading: { show: vi.fn(), hide: vi.fn() },
-      notify: vi.fn(),
-      dialog: vi.fn(() => ({ onOk: vi.fn(), onCancel: vi.fn() })),
-      screen: { lt: { sm: false }, gt: { sm: true } },
-      dark: { isActive: false }
-    })
-  }
-})
+installQuasarPlugin()
 
 // Mock vue-router – preserve real exports but stub composables
 vi.mock('vue-router', async (importOriginal) => {
@@ -40,90 +28,6 @@ vi.mock('vue-router', async (importOriginal) => {
     })
   }
 })
-
-// Import Quasar components (from mock which spreads real exports)
-import {
-  QBtn,
-  QInput,
-  QItem,
-  QItemSection,
-  QItemLabel,
-  QList,
-  QSeparator,
-  QIcon,
-  QSelect,
-  QToggle,
-  QDialog,
-  QCard,
-  QCardSection,
-  QCardActions,
-  QPage,
-  QPageSticky,
-  QTabs,
-  QTab,
-  QTabPanels,
-  QTabPanel,
-  QToolbar,
-  QToolbarTitle,
-  QHeader,
-  QLayout,
-  QPageContainer,
-  QDrawer,
-  QMenu,
-  QImg,
-  QFile,
-  QSpinner,
-  QFab,
-  QPagination,
-  QForm,
-  QCheckbox
-} from 'quasar'
-
-// Register Quasar components globally so shallowMount can stub them
-const quasarComponents: Record<string, object> = {
-  QBtn,
-  QInput,
-  QItem,
-  QItemSection,
-  QItemLabel,
-  QList,
-  QSeparator,
-  QIcon,
-  QSelect,
-  QToggle,
-  QDialog,
-  QCard,
-  QCardSection,
-  QCardActions,
-  QPage,
-  QPageSticky,
-  QTabs,
-  QTab,
-  QTabPanels,
-  QTabPanel,
-  QToolbar,
-  QToolbarTitle,
-  QHeader,
-  QLayout,
-  QPageContainer,
-  QDrawer,
-  QMenu,
-  QImg,
-  QFile,
-  QSpinner,
-  QFab,
-  QPagination,
-  QForm,
-  QCheckbox
-}
-
-config.global.components = config.global.components || {}
-for (const [name, component] of Object.entries(quasarComponents)) {
-  (config.global.components as Record<string, object>)[name] = component
-}
-
-// Stub Quasar directives
-config.global.directives = { 'close-popup': {} }
 
 // Setup i18n for tests
 const i18n = createI18n({

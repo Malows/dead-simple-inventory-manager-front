@@ -1,7 +1,7 @@
 import { onMounted } from 'vue'
 import { onCLS, onFCP, onLCP, onTTFB } from 'web-vitals'
 
-export function useWebVitals() {
+export function useWebVitals () {
   onMounted(() => {
     // Core Web Vitals tracking (CWV)
     onCLS(console.log) // Cumulative Layout Shift
