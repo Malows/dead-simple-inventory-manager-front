@@ -1,27 +1,23 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { setActivePinia, createPinia } from 'pinia'
 
 import SupplierForm from '../SupplierForm.vue'
 
+// Mock useI18n
 vi.mock('vue-i18n', () => ({
-  useI18n: vi.fn(() => ({
-    t: vi.fn((key: string) => key)
-  }))
+  useI18n: () => ({
+    t: vi.fn((key: string) => key) // Return key as is for simplicity
+  })
 }))
 
 const mountComponent = (props = {}) =>
   mount(SupplierForm, { props: { ...props } })
 
 describe('SupplierForm.vue', () => {
-  beforeEach(() => {
-    setActivePinia(createPinia())
-  })
-
-  it('renders form inputs', () => {
+  it('renders all form inputs', () => {
     const wrapper = mountComponent()
     const inputs = wrapper.findAllComponents({ name: 'QInput' })
-    expect(inputs.length).toBe(5)
+    expect(inputs).toHaveLength(5)
   })
 
   it('binds v-model correctly for name', async () => {
@@ -38,8 +34,8 @@ describe('SupplierForm.vue', () => {
 
   it('binds v-model correctly for phone', async () => {
     const wrapper = mountComponent()
-    wrapper.vm.phone = '123-456-7890'
-    expect(wrapper.emitted('update:phone')?.[0]).toEqual(['123-456-7890'])
+    wrapper.vm.phone = '123456789'
+    expect(wrapper.emitted('update:phone')?.[0]).toEqual(['123456789'])
   })
 
   it('binds v-model correctly for email', async () => {

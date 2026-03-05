@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { setActivePinia, createPinia } from 'pinia'
+import { createTestingPinia } from '@pinia/testing'
 
 import StockProductsStep from '../StockProductsStep.vue'
 import { mockProduct } from '../../../__tests__/mocks'
@@ -26,12 +26,6 @@ vi.mock('../../../stores/suppliers', () => ({
   }))
 }))
 
-vi.mock('vue-i18n', () => ({
-  useI18n: vi.fn(() => ({
-    t: vi.fn((key: string) => key)
-  }))
-}))
-
 vi.mock('../TransferList.vue', () => ({
   default: {
     name: 'TransferList',
@@ -42,16 +36,24 @@ vi.mock('../StockControls.vue', () => ({
   default: {
     name: 'StockControls',
     template: '<div>Mock StockControls</div>',
-    props: ['modelValue', 'brand', 'category', 'supplier', 'search']
+    props: ['brand', 'category', 'supplier', 'search', 'brandsOptions', 'suppliersOptions', 'categoriesOptions']
   }
 }))
 
 const mountComponent = (props = {}) =>
-  mount(StockProductsStep, { props: { ...props } })
+  mount(StockProductsStep, {
+    props: { ...props },
+    global: {
+      plugins: [createTestingPinia()],
+      stubs: {
+        TransferList: true,
+        StockControls: true
+      }
+    }
+  })
 
 describe('StockProductsStep.vue', () => {
   beforeEach(() => {
-    setActivePinia(createPinia())
     vi.clearAllMocks()
   })
 
@@ -65,7 +67,7 @@ describe('StockProductsStep.vue', () => {
     const wrapper = mountComponent()
     const transferList = wrapper.findComponent({ name: 'TransferList' })
     await transferList.vm.$emit('update:modelValue', [mockProduct])
-    expect(wrapper.vm.selectedProducts).toEqual([mockProduct])
+    expect((wrapper.vm as any).selectedProducts).toEqual([mockProduct])
   })
 
   it('binds v-model correctly for quantities', async () => {
@@ -76,34 +78,36 @@ describe('StockProductsStep.vue', () => {
   })
 
   it('emits next event when next button is clicked and canContinue is true', async () => {
-    const wrapper = mountComponent({
-      modelValue: [mockProduct],
-      quantities: { [mockProduct.uuid]: 1 }
-    })
-    const nextBtn = wrapper.findComponent({ name: 'QBtn' })
-    await nextBtn.vm.$emit('click')
+    const wrapper = mountComponent()
+    const transferList = wrapper.findComponent({ name: 'TransferList' })
+    await transferList.vm.$emit('update:modelValue', [mockProduct])
+    await transferList.vm.$emit('update:quantities', { [mockProduct.uuid]: 1 })
+    await wrapper.vm.$nextTick()
+    const nextBtn = wrapper.findAllComponents({ name: 'QBtn' }).find(btn => btn.props('label') === 'Next')
+    await nextBtn?.trigger('click')
     expect(wrapper.emitted('next')).toBeTruthy()
   })
 
   it('emits back event when back button is clicked', async () => {
     const wrapper = mountComponent()
-    const backBtn = wrapper.findAllComponents({ name: 'QBtn' })[1]
-    await backBtn.vm.$emit('click')
+    const backBtn = wrapper.findAllComponents({ name: 'QBtn' }).find(btn => btn.props('label') === 'Back')
+    await backBtn?.trigger('click')
     expect(wrapper.emitted('back')).toBeTruthy()
   })
 
   it('disables next button when canContinue is false', () => {
     const wrapper = mountComponent()
-    const nextBtn = wrapper.findComponent({ name: 'QBtn' })
-    expect(nextBtn.props('disable')).toBe(true)
+    const nextBtn = wrapper.findAllComponents({ name: 'QBtn' }).find(btn => btn.props('label') === 'Next')
+    expect(nextBtn?.props('disable')).toBe(true)
   })
 
-  it('enables next button when canContinue is true', () => {
-    const wrapper = mountComponent({
-      modelValue: [mockProduct],
-      quantities: { [mockProduct.uuid]: 1 }
-    })
-    const nextBtn = wrapper.findComponent({ name: 'QBtn' })
-    expect(nextBtn.props('disable')).toBe(false)
+  it('enables next button when canContinue is true', async () => {
+    const wrapper = mountComponent()
+    const transferList = wrapper.findComponent({ name: 'TransferList' })
+    await transferList.vm.$emit('update:modelValue', [mockProduct])
+    await transferList.vm.$emit('update:quantities', { [mockProduct.uuid]: 1 })
+    await wrapper.vm.$nextTick()
+    const nextBtn = wrapper.findAllComponents({ name: 'QBtn' }).find(btn => btn.props('label') === 'Next')
+    expect(nextBtn?.props('disable')).toBe(false)
   })
 })

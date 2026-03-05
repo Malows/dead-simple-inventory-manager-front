@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { setActivePinia, createPinia } from 'pinia'
+import { createTestingPinia } from '@pinia/testing'
 
 import ProductForm from '../ProductForm.vue'
 import { mockProduct } from '../../__tests__/mocks'
@@ -17,11 +17,22 @@ vi.mock('vue-i18n', () => ({
 }))
 
 const mountComponent = (props = {}) =>
-  mount(ProductForm, { props: { ...props } })
+  mount(ProductForm, {
+    props: { ...props },
+    global: {
+      plugins: [createTestingPinia({
+        initialState: {
+          categories: { categoriesOptions: [{ label: 'Test Category', value: 1 }] },
+          brands: { brandsOptions: [{ label: 'Test Brand', value: 1 }] },
+          suppliers: { suppliersOptions: [{ label: 'Test Supplier', value: 1 }] }
+        }
+      })]
+    }
+  })
 
 describe('ProductForm.vue', () => {
   beforeEach(() => {
-    setActivePinia(createPinia())
+    vi.clearAllMocks()
   })
 
   it('renders form inputs', () => {
