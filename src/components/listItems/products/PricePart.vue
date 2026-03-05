@@ -12,7 +12,10 @@ const price = computed(() => (product.price ? parsePrice(product.price) : 'no as
 <template>
   <q-item-section avatar>
     <q-item-label>{{ price }}</q-item-label>
-    <q-item-label v-if="product.last_price_update" caption>
+    <q-item-label
+      v-if="product.last_price_update"
+      caption
+    >
       {{ toPlainString(product.last_price_update) }}
     </q-item-label>
   </q-item-section>

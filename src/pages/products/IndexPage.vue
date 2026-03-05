@@ -28,10 +28,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <page-with-add :title="t('products.Products')" :to="{ name: 'products create' }">
-    <filterable-list :items="productsStore.products" :filter-fn="byProduct" :items-per-page="50">
+  <page-with-add
+    :title="t('products.Products')"
+    :to="{ name: 'products create' }"
+  >
+    <filterable-list
+      :items="productsStore.products"
+      :filter-fn="byProduct"
+      :items-per-page="50"
+    >
       <template #default="{ item }">
-        <product-item :product="item" :code-padding="codePadding" />
+        <product-item
+          :product="item"
+          :code-padding="codePadding"
+        />
       </template>
     </filterable-list>
   </page-with-add>

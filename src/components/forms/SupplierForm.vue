@@ -17,8 +17,20 @@ const web = defineModel<string>('web', { default: '' })
     lazy-rule
     :rules="[(val) => val?.length > 0 || t('common.required_field')]"
   />
-  <q-input v-model="address" :label="t('suppliers.Address')" />
-  <q-input v-model="phone" :label="t('suppliers.Phone')" />
-  <q-input v-model="email" :label="t('suppliers.Email')" />
-  <q-input v-model="web" :label="t('suppliers.Web')" />
+  <q-input
+    v-model="address"
+    :label="t('suppliers.Address')"
+  />
+  <q-input
+    v-model="phone"
+    :label="t('suppliers.Phone')"
+  />
+  <q-input
+    v-model="email"
+    :label="t('suppliers.Email')"
+  />
+  <q-input
+    v-model="web"
+    :label="t('suppliers.Web')"
+  />
 </template>

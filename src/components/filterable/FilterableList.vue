@@ -49,14 +49,20 @@ const changeOfSearchValue = (newValue: string) => {
 
 <template>
   <div>
-    <filter-input v-model="searchField" @update:model-value="changeOfSearchValue" />
+    <filter-input
+      v-model="searchField"
+      @update:model-value="changeOfSearchValue"
+    />
 
     <q-list>
       <template v-for="item in sliced">
-        <slot :item="item"></slot>
+        <slot :item="item" />
       </template>
     </q-list>
 
-    <filter-pagination v-model="currentPage" :max="numberOfPages" />
+    <filter-pagination
+      v-model="currentPage"
+      :max="numberOfPages"
+    />
   </div>
 </template>

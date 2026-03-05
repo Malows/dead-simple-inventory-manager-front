@@ -27,18 +27,36 @@ const clickOnItem = () => {
 </script>
 
 <template>
-  <q-item class="rounded" :class="{ 'bg-primary': isSelected }" clickable @click="clickOnItem">
+  <q-item
+    class="rounded"
+    :class="{ 'bg-primary': isSelected }"
+    clickable
+    @click="clickOnItem"
+  >
     <q-item-section avatar>
-      <q-icon name="stop_circle" size="sm" :color="iconColor" />
+      <q-icon
+        name="stop_circle"
+        size="sm"
+        :color="iconColor"
+      />
     </q-item-section>
 
-    <image-part :product size="64px" />
+    <image-part
+      :product
+      size="64px"
+    />
     <name-part :product />
     <price-part :product />
 
-    <q-separator class="q-mx-md" vertical />
+    <q-separator
+      class="q-mx-md"
+      vertical
+    />
 
-    <code-part :product :padding="codePadding" />
+    <code-part
+      :product
+      :padding="codePadding"
+    />
   </q-item>
 </template>
 

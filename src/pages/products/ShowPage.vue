@@ -47,15 +47,42 @@ const price = computed(() => (product.value?.price ? parsePrice(product.value.pr
 </script>
 
 <template>
-  <page-with-actions v-if="product" :title="t('products.show')">
+  <page-with-actions
+    v-if="product"
+    :title="t('products.show')"
+  >
     <template #actions>
-      <q-btn round color="primary" size="md" icon="edit" :aria-label="t('common.edit')" :to="editRoute" />
-      <q-btn round color="primary" size="md" icon="photo" :aria-label="t('products.photo')" @click="showPhotoDialog = true" />
-      <q-btn round color="negative" size="md" icon="delete" :aria-label="t('common.delete')" @click="showDeleteDialog = true" />
+      <q-btn
+        round
+        color="primary"
+        size="md"
+        icon="edit"
+        :aria-label="t('common.edit')"
+        :to="editRoute"
+      />
+      <q-btn
+        round
+        color="primary"
+        size="md"
+        icon="photo"
+        :aria-label="t('products.photo')"
+        @click="showPhotoDialog = true"
+      />
+      <q-btn
+        round
+        color="negative"
+        size="md"
+        icon="delete"
+        :aria-label="t('common.delete')"
+        @click="showDeleteDialog = true"
+      />
     </template>
 
     <!-- Product Image -->
-    <div v-if="product.image_url" class="q-mb-md">
+    <div
+      v-if="product.image_url"
+      class="q-mb-md"
+    >
       <q-img
         :src="product.image_url"
         fit="contain"
@@ -65,7 +92,10 @@ const price = computed(() => (product.value?.price ? parsePrice(product.value.pr
       >
         <template #error>
           <div class="absolute-full flex flex-center bg-grey-3 text-grey-7">
-            <q-icon name="broken_image" size="64px" />
+            <q-icon
+              name="broken_image"
+              size="64px"
+            />
           </div>
         </template>
       </q-img>
@@ -93,7 +123,10 @@ const price = computed(() => (product.value?.price ? parsePrice(product.value.pr
       </inline-data>
     </div>
 
-    <inline-data v-if="product.brand" :label="t('brands.Brand')">
+    <inline-data
+      v-if="product.brand"
+      :label="t('brands.Brand')"
+    >
       <router-link
         :to="{
           name: 'brands show',
@@ -104,7 +137,10 @@ const price = computed(() => (product.value?.price ? parsePrice(product.value.pr
       </router-link>
     </inline-data>
 
-    <inline-data v-if="product.supplier" :label="t('suppliers.Supplier')">
+    <inline-data
+      v-if="product.supplier"
+      :label="t('suppliers.Supplier')"
+    >
       <router-link
         :to="{
           name: 'suppliers show',
@@ -115,8 +151,18 @@ const price = computed(() => (product.value?.price ? parsePrice(product.value.pr
       </router-link>
     </inline-data>
 
-    <q-page-sticky position="bottom-right" :offset="[32, 32]">
-      <q-btn round color="positive" size="xl" icon="assignment" :aria-label="t('products.manage_stock')" @click="showStockDialog = true" />
+    <q-page-sticky
+      position="bottom-right"
+      :offset="[32, 32]"
+    >
+      <q-btn
+        round
+        color="positive"
+        size="xl"
+        icon="assignment"
+        :aria-label="t('products.manage_stock')"
+        @click="showStockDialog = true"
+      />
     </q-page-sticky>
 
     <base-delete-dialog
@@ -127,8 +173,14 @@ const price = computed(() => (product.value?.price ? parsePrice(product.value.pr
       success-message-key="products.deleted"
       error-message-key="products.error_deleting"
     />
-    <product-stock-dialog v-model="showStockDialog" :product />
-    <product-photo-dialog v-model="showPhotoDialog" :product />
+    <product-stock-dialog
+      v-model="showStockDialog"
+      :product
+    />
+    <product-photo-dialog
+      v-model="showPhotoDialog"
+      :product
+    />
   </page-with-actions>
 </template>
 

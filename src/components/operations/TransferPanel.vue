@@ -32,9 +32,17 @@ defineEmits<{
 </script>
 
 <template>
-  <q-card class="col" flat bordered>
+  <q-card
+    class="col"
+    flat
+    bordered
+  >
     <q-card-section class="q-pa-none">
-      <q-item dense clickable @click="$emit('selectAll')">
+      <q-item
+        dense
+        clickable
+        @click="$emit('selectAll')"
+      >
         <q-item-section side>
           <q-checkbox
             :model-value="allChecked"
@@ -80,7 +88,10 @@ defineEmits<{
               </template>
             </q-item-label>
           </q-item-section>
-          <q-item-section v-if="showQuantities && quantities" side>
+          <q-item-section
+            v-if="showQuantities && quantities"
+            side
+          >
             <q-input
               :model-value="quantities[product.uuid] ?? 0"
               type="number"
@@ -102,7 +113,11 @@ defineEmits<{
         </q-item>
       </q-list>
 
-      <filter-pagination :model-value="page" :max="totalPages" @update:model-value="$emit('update:page', $event)" />
+      <filter-pagination
+        :model-value="page"
+        :max="totalPages"
+        @update:model-value="$emit('update:page', $event)"
+      />
     </q-card-section>
   </q-card>
 </template>

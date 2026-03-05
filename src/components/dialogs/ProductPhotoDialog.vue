@@ -107,15 +107,24 @@ async function uploadImage () {
         />
 
         <!-- Compression indicator -->
-        <div v-if="isCompressing" class="q-mt-md text-center">
-          <q-spinner color="primary" size="40px" />
+        <div
+          v-if="isCompressing"
+          class="q-mt-md text-center"
+        >
+          <q-spinner
+            color="primary"
+            size="40px"
+          />
           <div class="text-caption q-mt-sm">
             {{ t("products.compressing") }}
           </div>
         </div>
 
         <!-- Preview -->
-        <div v-if="previewUrl && !isCompressing" class="q-mt-md">
+        <div
+          v-if="previewUrl && !isCompressing"
+          class="q-mt-md"
+        >
           <div class="text-subtitle2 q-mb-sm">
             {{ t("products.preview") }}
           </div>
@@ -128,7 +137,10 @@ async function uploadImage () {
               class="full-width rounded-borders"
             />
           </div>
-          <div v-if="fileInfo" class="text-caption text-center text-grey-7 q-mt-sm">
+          <div
+            v-if="fileInfo"
+            class="text-caption text-center text-grey-7 q-mt-sm"
+          >
             {{ fileInfo.name }} • {{ fileInfo.size }}
           </div>
         </div>
@@ -137,7 +149,12 @@ async function uploadImage () {
       <q-separator />
 
       <q-card-actions align="right">
-        <q-btn v-close-popup flat :label="t('common.cancel')" color="primary" />
+        <q-btn
+          v-close-popup
+          flat
+          :label="t('common.cancel')"
+          color="primary"
+        />
         <q-btn
           flat
           :label="t('common.upload')"

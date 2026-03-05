@@ -107,7 +107,12 @@ async function submit () {
     </div>
 
     <div class="row justify-end q-mt-md">
-      <q-btn color="primary" :label="t('operations.apply')" :disable="!canSubmit" @click="submit" />
+      <q-btn
+        color="primary"
+        :label="t('operations.apply')"
+        :disable="!canSubmit"
+        @click="submit"
+      />
     </div>
   </div>
 </template>

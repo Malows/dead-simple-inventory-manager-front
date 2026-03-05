@@ -9,9 +9,15 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <q-item clickable :to="link.to">
+  <q-item
+    clickable
+    :to="link.to"
+  >
     <q-item-section avatar>
-      <q-icon v-if="link.icon" :name="link.icon" />
+      <q-icon
+        v-if="link.icon"
+        :name="link.icon"
+      />
     </q-item-section>
 
     <q-item-section>

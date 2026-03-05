@@ -16,6 +16,8 @@ const stock = computed(
 <template>
   <q-item-section>
     <q-item-label>{{ product.name }}</q-item-label>
-    <q-item-label caption> {{ t('products.stock') }}: {{ stock }} </q-item-label>
+    <q-item-label caption>
+      {{ t('products.stock') }}: {{ stock }}
+    </q-item-label>
   </q-item-section>
 </template>

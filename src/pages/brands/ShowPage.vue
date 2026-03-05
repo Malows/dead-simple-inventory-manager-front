@@ -41,10 +41,25 @@ onMounted(() => {
 </script>
 
 <template>
-  <page-with-actions v-if="brand" :title="t('brands.show')">
+  <page-with-actions
+    v-if="brand"
+    :title="t('brands.show')"
+  >
     <template #actions>
-      <q-btn round color="primary" size="md" icon="edit" :to="editRoute" />
-      <q-btn round color="negative" size="md" icon="delete" @click="showDeleteDialog = true" />
+      <q-btn
+        round
+        color="primary"
+        size="md"
+        icon="edit"
+        :to="editRoute"
+      />
+      <q-btn
+        round
+        color="negative"
+        size="md"
+        icon="delete"
+        @click="showDeleteDialog = true"
+      />
     </template>
 
     <inline-data :label="t('common.name')">

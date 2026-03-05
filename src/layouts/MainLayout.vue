@@ -58,13 +58,26 @@ onMounted(async () => {
 </script>
 
 <template>
-  <q-layout v-if="sessionStore.user" view="hHh LpR fFf">
+  <q-layout
+    v-if="sessionStore.user"
+    view="hHh LpR fFf"
+  >
     <q-header elevated>
       <q-toolbar>
-        <q-btn flat dense round icon="menu" :aria-label="t('common.aria_menu')" @click="toggleDrawer" />
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          :aria-label="t('common.aria_menu')"
+          @click="toggleDrawer"
+        />
         <q-toolbar-title>{{ NAME }}</q-toolbar-title>
 
-        <user-menu :user="sessionStore.user" @logout="logout" />
+        <user-menu
+          :user="sessionStore.user"
+          @logout="logout"
+        />
       </q-toolbar>
     </q-header>
 

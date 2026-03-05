@@ -8,9 +8,8 @@ import { useCategoriesStore } from '../../../stores/categories'
 import { useSuppliersStore } from '../../../stores/suppliers'
 import type { Product } from '../../../types/product.interfaces'
 
-import FilterInput from '../../filterable/FilterInput.vue'
-import FilterableSelect from '../../filterable/FilterableSelect.vue'
 import TransferList from '../TransferList.vue'
+import StockControls from '../StockControls.vue'
 
 const { t } = useI18n()
 
@@ -36,30 +35,16 @@ const canContinue = computed(() => {
 </script>
 
 <template>
-  <div class="row gap q-mb-md">
-    <filter-input dense v-model="searchText" class="col-12 col-md" />
-
-    <filterable-select
-      v-model="filterBrand"
-      class="col"
-      :label="t('brands.Brand')"
-      :options="brandsStore.brandsOptions"
-    />
-
-    <filterable-select
-      v-model="filterSupplier"
-      class="col"
-      :label="t('suppliers.Supplier')"
-      :options="suppliersStore.suppliersOptions"
-    />
-
-    <filterable-select
-      v-model="filterCategory"
-      class="col"
-      :label="t('categories.Category')"
-      :options="categoriesStore.categoriesOptions"
-    />
-  </div>
+  <stock-controls
+    v-model:brand="filterBrand"
+    v-model:category="filterCategory"
+    v-model:supplier="filterSupplier"
+    v-model:search="searchText"
+    class="q-mb-md"
+    :brands-options="brandsStore.brandsOptions"
+    :suppliers-options="suppliersStore.suppliersOptions"
+    :categories-options="categoriesStore.categoriesOptions"
+  />
 
   <transfer-list
     v-model="selectedProducts"
@@ -88,9 +73,3 @@ const canContinue = computed(() => {
     />
   </q-stepper-navigation>
 </template>
-
-<style scoped lang="css">
-.gap {
-  gap: 1rem;
-}
-</style>

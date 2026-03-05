@@ -7,9 +7,16 @@ const { position, offset, direction, icon } = useStickyButton()
 </script>
 
 <template>
-  <q-page-sticky :position :offset>
-    <q-fab :icon :direction :color>
-      <slot></slot>
+  <q-page-sticky
+    :position
+    :offset
+  >
+    <q-fab
+      :icon
+      :direction
+      :color
+    >
+      <slot />
     </q-fab>
   </q-page-sticky>
 </template>

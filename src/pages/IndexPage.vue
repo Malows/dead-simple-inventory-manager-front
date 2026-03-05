@@ -34,15 +34,22 @@ onMounted(() => {
     <filterable-list
       :items="productsStore.products"
       :filter-fn="byProduct"
-      @changeSearch="selected = null"
       :items-per-page="50"
+      @change-search="selected = null"
     >
       <template #default="{ item }">
-        <home-item v-model:selected="selected" :product="item" :code-padding="codePadding" />
+        <home-item
+          v-model:selected="selected"
+          :product="item"
+          :code-padding="codePadding"
+        />
       </template>
     </filterable-list>
 
-    <q-page-sticky position="bottom-right" :offset="[32, 32]">
+    <q-page-sticky
+      position="bottom-right"
+      :offset="[32, 32]"
+    >
       <transition name="fade">
         <q-btn
           v-show="selected"
@@ -55,7 +62,11 @@ onMounted(() => {
       </transition>
     </q-page-sticky>
 
-    <product-stock-dialog v-model="showStock" v-if="selected" :product="selected" />
+    <product-stock-dialog
+      v-if="selected"
+      v-model="showStock"
+      :product="selected"
+    />
   </q-page>
 </template>
 

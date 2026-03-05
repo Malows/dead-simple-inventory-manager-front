@@ -4,10 +4,10 @@ const model = defineModel<string>({ default: '' })
 
 <template>
   <q-input
+    v-model="model"
     class="q-my-md"
     type="search"
     clearable
-    v-model="model"
     :debounce="300"
   >
     <template #append>

@@ -20,14 +20,25 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <div v-if="movement" class="q-mb-md">
+  <div
+    v-if="movement"
+    class="q-mb-md"
+  >
     <div class="text-subtitle2 text-grey-7">
       {{ t('operations.review_movement_type') }}
     </div>
     <div class="row items-center q-gutter-sm q-mt-xs">
-      <q-icon :name="movement.icon" :color="movement.color" size="24px" />
+      <q-icon
+        :name="movement.icon"
+        :color="movement.color"
+        size="24px"
+      />
       <span class="text-subtitle1 text-weight-bold">{{ movement.label }}</span>
-      <q-badge :color="movement.color" :label="movement.action" outline />
+      <q-badge
+        :color="movement.color"
+        :label="movement.action"
+        outline
+      />
     </div>
   </div>
 
@@ -38,10 +49,21 @@ const { t } = useI18n()
     ({{ t('operations.review_total_products', { count: products.length }, products.length) }})
   </div>
 
-  <q-list v-if="products.length > 0" bordered separator class="rounded-borders">
-    <q-item v-for="product in products" :key="product.uuid">
+  <q-list
+    v-if="products.length > 0"
+    bordered
+    separator
+    class="rounded-borders"
+  >
+    <q-item
+      v-for="product in products"
+      :key="product.uuid"
+    >
       <q-item-section avatar>
-        <q-icon name="inventory_2" color="grey-7" />
+        <q-icon
+          name="inventory_2"
+          color="grey-7"
+        />
       </q-item-section>
       <q-item-section>
         <q-item-label>{{ product.name }}</q-item-label>
@@ -59,7 +81,10 @@ const { t } = useI18n()
     </q-item>
   </q-list>
 
-  <div v-else class="text-grey text-center q-pa-lg">
+  <div
+    v-else
+    class="text-grey text-center q-pa-lg"
+  >
     {{ t('operations.review_empty') }}
   </div>
 

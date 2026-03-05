@@ -108,7 +108,13 @@ watchFilters([
 
     <!-- Center transfer button -->
     <div class="column justify-center items-center">
-      <q-btn round color="primary" :icon="buttonIcon" :disable="buttonDisabled" @click="transfer" />
+      <q-btn
+        round
+        color="primary"
+        :icon="buttonIcon"
+        :disable="buttonDisabled"
+        @click="transfer"
+      />
     </div>
 
     <transfer-panel

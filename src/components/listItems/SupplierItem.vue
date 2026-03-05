@@ -12,7 +12,10 @@ const to = computed(() => ({ name: 'suppliers show', params: { supplierId: suppl
 </script>
 
 <template>
-  <q-item clickable :to="to">
+  <q-item
+    clickable
+    :to="to"
+  >
     <q-item-section>
       <q-item-label>{{ supplier.name }}</q-item-label>
       <q-item-label caption>

@@ -48,7 +48,9 @@ function submitLogin () {
   <q-page class="center-card">
     <q-card class="my-card shadow-8">
       <q-card-section class="bg-primary text-white q-pt-lg">
-        <div class="text-h4">{{ NAME }}</div>
+        <div class="text-h4">
+          {{ NAME }}
+        </div>
       </q-card-section>
       <q-card-section>
         <q-form @submit="submitLogin">

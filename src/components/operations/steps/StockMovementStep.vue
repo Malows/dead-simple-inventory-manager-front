@@ -65,8 +65,8 @@ defineExpose({ movementOptions })
   <div class="row q-gutter-md">
     <selectable-card
       v-for="option in movementOptions"
-      v-model="movementType"
       :key="option.value"
+      v-model="movementType"
       :title="option.label"
       :description="option.description"
       :icon="option.icon"

@@ -25,8 +25,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <page-with-add :title="t('brands.Brands')" :to="{ name: 'brands create' }">
-    <filterable-list :items="brandsStore.brands" :items-per-page="50">
+  <page-with-add
+    :title="t('brands.Brands')"
+    :to="{ name: 'brands create' }"
+  >
+    <filterable-list
+      :items="brandsStore.brands"
+      :items-per-page="50"
+    >
       <template #default="{ item }">
         <brand-item :brand="item" />
       </template>

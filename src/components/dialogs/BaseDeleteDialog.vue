@@ -64,9 +64,23 @@ const destroy = () => {
         <q-separator />
       </q-card-section>
 
-      <q-card-actions class="q-mt-sm" align="right">
-        <q-btn v-close-popup flat color="red" :label="t('common.delete')" @click="destroy" />
-        <q-btn v-close-popup flat color="primary" :label="t('common.cancel')" />
+      <q-card-actions
+        class="q-mt-sm"
+        align="right"
+      >
+        <q-btn
+          v-close-popup
+          flat
+          color="red"
+          :label="t('common.delete')"
+          @click="destroy"
+        />
+        <q-btn
+          v-close-popup
+          flat
+          color="primary"
+          :label="t('common.cancel')"
+        />
       </q-card-actions>
     </q-card>
   </q-dialog>

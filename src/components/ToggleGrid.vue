@@ -30,7 +30,11 @@ const filteredOptions = computed(() =>
       <strong>{{ label }}:</strong>
     </p>
 
-    <q-input v-model="filter" type="search" clearable>
+    <q-input
+      v-model="filter"
+      type="search"
+      clearable
+    >
       <template #append>
         <q-icon name="search" />
       </template>

@@ -21,7 +21,16 @@ const { position, offset } = useStickyButton()
 </script>
 
 <template>
-  <q-page-sticky :position :offset>
-    <q-btn round :color :size :icon :to />
+  <q-page-sticky
+    :position
+    :offset
+  >
+    <q-btn
+      round
+      :color
+      :size
+      :icon
+      :to
+    />
   </q-page-sticky>
 </template>

@@ -9,9 +9,9 @@ withDefaults(defineProps<{ title?: string }>(), { title: '' })
     <h4>{{ title }}</h4>
 
     <sticky-actions style="z-index: 10">
-      <slot name="actions"></slot>
+      <slot name="actions" />
     </sticky-actions>
 
-    <slot></slot>
+    <slot />
   </q-page>
 </template>

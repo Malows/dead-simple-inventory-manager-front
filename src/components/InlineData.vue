@@ -6,6 +6,6 @@ defineProps<{ label: string }>()
   <p class="text-body1">
     <strong>{{ label }}: </strong>
     {{ " " }}
-    <slot></slot>
+    <slot />
   </p>
 </template>
