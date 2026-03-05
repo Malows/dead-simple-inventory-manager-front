@@ -2,15 +2,15 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { bulkOperationService } from '../../services/BulkOperationService'
-import type { Product } from '../../types/product.interfaces'
-import type { StockMovementType, StockChange } from '../../types/operations.interfaces'
+import { bulkOperationService } from '../../../services/BulkOperationService'
+import type { Product } from '../../../types/product.interfaces'
+import type { StockMovementType, StockChange } from '../../../types/operations.interfaces'
 
-import { useBulkSubmit } from '../../composition/components/useBulkSubmit'
+import { useBulkSubmit } from '../../../composition/components/useBulkSubmit'
 
-import StockMovementStep from './steps/StockMovementStep.vue'
-import StockProductsStep from './steps/StockProductsStep.vue'
-import StockReviewStep from './steps/StockReviewStep.vue'
+import StockMovementStep from '../steps/StockMovementStep.vue'
+import StockProductsStep from '../steps/StockProductsStep.vue'
+import StockReviewStep from '../steps/StockReviewStep.vue'
 
 const { t } = useI18n()
 const { execute } = useBulkSubmit()

@@ -9,8 +9,8 @@ import { useCategoriesStore } from '../../stores/categories'
 import { useSuppliersStore } from '../../stores/suppliers'
 import { useNotify } from '../../composition/useNotify'
 
-import StockTab from '../../components/operations/StockTab.vue'
-import PriceTab from '../../components/operations/PriceTab.vue'
+import StockTab from '../../components/operations/tabs/StockTab.vue'
+import PriceTab from '../../components/operations/tabs/PriceTab.vue'
 
 const { t } = useI18n()
 const quasar = useQuasar()
