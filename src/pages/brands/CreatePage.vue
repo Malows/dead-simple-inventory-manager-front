@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useBrandsStore } from '../../stores/brands'
 import { useNotify } from '../../composition/useNotify'
 
-import BrandForm from '../../components/forms/BrandForm.vue'
+import NameOnlyForm from '../../components/forms/NameOnlyForm.vue'
 
 const brandsStore = useBrandsStore()
 const { t } = useI18n()
@@ -26,7 +26,7 @@ const createBrand = () => {
     <h4>{{ t("brands.create") }}</h4>
 
     <div class="q-gutter-md">
-      <brand-form v-model:name="name" />
+      <name-only-form v-model:name="name" />
 
       <q-btn
         color="primary"

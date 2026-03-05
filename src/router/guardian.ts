@@ -1,7 +1,7 @@
 import { RouteLocation, NavigationGuardWithThis } from 'vue-router'
 import { isBefore } from 'date-fns'
 
-export default function<T> (prefix: string): NavigationGuardWithThis<T> {
+export default function <T> (prefix: string): NavigationGuardWithThis<T> {
   return (to: RouteLocation, _: RouteLocation, next) => {
     if (!to.meta.requiresAuth) return next()
 
@@ -18,7 +18,7 @@ export const checkLocalAuth = (prefix: string) => {
     return false
   }
 
-  const expireSession = new Date((localStorage.getItem(`${prefix}_expiration_at`) ?? ''))
+  const expireSession = new Date(localStorage.getItem(`${prefix}_expiration_at`) ?? '')
   if (!expireSession) return false
 
   return isBefore(Date.now(), expireSession)

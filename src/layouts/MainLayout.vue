@@ -2,7 +2,9 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
+import { useWebVitals } from '../composition/useWebVitals'
 import { useSessionStore } from '../stores/session'
 import { useCategoriesStore } from '../stores/categories'
 import { useSuppliersStore } from '../stores/suppliers'
@@ -14,6 +16,7 @@ const NAME = process.env.NAME
 
 const router = useRouter()
 const quasar = useQuasar()
+const { t } = useI18n()
 
 const drawer = ref(false)
 const toggleDrawer = () => {
@@ -23,6 +26,9 @@ const toggleDrawer = () => {
 const sessionStore = useSessionStore()
 const categoriesStore = useCategoriesStore()
 const suppliersStore = useSuppliersStore()
+
+// Initialize Core Web Vitals tracking
+useWebVitals()
 
 const logout = () => {
   sessionStore.logout()
@@ -43,8 +49,7 @@ onMounted(async () => {
   const responses = await Promise.all([
     categoriesStore.getCategories(),
     suppliersStore.getSuppliers()
-  ])
-    .finally(() => quasar.loading.hide())
+  ]).finally(() => quasar.loading.hide())
 
   if (responses.some((x) => x?.code === 401)) {
     logout()
@@ -53,7 +58,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <q-layout v-if="sessionStore.user" view="hHh LpR fFf">
+  <q-layout
+    v-if="sessionStore.user"
+    view="hHh LpR fFf"
+  >
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -61,12 +69,15 @@ onMounted(async () => {
           dense
           round
           icon="menu"
-          aria-label="Menu"
+          :aria-label="t('common.aria_menu')"
           @click="toggleDrawer"
         />
         <q-toolbar-title>{{ NAME }}</q-toolbar-title>
 
-        <user-menu :user="sessionStore.user" @logout="logout" />
+        <user-menu
+          :user="sessionStore.user"
+          @logout="logout"
+        />
       </q-toolbar>
     </q-header>
 

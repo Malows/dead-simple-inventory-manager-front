@@ -24,9 +24,12 @@ const to = computed(() => ({ name: 'products show', params: { productId: props.p
 </script>
 
 <template>
-  <q-item clickable :to>
+  <q-item
+    clickable
+    :to
+  >
     <q-item-section avatar>
-     <q-icon
+      <q-icon
         :name="iconData.name"
         :color="iconData.color"
       />
@@ -36,8 +39,14 @@ const to = computed(() => ({ name: 'products show', params: { productId: props.p
     <name-part :product />
     <price-part :product />
 
-    <q-separator class="q-mx-md" vertical />
+    <q-separator
+      class="q-mx-md"
+      vertical
+    />
 
-    <code-part :product :padding="props.codePadding" />
+    <code-part
+      :product
+      :padding="props.codePadding"
+    />
   </q-item>
 </template>

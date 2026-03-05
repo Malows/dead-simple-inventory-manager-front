@@ -4,11 +4,12 @@ import { useStickyButton } from '../../composition/components/stickyButtons'
 
 withDefaults(
   defineProps<{
-    icon?: string
-    to?: RouteLocationRaw
-    size?: string
-    color?: string
-  }>(), {
+    icon?: string;
+    to?: RouteLocationRaw;
+    size?: string;
+    color?: string;
+  }>(),
+  {
     icon: 'add',
     to: '/',
     size: 'md',
@@ -20,7 +21,16 @@ const { position, offset } = useStickyButton()
 </script>
 
 <template>
-  <q-page-sticky :position :offset>
-    <q-btn round :color :size :icon :to />
+  <q-page-sticky
+    :position
+    :offset
+  >
+    <q-btn
+      round
+      :color
+      :size
+      :icon
+      :to
+    />
   </q-page-sticky>
 </template>

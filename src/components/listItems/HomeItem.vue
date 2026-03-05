@@ -8,7 +8,7 @@ import PricePart from './products/PricePart.vue'
 import NamePart from './products/NamePart.vue'
 import CodePart from './products/CodePart.vue'
 
-const props = defineProps<{ product: Product; codePadding?: number; }>()
+const props = defineProps<{ product: Product; codePadding?: number }>()
 
 const selected = defineModel<Product | null>('selected', { default: null })
 
@@ -41,18 +41,27 @@ const clickOnItem = () => {
       />
     </q-item-section>
 
-    <image-part :product size="64px"/>
+    <image-part
+      :product
+      size="64px"
+    />
     <name-part :product />
     <price-part :product />
 
-    <q-separator class="q-mx-md" vertical/>
+    <q-separator
+      class="q-mx-md"
+      vertical
+    />
 
-    <code-part :product :padding="codePadding" />
+    <code-part
+      :product
+      :padding="codePadding"
+    />
   </q-item>
 </template>
 
 <style scoped>
 .rounded {
-  border-radius: .75rem;
+  border-radius: 0.75rem;
 }
 </style>

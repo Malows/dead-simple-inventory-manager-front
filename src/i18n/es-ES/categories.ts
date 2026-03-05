@@ -3,7 +3,8 @@ export default {
   categories: 'categorías',
   Category: '@.capitalize:categories.category',
   Categories: '@.capitalize:categories.categories',
-  count: 'sin @:categories.categories | una @:categories.category | {count} @:categories.categories',
+  count:
+    'sin @:categories.categories | una @:categories.category | {count} @:categories.categories',
 
   // page titles
   create: 'Crear @:categories.category',

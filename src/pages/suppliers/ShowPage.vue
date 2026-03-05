@@ -11,7 +11,7 @@ import { useNotify } from '../../composition/useNotify'
 import PageWithActions from '../../components/pages/PageWithActions.vue'
 import InlineData from '../../components/InlineData.vue'
 import ProductList from '../../components/ProductList.vue'
-import SupplierDeleteDialog from '../../components/dialogs/SupplierDeleteDialog.vue'
+import BaseDeleteDialog from '../../components/dialogs/BaseDeleteDialog.vue'
 
 const suppliersStore = useSuppliersStore()
 const route = useRoute()
@@ -20,15 +20,11 @@ const { t } = useI18n()
 const { errorNotify } = useNotify()
 
 const uuid = computed(() =>
-  Array.isArray(route.params.supplierId)
-    ? route.params.supplierId[0]
-    : route.params.supplierId
+  Array.isArray(route.params.supplierId) ? route.params.supplierId[0] : route.params.supplierId
 )
 
 const supplier = computed(() =>
-  suppliersStore.suppliers.find(
-    (supplier: Supplier) => supplier.uuid === uuid.value
-  )
+  suppliersStore.suppliers.find((supplier: Supplier) => supplier.uuid === uuid.value)
 )
 
 onMounted(() => {
@@ -86,12 +82,16 @@ const editRoute = computed(() => ({
 
     <q-separator class="q-mt-lg" />
 
-    <h5>{{ t('products.Products') }}</h5>
+    <h5>{{ t("products.Products") }}</h5>
     <product-list :products="supplier.products" />
 
-    <supplier-delete-dialog
+    <base-delete-dialog
       v-model="showDeleteDialog"
-      :supplier
+      :confirm-message="t('suppliers.confirm_delete', { name: supplier?.name })"
+      :delete-action="() => suppliersStore.deleteSupplier(supplier!)"
+      success-route="suppliers index"
+      success-message-key="suppliers.deleted"
+      error-message-key="suppliers.error_deleting"
     />
   </page-with-actions>
 </template>

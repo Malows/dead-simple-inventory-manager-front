@@ -1,14 +1,14 @@
 interface HttpError {
-  message: string
-  statusText: string
+  message: string;
+  statusText: string;
 }
 
 interface HttpData<T> {
-  isOk?: boolean
-  code?: number
-  error?: HttpError
-  message?: string
-  data?: T | null
+  isOk?: boolean;
+  code?: number;
+  error?: HttpError;
+  message?: string;
+  data?: T | null;
 }
 
 class HttpResponse<T> {
@@ -38,7 +38,7 @@ export async function handle<T> (fetchPromise: Promise<Response>) {
     load.code = res.status
     load.message = ''
     load.error = null
-    load.data = await res.json() as T
+    load.data = (await res.json()) as T
   } catch (error) {
     const _error = error as HttpError
     load.isOk = false

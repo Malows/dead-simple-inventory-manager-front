@@ -38,11 +38,13 @@ class SessionService extends Service {
       scope: '*'
     })
 
-    return handle(fetch(this.loginURL, {
-      method: 'POST',
-      headers: this.commonHeader(),
-      body
-    }))
+    return handle(
+      fetch(this.loginURL, {
+        method: 'POST',
+        headers: this.commonHeader(),
+        body
+      })
+    )
   }
 
   fetchUserData<T> (): Promise<HttpResponse<T>> {

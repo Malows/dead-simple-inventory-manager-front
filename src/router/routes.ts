@@ -94,6 +94,14 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true }
       },
 
+      // OPERATIONS
+      {
+        path: 'operations',
+        name: 'operations index',
+        component: () => import('pages/operations/IndexPage.vue'),
+        meta: { requiresAuth: true }
+      },
+
       // SUPPLIERS
       {
         path: 'suppliers',

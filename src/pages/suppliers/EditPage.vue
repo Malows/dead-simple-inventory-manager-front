@@ -21,15 +21,11 @@ const email = ref('')
 const web = ref('')
 
 const uuid = computed(() =>
-  Array.isArray(route.params.supplierId)
-    ? route.params.supplierId[0]
-    : route.params.supplierId
+  Array.isArray(route.params.supplierId) ? route.params.supplierId[0] : route.params.supplierId
 )
 
 const supplier = computed(() =>
-  suppliersStore.suppliers.find(
-    (supplier: Supplier) => supplier.uuid === uuid.value
-  )
+  suppliersStore.suppliers.find((supplier: Supplier) => supplier.uuid === uuid.value)
 )
 
 onMounted(async () => {

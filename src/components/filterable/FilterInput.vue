@@ -1,17 +1,13 @@
 <script setup lang="ts">
-const data = defineModel({
-  type: String,
-  default: ''
-})
+const model = defineModel<string>({ default: '' })
 </script>
 
 <template>
   <q-input
+    v-model="model"
     class="q-my-md"
     type="search"
-    outlined
     clearable
-    v-model="data"
     :debounce="300"
   >
     <template #append>

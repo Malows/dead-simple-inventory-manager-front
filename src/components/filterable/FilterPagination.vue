@@ -1,10 +1,7 @@
 <script setup lang="ts">
 defineProps<{ max: number }>()
 
-const model = defineModel({
-  type: Number,
-  default: 1
-})
+const model = defineModel<number>({ default: 1 })
 </script>
 
 <template>
@@ -17,6 +14,6 @@ const model = defineModel({
       boundary-numbers
       boundary-links
       direction-links
-      />
+    />
   </div>
 </template>

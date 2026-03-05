@@ -6,8 +6,8 @@ import StickyBtn from '../stickyButtons/StickyBtn.vue'
 
 withDefaults(
   defineProps<{
-    title?: string
-    to?: RouteLocationRaw | null
+    title?: string;
+    to?: RouteLocationRaw | null;
   }>(),
   {
     title: '',
@@ -33,6 +33,6 @@ defineEmits<{ click: [void] }>()
       @click="$emit('click')"
     />
 
-    <slot></slot>
+    <slot />
   </q-page>
-  </template>
+</template>

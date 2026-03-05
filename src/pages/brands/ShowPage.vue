@@ -11,7 +11,7 @@ import { useNotify } from '../../composition/useNotify'
 import PageWithActions from '../../components/pages/PageWithActions.vue'
 import InlineData from '../../components/InlineData.vue'
 import ProductList from '../../components/ProductList.vue'
-import BrandDeleteDialog from '../../components/dialogs/BrandDeleteDialog.vue'
+import BaseDeleteDialog from '../../components/dialogs/BaseDeleteDialog.vue'
 
 const brandsStore = useBrandsStore()
 const route = useRoute()
@@ -22,15 +22,9 @@ const { errorNotify } = useNotify()
 const showDeleteDialog = ref(false)
 
 const uuid = computed(() =>
-  Array.isArray(route.params.brandId)
-    ? route.params.brandId[0]
-    : route.params.brandId
+  Array.isArray(route.params.brandId) ? route.params.brandId[0] : route.params.brandId
 )
-const brand = computed(() =>
-  brandsStore.brands.find(
-    (brand: Brand) => brand.uuid === uuid.value
-  )
-)
+const brand = computed(() => brandsStore.brands.find((brand: Brand) => brand.uuid === uuid.value))
 
 const editRoute = computed(() => ({
   name: 'brands edit',
@@ -52,7 +46,13 @@ onMounted(() => {
     :title="t('brands.show')"
   >
     <template #actions>
-      <q-btn round color="primary" size="md" icon="edit" :to="editRoute" />
+      <q-btn
+        round
+        color="primary"
+        size="md"
+        icon="edit"
+        :to="editRoute"
+      />
       <q-btn
         round
         color="negative"
@@ -68,12 +68,16 @@ onMounted(() => {
 
     <q-separator class="q-mt-lg" />
 
-    <h5>{{ t('products.Products') }}</h5>
+    <h5>{{ t("products.Products") }}</h5>
     <product-list :products="brand.products" />
 
-    <brand-delete-dialog
+    <base-delete-dialog
       v-model="showDeleteDialog"
-      :brand
+      :confirm-message="t('brands.confirm_delete', { name: brand?.name })"
+      :delete-action="() => brandsStore.deleteBrand(brand!)"
+      success-route="brands index"
+      success-message-key="brands.deleted"
+      error-message-key="brands.error_deleting"
     />
   </page-with-actions>
 </template>

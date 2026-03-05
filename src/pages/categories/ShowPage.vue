@@ -11,7 +11,7 @@ import { useNotify } from '../../composition/useNotify'
 import PageWithActions from '../../components/pages/PageWithActions.vue'
 import InlineData from '../../components/InlineData.vue'
 import ProductList from '../../components/ProductList.vue'
-import CategoryDeleteDialog from '../../components/dialogs/CategoryDeleteDialog.vue'
+import BaseDeleteDialog from '../../components/dialogs/BaseDeleteDialog.vue'
 
 const categoriesStore = useCategoriesStore()
 const route = useRoute()
@@ -22,14 +22,10 @@ const { errorNotify } = useNotify()
 const showDeleteDialog = ref(false)
 
 const uuid = computed(() =>
-  Array.isArray(route.params.categoryId)
-    ? route.params.categoryId[0]
-    : route.params.categoryId
+  Array.isArray(route.params.categoryId) ? route.params.categoryId[0] : route.params.categoryId
 )
 const category = computed(() =>
-  categoriesStore.categories.find(
-    (category: Category) => category.uuid === uuid.value
-  )
+  categoriesStore.categories.find((category: Category) => category.uuid === uuid.value)
 )
 
 const editRoute = computed(() => ({
@@ -52,7 +48,13 @@ onMounted(() => {
     :title="t('categories.show')"
   >
     <template #actions>
-      <q-btn round color="primary" size="md" icon="edit" :to="editRoute" />
+      <q-btn
+        round
+        color="primary"
+        size="md"
+        icon="edit"
+        :to="editRoute"
+      />
       <q-btn
         round
         color="negative"
@@ -68,12 +70,16 @@ onMounted(() => {
 
     <q-separator class="q-mt-lg" />
 
-    <h5>{{ t('products.Products') }}</h5>
+    <h5>{{ t("products.Products") }}</h5>
     <product-list :products="category.products" />
 
-    <category-delete-dialog
+    <base-delete-dialog
       v-model="showDeleteDialog"
-      :category
+      :confirm-message="t('categories.confirm_delete', { name: category?.name })"
+      :delete-action="() => categoriesStore.deleteCategory(category!)"
+      success-route="categories index"
+      success-message-key="categories.deleted"
+      error-message-key="categories.error_deleting"
     />
   </page-with-actions>
 </template>

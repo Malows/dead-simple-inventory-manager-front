@@ -7,7 +7,7 @@ import { useBrandsStore } from '../../stores/brands'
 import { Brand } from '../../types/brand.interfaces'
 import { useNotify } from '../../composition/useNotify'
 
-import BrandForm from '../../components/forms/BrandForm.vue'
+import NameOnlyForm from '../../components/forms/NameOnlyForm.vue'
 
 const route = useRoute()
 const brandsStore = useBrandsStore()
@@ -17,16 +17,10 @@ const { errorNotify, goodNotify } = useNotify()
 const name = ref('')
 
 const uuid = computed(() =>
-  Array.isArray(route.params.brandId)
-    ? route.params.brandId[0]
-    : route.params.brandId
+  Array.isArray(route.params.brandId) ? route.params.brandId[0] : route.params.brandId
 )
 
-const brand = computed(() =>
-  brandsStore.brands.find(
-    (brand: Brand) => brand.uuid === uuid.value
-  )
-)
+const brand = computed(() => brandsStore.brands.find((brand: Brand) => brand.uuid === uuid.value))
 
 onMounted(async () => {
   await brandsStore
@@ -56,7 +50,7 @@ const submit = () => {
     <h4>{{ t("brands.update") }}</h4>
 
     <div class="q-gutter-md">
-      <brand-form v-model:name="name" />
+      <name-only-form v-model:name="name" />
 
       <q-btn
         color="primary"

@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useCategoriesStore } from '../../stores/categories'
 import { useNotify } from '../../composition/useNotify'
 
-import CategoryForm from '../../components/forms/CategoryForm.vue'
+import NameOnlyForm from '../../components/forms/NameOnlyForm.vue'
 
 const categoriesStore = useCategoriesStore()
 const { t } = useI18n()
@@ -28,7 +28,7 @@ const submit = () => {
     <h4>{{ t("categories.create") }}</h4>
 
     <div class="q-gutter-md">
-      <category-form v-model:name="name" />
+      <name-only-form v-model:name="name" />
 
       <q-btn
         color="primary"

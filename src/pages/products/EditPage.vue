@@ -24,9 +24,7 @@ const brand = ref<number | null>(null)
 const categories = ref<number[]>([])
 
 const uuid = computed(() =>
-  Array.isArray(route.params.productId)
-    ? route.params.productId[0]
-    : route.params.productId
+  Array.isArray(route.params.productId) ? route.params.productId[0] : route.params.productId
 )
 const product = computed(() =>
   productsStore.products.find((product) => product.uuid === uuid.value)

@@ -3,42 +3,41 @@ import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
-import { useCategoriesStore } from '../../stores/categories'
-import { Category } from '../../types/category.interfaces'
+interface DeleteResult { isOk?: boolean }
+type DeleteAction = () => Promise<DeleteResult>
 
-const categoriesStore = useCategoriesStore()
+const props = defineProps<{
+  confirmMessage: string
+  deleteAction: DeleteAction
+  successRoute: string
+  successMessageKey: string
+  errorMessageKey: string
+}>()
+
+const show = defineModel<boolean>({ default: false })
+
 const router = useRouter()
 const quasar = useQuasar()
 const { t } = useI18n()
 
-const props = defineProps<{ category: Category | null }>()
-
-const show = defineModel({ type: Boolean, default: false })
-
 const destroy = () => {
-  if (!props.category) {
-    console.error('Category is not valid', props.category)
-    return
-  }
-
   quasar.loading.show()
-  categoriesStore
-    .deleteCategory(props.category)
+  props
+    .deleteAction()
     .then(({ isOk }) => {
       const color = isOk ? 'positive' : 'negative'
-      const message = isOk ? t('categories.deleted') : t('categories.error_deleting')
+      const message = isOk ? t(props.successMessageKey) : t(props.errorMessageKey)
       quasar.notify({ color, message })
 
       if (isOk) {
-        router.push({ name: 'categories index' })
+        router.push({ name: props.successRoute })
       }
     })
-    .catch((error) => {
+    .catch(() => {
       quasar.notify({
         color: 'negative',
-        message: t('categories.error_deleting')
+        message: t(props.errorMessageKey)
       })
-      console.error(error)
     })
     .finally(() => {
       quasar.loading.hide()
@@ -51,13 +50,13 @@ const destroy = () => {
     <q-card>
       <q-card-section>
         <div class="text-h6 q-mb-sm">
-          {{ t('common.confirm') }}
+          {{ t("common.confirm") }}
         </div>
       </q-card-section>
 
       <q-card-section class="row items-center">
         <div class="text-body1">
-          {{ t('categories.confirm_delete', { name: category?.name}) }}
+          {{ confirmMessage }}
         </div>
       </q-card-section>
 
@@ -65,7 +64,10 @@ const destroy = () => {
         <q-separator />
       </q-card-section>
 
-      <q-card-actions class="q-mt-sm" align="right">
+      <q-card-actions
+        class="q-mt-sm"
+        align="right"
+      >
         <q-btn
           v-close-popup
           flat

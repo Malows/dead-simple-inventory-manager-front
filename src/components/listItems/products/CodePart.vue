@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import type { Product } from '../../../types/product.interfaces'
+import type { ProductEntity } from '../../../types/product.interfaces'
 
-const { product, padding = 0 } = defineProps<{ product: Product; padding?: number }>()
+const { product, padding = 0 } = defineProps<{ product: ProductEntity; padding?: number }>()
 
 const code = computed(() => {
   const value = product.code || 'no asignado'

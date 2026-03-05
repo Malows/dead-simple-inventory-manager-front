@@ -30,12 +30,12 @@ module.exports = {
     // Uncomment any of the lines below to choose desired strictness,
     // but leave only one uncommented!
     // See https://eslint.vuejs.org/rules/#available-rules
-    'plugin:vue/vue3-essential', // Priority A: Essential (Error Prevention)
+    'plugin:vue/vue3-recommended', // Priority A: Essential (Error Prevention)
     // 'plugin:vue/vue3-strongly-recommended', // Priority B: Strongly Recommended (Improving Readability)
     // 'plugin:vue/vue3-recommended', // Priority C: Recommended (Minimizing Arbitrary Choices and Cognitive Overhead)
 
     'standard'
-    
+
   ],
 
   plugins: [
@@ -44,8 +44,10 @@ module.exports = {
 
     // https://eslint.vuejs.org/user-guide/#why-doesn-t-it-work-on-vue-files
     // required to lint *.vue files
-    'vue'
-    
+    'vue',
+
+    // accessibility plugin
+    'vuejs-accessibility'
   ],
 
   globals: {
@@ -63,7 +65,6 @@ module.exports = {
 
   // add your custom rules here
   rules: {
-    
     // allow async-await
     'generator-star-spacing': 'off',
     // allow paren-less arrow functions
@@ -71,6 +72,7 @@ module.exports = {
     'one-var': 'off',
     'no-void': 'off',
     'multiline-ternary': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
 
     'import/first': 'off',
     'import/namespace': 'error',
@@ -83,7 +85,7 @@ module.exports = {
     // The core 'import/named' rules
     // does not work with type definitions
     'import/named': 'off',
-    
+
     'prefer-promise-reject-errors': 'off',
 
     quotes: ['warn', 'single', { avoidEscape: true }],
@@ -99,6 +101,14 @@ module.exports = {
     'no-unused-vars': 'off',
 
     // allow debugger during development only
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+
+    // accessibility rules
+    'vuejs-accessibility/alt-text': 'error',
+    'vuejs-accessibility/aria-role': 'error',
+    'vuejs-accessibility/click-events-have-key-events': 'error',
+    'vuejs-accessibility/form-control-has-label': 'error',
+    'vuejs-accessibility/heading-has-content': 'error',
+    'vuejs-accessibility/mouse-events-have-key-events': 'error'
   }
 }

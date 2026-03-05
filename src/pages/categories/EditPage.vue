@@ -7,7 +7,7 @@ import { useCategoriesStore } from '../../stores/categories'
 import { Category } from '../../types/category.interfaces'
 import { useNotify } from '../../composition/useNotify'
 
-import CategoryForm from '../../components/forms/CategoryForm.vue'
+import NameOnlyForm from '../../components/forms/NameOnlyForm.vue'
 
 const categoriesStore = useCategoriesStore()
 const route = useRoute()
@@ -17,14 +17,10 @@ const { errorNotify, goodNotify } = useNotify()
 const name = ref('')
 
 const uuid = computed(() =>
-  Array.isArray(route.params.categoryId)
-    ? route.params.categoryId[0]
-    : route.params.categoryId
+  Array.isArray(route.params.categoryId) ? route.params.categoryId[0] : route.params.categoryId
 )
 const category = computed(() =>
-  categoriesStore.categories.find(
-    (category: Category) => category.uuid === uuid.value
-  )
+  categoriesStore.categories.find((category: Category) => category.uuid === uuid.value)
 )
 
 onMounted(async () => {
@@ -52,7 +48,7 @@ const submit = () => {
     <h4>{{ t("categories.update") }}</h4>
 
     <div class="q-gutter-md">
-      <category-form v-model:name="name" />
+      <name-only-form v-model:name="name" />
 
       <q-btn
         color="primary"

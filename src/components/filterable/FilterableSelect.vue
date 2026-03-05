@@ -1,11 +1,11 @@
 <script setup lang="ts" generic="T">
 import { ref } from 'vue'
 
-import { SelectOption } from '../types/index'
+import { SelectOption } from '../../types/index'
 
 const props = defineProps<{
-  label: string
-  options: SelectOption<T>[]
+  label: string;
+  options: SelectOption<T>[];
 }>()
 
 const model = defineModel<T>()
@@ -17,7 +17,7 @@ function filterFn (val: string, update: (callback: () => void) => void) {
     const needle = val.toLowerCase()
     filteredOptions.value = !needle
       ? props.options
-      : props.options.filter(v => v.label.toLowerCase().includes(needle))
+      : props.options.filter((v) => v.label.toLowerCase().includes(needle))
   })
 }
 
@@ -41,7 +41,7 @@ function abortFilterFn () {
     @filter="filterFn"
     @filter-abort="abortFilterFn"
   >
-    <template v-slot:no-option>
+    <template #no-option>
       <q-item>
         <q-item-section class="text-grey">
           No results

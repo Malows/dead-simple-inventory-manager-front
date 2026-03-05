@@ -11,10 +11,20 @@ export default {
   // actions
   create: 'Create',
   update: 'Update',
+  edit: 'Edit',
   delete: 'Delete',
   confirm: 'Confirm',
-  cancel: 'Cancel',  upload: 'Upload',  sign_in: 'Sign In',
+  cancel: 'Cancel',
+  upload: 'Upload',
+  sign_in: 'Sign In',
+  logout: 'Log out',
+  go_home: 'Go Home',
 
   // messages
-  error_login: 'Wrong credentials'
+  error_login: 'Wrong credentials',
+  not_found: 'Oops. Nothing here...',
+
+  // accessibility
+  aria_menu: 'Menu',
+  aria_user: 'User'
 }

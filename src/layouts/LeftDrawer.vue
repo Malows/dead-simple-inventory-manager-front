@@ -7,8 +7,8 @@ const show = defineModel<boolean>()
 
 <template>
   <q-drawer
-    class="bg-grey-1"
     v-model="show"
+    class="bg-grey-1"
     show-if-above
     bordered
   >

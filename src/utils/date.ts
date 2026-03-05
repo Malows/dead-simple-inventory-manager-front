@@ -1,9 +1,4 @@
-import {
-  parse,
-  parseJSON,
-  format,
-  isDate
-} from 'date-fns'
+import { parse, parseJSON, format, isDate } from 'date-fns'
 
 const regionalDateFormat = 'dd/MM/yyyy'
 
@@ -43,7 +38,5 @@ export function fromPlainString (input: string): Date | null {
 export function filterDate (input: string): Date | null {
   const dateFormat = /\d{2}.\d{2}.\d{4}/
 
-  return dateFormat.exec(input)
-    ? parse(input, regionalDateFormat, new Date())
-    : null
+  return dateFormat.exec(input) ? parse(input, regionalDateFormat, new Date()) : null
 }

@@ -10,7 +10,7 @@ import { useNotify } from '../../composition/useNotify'
 
 import PageWithActions from '../../components/pages/PageWithActions.vue'
 import InlineData from '../../components/InlineData.vue'
-import ProductDeleteDialog from '../../components/dialogs/ProductDeleteDialog.vue'
+import BaseDeleteDialog from '../../components/dialogs/BaseDeleteDialog.vue'
 import ProductStockDialog from '../../components/dialogs/ProductStockDialog.vue'
 import ProductPhotoDialog from '../../components/dialogs/ProductPhotoDialog.vue'
 
@@ -21,9 +21,7 @@ const { t } = useI18n()
 const { errorNotify } = useNotify()
 
 const uuid = computed(() =>
-  Array.isArray(route.params.productId)
-    ? route.params.productId[0]
-    : route.params.productId
+  Array.isArray(route.params.productId) ? route.params.productId[0] : route.params.productId
 )
 const product = computed(() =>
   productsStore.products.find((product) => product.uuid === uuid.value)
@@ -45,7 +43,7 @@ const editRoute = computed(() => ({
   name: 'products edit',
   params: route.params
 }))
-const price = computed(() => product.value?.price ? parsePrice(product.value.price) : '')
+const price = computed(() => (product.value?.price ? parsePrice(product.value.price) : ''))
 </script>
 
 <template>
@@ -59,6 +57,7 @@ const price = computed(() => product.value?.price ? parsePrice(product.value.pri
         color="primary"
         size="md"
         icon="edit"
+        :aria-label="t('common.edit')"
         :to="editRoute"
       />
       <q-btn
@@ -66,6 +65,7 @@ const price = computed(() => product.value?.price ? parsePrice(product.value.pri
         color="primary"
         size="md"
         icon="photo"
+        :aria-label="t('products.photo')"
         @click="showPhotoDialog = true"
       />
       <q-btn
@@ -73,12 +73,16 @@ const price = computed(() => product.value?.price ? parsePrice(product.value.pri
         color="negative"
         size="md"
         icon="delete"
+        :aria-label="t('common.delete')"
         @click="showDeleteDialog = true"
       />
     </template>
 
     <!-- Product Image -->
-    <div v-if="product.image_url" class="q-mb-md">
+    <div
+      v-if="product.image_url"
+      class="q-mb-md"
+    >
       <q-img
         :src="product.image_url"
         fit="contain"
@@ -88,7 +92,10 @@ const price = computed(() => product.value?.price ? parsePrice(product.value.pri
       >
         <template #error>
           <div class="absolute-full flex flex-center bg-grey-3 text-grey-7">
-            <q-icon name="broken_image" size="64px" />
+            <q-icon
+              name="broken_image"
+              size="64px"
+            />
           </div>
         </template>
       </q-img>
@@ -108,7 +115,7 @@ const price = computed(() => product.value?.price ? parsePrice(product.value.pri
       <inline-data :label="t('products.Price')">
         {{ price }}
       </inline-data>
-      <inline-data label="Stock">
+      <inline-data :label="t('products.stock')">
         {{ product.stock }}
       </inline-data>
       <inline-data :label="t('products.lower_stock_warning')">
@@ -153,13 +160,18 @@ const price = computed(() => product.value?.price ? parsePrice(product.value.pri
         color="positive"
         size="xl"
         icon="assignment"
+        :aria-label="t('products.manage_stock')"
         @click="showStockDialog = true"
       />
     </q-page-sticky>
 
-    <product-delete-dialog
+    <base-delete-dialog
       v-model="showDeleteDialog"
-      :product
+      :confirm-message="t('products.confirm_delete', { name: product.name, code: product.code })"
+      :delete-action="() => productsStore.deleteProduct(product!)"
+      success-route="products index"
+      success-message-key="products.deleted"
+      error-message-key="products.error_deleting"
     />
     <product-stock-dialog
       v-model="showStockDialog"
@@ -175,6 +187,6 @@ const price = computed(() => product.value?.price ? parsePrice(product.value.pri
 <style scoped>
 .product-image-card {
   border-radius: 8px;
-  max-height: 400px
+  max-height: 400px;
 }
 </style>
