@@ -8,7 +8,7 @@ import type { PriceAdjustmentType } from '../../types/operations.interfaces'
 import { useEntitySelection } from '../../composition/components/useEntitySelection'
 import { useBulkSubmit } from '../../composition/components/useBulkSubmit'
 
-import FilterableSelect from '../FilterableSelect.vue'
+import FilterableSelect from '../filterable/FilterableSelect.vue'
 
 const { t } = useI18n()
 

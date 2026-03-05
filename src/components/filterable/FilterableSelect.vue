@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="T">
 import { ref } from 'vue'
 
-import { SelectOption } from '../types/index'
+import { SelectOption } from '../../types/index'
 
 const props = defineProps<{
   label: string;

@@ -6,7 +6,7 @@ import { useCategoriesStore } from '../../stores/categories'
 import { useSuppliersStore } from '../../stores/suppliers'
 import { useBrandsStore } from '../../stores/brands'
 
-import FilterableSelect from '../FilterableSelect.vue'
+import FilterableSelect from '../filterable/FilterableSelect.vue'
 import ToggleGrid from '../ToggleGrid.vue'
 
 const { t } = useI18n()

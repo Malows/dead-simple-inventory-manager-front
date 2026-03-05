@@ -9,7 +9,7 @@ import { useSuppliersStore } from '../../../stores/suppliers'
 import type { Product } from '../../../types/product.interfaces'
 
 import FilterInput from '../../filterable/FilterInput.vue'
-import FilterableSelect from '../../FilterableSelect.vue'
+import FilterableSelect from '../../filterable/FilterableSelect.vue'
 import TransferList from '../TransferList.vue'
 
 const { t } = useI18n()

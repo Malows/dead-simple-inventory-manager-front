@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import type { StockMovementType } from '../../types/operations.interfaces'
 
 import FilterInput from '../filterable/FilterInput.vue'
-import FilterableSelect from '../FilterableSelect.vue'
+import FilterableSelect from '../filterable/FilterableSelect.vue'
 
 defineProps<{
   brandsOptions: { label: string; value: number }[];

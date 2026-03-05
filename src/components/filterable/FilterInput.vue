@@ -1,8 +1,5 @@
 <script setup lang="ts">
-const data = defineModel({
-  type: String,
-  default: ''
-})
+const model = defineModel<string>({ default: '' })
 </script>
 
 <template>
@@ -10,7 +7,7 @@ const data = defineModel({
     class="q-my-md"
     type="search"
     clearable
-    v-model="data"
+    v-model="model"
     :debounce="300"
   >
     <template #append>
