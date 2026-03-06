@@ -69,6 +69,12 @@ export default {
   select_entity_value: 'Seleccione una entidad',
   value_required: 'Ingrese un valor',
   quantity_required: 'La cantidad debe ser mayor a 0',
+  quantity_min: 'La cantidad debe ser al menos {min}',
+  quantity_max_stock: 'La cantidad no puede superar el stock actual',
+  sold_quantity: 'Unidades vendidas',
+  purchased_quantity: 'Unidades compradas',
+  returned_quantity: 'Unidades devueltas',
+  adjusted_quantity: 'Stock ajustado',
   no_products: 'No hay productos disponibles',
 
   // review
