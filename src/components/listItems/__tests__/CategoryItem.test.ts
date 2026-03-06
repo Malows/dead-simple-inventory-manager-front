@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 
 import CategoryItem from '../CategoryItem.vue'
 
-import { mockCategory, mockCategoryNoProducts } from './mocks'
+import { mockCategory, mockCategoryNoProducts } from '../../__tests__/mocks'
 
 describe('CategoryItem.vue', () => {
   it('renders category name correctly', () => {

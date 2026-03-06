@@ -2,10 +2,11 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 
-import StockReviewStep from '../StockReviewStep.vue'
 import { useOperationsStore } from '../../../../stores/operations'
-import { mockProducts } from '../../../__tests__/mocks'
 import type { StockMovementType } from '../../../../types/operations.interfaces'
+import { mockProducts } from '../../../__tests__/mocks'
+
+import StockReviewStep from '../StockReviewStep.vue'
 
 const mockMovement = {
   value: 'purchase' as StockMovementType,

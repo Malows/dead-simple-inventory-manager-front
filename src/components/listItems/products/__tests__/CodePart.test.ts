@@ -5,7 +5,7 @@ import { Product } from '../../../../types/product.interfaces'
 import CodePart from '../CodePart.vue'
 
 // Import mocks
-import { mockProduct, mockProductNoCode } from './mocks'
+import { mockProduct, mockProductNoCode } from '../../../__tests__/mocks'
 
 const mountComponent = (product: Product, props = {}) => {
   return mount(CodePart, {

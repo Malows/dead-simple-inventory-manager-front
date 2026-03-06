@@ -5,7 +5,6 @@ import { useI18n } from 'vue-i18n'
 import { bulkOperationService } from '../../../services/BulkOperationService'
 import type { StockMovementType } from '../../../types/operations.interfaces'
 import { useOperationsStore } from '../../../stores/operations'
-
 import { useBulkSubmit } from '../../../composition/components/useBulkSubmit'
 
 import StockMovementStep from '../steps/StockMovementStep.vue'

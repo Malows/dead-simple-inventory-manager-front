@@ -8,8 +8,8 @@ import { useCategoriesStore } from '../../../stores/categories'
 import { useSuppliersStore } from '../../../stores/suppliers'
 import { useOperationsStore } from '../../../stores/operations'
 
-import TransferList from '../TransferList.vue'
-import StockControls from '../StockControls.vue'
+import TransferList from '../../../components/operations/TransferList.vue'
+import StockControls from '../../../components/operations/StockControls.vue'
 
 const { t } = useI18n()
 

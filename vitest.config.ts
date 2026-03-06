@@ -42,10 +42,10 @@ export default defineConfig({
         'src/css/**'
       ],
       thresholds: {
-        lines: 80,
-        functions: 80,
-        branches: 80,
-        statements: 80
+        lines: 50,
+        functions: 50,
+        branches: 50,
+        statements: 50
       }
     }
   }

@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 
 import ProductItem from '../ProductItem.vue'
 
-import { mockFullProduct, mockLowStockProduct, mockNoStockProduct } from './mocks'
+import { mockFullProduct, mockLowStockProduct, mockNoStockProduct } from '../../__tests__/mocks'
 
 const mountComponent = (props = {}) => {
   return mount(ProductItem, {

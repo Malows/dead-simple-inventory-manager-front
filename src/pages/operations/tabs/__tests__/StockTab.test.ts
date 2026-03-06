@@ -2,9 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 
-import StockTab from '../StockTab.vue'
 import { useOperationsStore } from '../../../../stores/operations'
 import { mockProduct } from '../../../__tests__/mocks'
+import StockTab from '../StockTab.vue'
 
 const { mockAdjustStock, mockExecute } = vi.hoisted(() => ({
   mockAdjustStock: vi.fn(),

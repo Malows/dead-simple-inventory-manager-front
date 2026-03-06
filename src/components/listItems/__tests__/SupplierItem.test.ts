@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 
 import SupplierItem from '../SupplierItem.vue'
 
-import { mockSupplier, mockSupplierNoProducts } from './mocks'
+import { mockSupplier, mockSupplierNoProducts } from '../../__tests__/mocks'
 
 describe('SupplierItem.vue', () => {
   it('renders supplier name correctly', () => {

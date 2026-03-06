@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Product } from '../types/product.interfaces'
+import type { Product } from '../types/product.interfaces'
 
 import ProductItem from './listItems/ProductItem.vue'
 
