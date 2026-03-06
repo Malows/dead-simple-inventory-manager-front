@@ -3,7 +3,6 @@ import { mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 
 import ProductForm from '../ProductForm.vue'
-import { mockProduct } from '../../__tests__/mocks'
 
 vi.mock('../../../stores/products', () => ({
   useProductsStore: vi.fn(() => ({
@@ -43,25 +42,29 @@ describe('ProductForm.vue', () => {
 
   it('binds v-model correctly for name', async () => {
     const wrapper = mountComponent()
-    wrapper.vm.name = 'Test Product'
+    const vm = wrapper.vm as any
+    vm.name = 'Test Product'
     expect(wrapper.emitted('update:name')?.[0]).toEqual(['Test Product'])
   })
 
   it('binds v-model correctly for price', async () => {
     const wrapper = mountComponent()
-    wrapper.vm.price = 10.5
+    const vm = wrapper.vm as any
+    vm.price = 10.5
     expect(wrapper.emitted('update:price')?.[0]).toEqual([10.5])
   })
 
   it('binds v-model correctly for stock', async () => {
     const wrapper = mountComponent()
-    wrapper.vm.stock = 100
+    const vm = wrapper.vm as any
+    vm.stock = 100
     expect(wrapper.emitted('update:stock')?.[0]).toEqual([100])
   })
 
   it('binds v-model correctly for categories', async () => {
     const wrapper = mountComponent()
-    wrapper.vm.categories = [1, 2]
+    const vm = wrapper.vm as any
+    vm.categories = [1, 2]
     expect(wrapper.emitted('update:categories')?.[0]).toEqual([[1, 2]])
   })
 })

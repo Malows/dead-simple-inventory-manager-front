@@ -139,10 +139,13 @@ export default configure((/* ctx */) => {
       workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       swFilename: 'sw.js',
       manifestFilename: 'manifest.json',
-      extendManifestJson (json) {},
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      extendManifestJson (json: Record<string, unknown>) {},
       useCredentialsForManifestTag: true,
-      extendPWACustomSWConf (esbuildConf) {},
-      extendGenerateSWOptions (cfg) {}
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      extendPWACustomSWConf (esbuildConf: Record<string, unknown>) {},
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      extendGenerateSWOptions (cfg: Record<string, unknown>) {}
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-browser-extensions/configuring-bex

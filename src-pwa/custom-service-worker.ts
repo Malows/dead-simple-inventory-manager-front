@@ -4,6 +4,7 @@
  * quasar.config file > pwa > workboxMode is set to "InjectManifest"
  */
 
+// eslint-disable-next-line no-undef
 declare const self: ServiceWorkerGlobalScope &
   typeof globalThis & { skipWaiting: () => void }
 
