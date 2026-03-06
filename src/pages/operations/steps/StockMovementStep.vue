@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 
 import type { StockMovementType } from '../../../types/operations.interfaces'
 
-import SelectableCard from '../../SelectableCard.vue'
+import SelectableCard from '../../../components/SelectableCard.vue'
 
 export interface MovementOption {
   value: StockMovementType
