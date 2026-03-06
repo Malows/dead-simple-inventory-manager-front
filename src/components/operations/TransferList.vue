@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 
 import { byProductAdvanced } from '../../utils/filters'
 import type { Product } from '../../types/product.interfaces'
+import { useOperationsStore } from '../../stores/operations'
 
 import { useTransferSelection } from '../../composition/components/useTransferSelection'
 import { useTransferPagination } from '../../composition/components/useTransferPagination'
@@ -21,8 +22,12 @@ const props = defineProps<{
   showQuantities?: boolean
 }>()
 
-const model = defineModel<Product[]>({ default: () => [] })
-const quantities = defineModel<Record<string, number>>('quantities', { default: () => ({}) })
+const operationsStore = useOperationsStore()
+const model = computed({
+  get: () => operationsStore.selectedProducts,
+  set: (products: Product[]) => operationsStore.setSelectedProducts(products)
+})
+const quantities = computed(() => operationsStore.quantities)
 
 // Set of selected UUIDs for fast lookup
 const selectedUuids = computed(() => new Set(model.value.map((p) => p.uuid)))
@@ -77,7 +82,7 @@ function transfer () {
 }
 
 function onUpdateQuantity (uuid: string, value: number) {
-  quantities.value[uuid] = value
+  operationsStore.setQuantity(uuid, value)
 }
 
 // Reset pagination on filter change
@@ -130,6 +135,7 @@ watchFilters([
       show-stock
       :show-quantities="showQuantities"
       :quantities="quantities"
+      :movement-type="operationsStore.movementType"
       @toggle-check="toggleRightCheck"
       @select-all="selectAllRight"
       @update:page="rightPage = $event"

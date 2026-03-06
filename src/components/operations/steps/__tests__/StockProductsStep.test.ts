@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { createTestingPinia } from '@pinia/testing'
+import { createPinia, setActivePinia } from 'pinia'
 
 import StockProductsStep from '../StockProductsStep.vue'
+import { useOperationsStore } from '../../../../stores/operations'
 import { mockProduct } from '../../../__tests__/mocks'
 
 vi.mock('../../../stores/products', () => ({
@@ -10,16 +11,19 @@ vi.mock('../../../stores/products', () => ({
     products: [mockProduct]
   }))
 }))
+
 vi.mock('../../../stores/brands', () => ({
   useBrandsStore: vi.fn(() => ({
     brandsOptions: [{ label: 'Test Brand', value: 1 }]
   }))
 }))
+
 vi.mock('../../../stores/categories', () => ({
   useCategoriesStore: vi.fn(() => ({
     categoriesOptions: [{ label: 'Test Category', value: 1 }]
   }))
 }))
+
 vi.mock('../../../stores/suppliers', () => ({
   useSuppliersStore: vi.fn(() => ({
     suppliersOptions: [{ label: 'Test Supplier', value: 1 }]
@@ -32,6 +36,7 @@ vi.mock('../TransferList.vue', () => ({
     template: '<div>Mock TransferList</div>'
   }
 }))
+
 vi.mock('../StockControls.vue', () => ({
   default: {
     name: 'StockControls',
@@ -40,17 +45,10 @@ vi.mock('../StockControls.vue', () => ({
   }
 }))
 
-const mountComponent = (props = {}) =>
-  mount(StockProductsStep, {
-    props: { ...props },
-    global: {
-      plugins: [createTestingPinia()],
-      stubs: {
-        TransferList: true,
-        StockControls: true
-      }
-    }
-  })
+const mountComponent = () => {
+  setActivePinia(createPinia())
+  return mount(StockProductsStep)
+}
 
 describe('StockProductsStep.vue', () => {
   beforeEach(() => {
@@ -63,50 +61,48 @@ describe('StockProductsStep.vue', () => {
     expect(wrapper.findComponent({ name: 'TransferList' }).exists()).toBe(true)
   })
 
-  it('binds v-model correctly for selectedProducts', async () => {
-    const wrapper = mountComponent()
-    const transferList = wrapper.findComponent({ name: 'TransferList' })
-    await transferList.vm.$emit('update:modelValue', [mockProduct])
-    expect((wrapper.vm as any).selectedProducts).toEqual([mockProduct])
-  })
-
-  it('binds v-model correctly for quantities', async () => {
-    const wrapper = mountComponent()
-    const transferList = wrapper.findComponent({ name: 'TransferList' })
-    await transferList.vm.$emit('update:quantities', { [mockProduct.uuid]: 5 })
-    expect(wrapper.vm.quantities).toEqual({ [mockProduct.uuid]: 5 })
-  })
-
   it('emits next event when next button is clicked and canContinue is true', async () => {
     const wrapper = mountComponent()
-    const transferList = wrapper.findComponent({ name: 'TransferList' })
-    await transferList.vm.$emit('update:modelValue', [mockProduct])
-    await transferList.vm.$emit('update:quantities', { [mockProduct.uuid]: 1 })
+    const operationsStore = useOperationsStore()
+
+    operationsStore.setMovementType('sale')
+    operationsStore.setSelectedProducts([mockProduct])
+    operationsStore.setQuantity(mockProduct.uuid, 1)
+
     await wrapper.vm.$nextTick()
+
     const nextBtn = wrapper.findAllComponents({ name: 'QBtn' }).find(btn => btn.props('label') === 'Next')
     await nextBtn?.trigger('click')
+
     expect(wrapper.emitted('next')).toBeTruthy()
   })
 
   it('emits back event when back button is clicked', async () => {
     const wrapper = mountComponent()
+
     const backBtn = wrapper.findAllComponents({ name: 'QBtn' }).find(btn => btn.props('label') === 'Back')
     await backBtn?.trigger('click')
+
     expect(wrapper.emitted('back')).toBeTruthy()
   })
 
   it('disables next button when canContinue is false', () => {
     const wrapper = mountComponent()
+
     const nextBtn = wrapper.findAllComponents({ name: 'QBtn' }).find(btn => btn.props('label') === 'Next')
     expect(nextBtn?.props('disable')).toBe(true)
   })
 
   it('enables next button when canContinue is true', async () => {
     const wrapper = mountComponent()
-    const transferList = wrapper.findComponent({ name: 'TransferList' })
-    await transferList.vm.$emit('update:modelValue', [mockProduct])
-    await transferList.vm.$emit('update:quantities', { [mockProduct.uuid]: 1 })
+    const operationsStore = useOperationsStore()
+
+    operationsStore.setMovementType('sale')
+    operationsStore.setSelectedProducts([mockProduct])
+    operationsStore.setQuantity(mockProduct.uuid, 1)
+
     await wrapper.vm.$nextTick()
+
     const nextBtn = wrapper.findAllComponents({ name: 'QBtn' }).find(btn => btn.props('label') === 'Next')
     expect(nextBtn?.props('disable')).toBe(false)
   })

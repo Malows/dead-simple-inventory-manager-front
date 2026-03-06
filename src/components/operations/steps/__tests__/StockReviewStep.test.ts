@@ -1,7 +1,9 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { createPinia, setActivePinia } from 'pinia'
 
 import StockReviewStep from '../StockReviewStep.vue'
+import { useOperationsStore } from '../../../../stores/operations'
 import { mockProducts } from '../../../__tests__/mocks'
 import type { StockMovementType } from '../../../../types/operations.interfaces'
 
@@ -18,14 +20,21 @@ const mountComponent = (props = {}) =>
   mount(StockReviewStep, {
     props: {
       movement: mockMovement,
-      products: mockProducts.slice(0, 2),
-      quantities: { [mockProducts[0].uuid]: 5, [mockProducts[1].uuid]: 10 },
       canConfirm: true,
       ...props
     }
   })
 
 describe('StockReviewStep.vue', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    const operationsStore = useOperationsStore()
+    operationsStore.setMovementType('purchase')
+    operationsStore.setSelectedProducts(mockProducts.slice(0, 2))
+    operationsStore.setQuantity(mockProducts[0].uuid, 5)
+    operationsStore.setQuantity(mockProducts[1].uuid, 10)
+  })
+
   it('renders movement info when movement exists', () => {
     const wrapper = mountComponent()
     expect(wrapper.text()).toContain('Purchase')
@@ -33,7 +42,7 @@ describe('StockReviewStep.vue', () => {
     expect(wrapper.findComponent({ name: 'QChip' }).exists()).toBe(true)
   })
 
-  it('renders product list with quantities', () => {
+  it('renders product list with quantities from store', () => {
     const wrapper = mountComponent()
     expect(wrapper.text()).toContain(mockProducts[0].name)
     expect(wrapper.text()).toContain('Quantity: 5')
@@ -77,7 +86,9 @@ describe('StockReviewStep.vue', () => {
   })
 
   it('shows empty message when no products', () => {
-    const wrapper = mountComponent({ products: [] })
+    const operationsStore = useOperationsStore()
+    operationsStore.setSelectedProducts([])
+    const wrapper = mountComponent()
     expect(wrapper.text()).toContain('No products selected')
   })
 })
