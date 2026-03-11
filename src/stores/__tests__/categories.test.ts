@@ -44,6 +44,15 @@ describe('categories store', () => {
       expect(store.categories).toHaveLength(1)
       expect(store.categories[0].name).toBe('Cat A')
     })
+
+    it('returns early if already fetched and categories are not empty', async () => {
+      vi.mocked(categoryService.fetch).mockResolvedValue(mockResponse([makeRawCategory()]))
+      await store.getCategories()
+      expect(categoryService.fetch).toHaveBeenCalledTimes(1)
+
+      await store.getCategories()
+      expect(categoryService.fetch).toHaveBeenCalledTimes(1)
+    })
   })
 
   describe('getCategory', () => {
@@ -51,6 +60,18 @@ describe('categories store', () => {
       vi.mocked(categoryService.get).mockResolvedValue(mockResponse(makeRawCategory()))
       await store.getCategory('c-uuid-1')
       expect(store.categories).toHaveLength(1)
+    })
+
+    it('updates existing category in the list', async () => {
+      vi.mocked(categoryService.fetch).mockResolvedValue(mockResponse([makeRawCategory()]))
+      await store.getCategories()
+
+      vi.mocked(categoryService.get).mockResolvedValue(
+        mockResponse(makeRawCategory(1, 'c-uuid-1', 'Updated'))
+      )
+      await store.getCategory('c-uuid-1')
+      expect(store.categories).toHaveLength(1)
+      expect(store.categories[0].name).toBe('Updated')
     })
   })
 
@@ -82,6 +103,22 @@ describe('categories store', () => {
       })
       expect(store.categories[0].name).toBe('Edited')
     })
+
+    it('pushes category to the list if not present during update', async () => {
+      vi.mocked(categoryService.update).mockResolvedValue(
+        mockResponse(makeRawCategory(1, 'c-uuid-1', 'New in list'))
+      )
+      await store.updateCategory({
+        id: 1,
+        uuid: 'c-uuid-1',
+        name: 'New in list',
+        created_at: new Date(),
+        updated_at: new Date(),
+        products: []
+      })
+      expect(store.categories).toHaveLength(1)
+      expect(store.categories[0].name).toBe('New in list')
+    })
   })
 
   describe('deleteCategory', () => {
@@ -91,6 +128,19 @@ describe('categories store', () => {
 
       vi.mocked(categoryService.remove).mockResolvedValue(mockResponse(makeRawCategory()))
       await store.deleteCategory(store.categories[0])
+      expect(store.categories).toHaveLength(0)
+    })
+
+    it('does nothing to list if category is not present', async () => {
+      vi.mocked(categoryService.remove).mockResolvedValue(mockResponse(makeRawCategory()))
+      await store.deleteCategory({
+        id: 1,
+        uuid: 'c-uuid-1',
+        name: 'Cat A',
+        created_at: new Date(),
+        updated_at: new Date(),
+        products: []
+      })
       expect(store.categories).toHaveLength(0)
     })
   })
