@@ -126,6 +126,32 @@ const routes: RouteRecordRaw[] = [
         name: 'suppliers edit',
         component: () => import('pages/suppliers/EditPage.vue'),
         meta: { requiresAuth: true }
+      },
+
+      // STORAGE LOCATIONS
+      {
+        path: 'storage-locations',
+        name: 'storage locations index',
+        component: () => import('pages/storage-locations/IndexPage.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'storage-locations/create',
+        name: 'storage locations create',
+        component: () => import('pages/storage-locations/CreatePage.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'storage-locations/:storageLocationId',
+        name: 'storage locations show',
+        component: () => import('pages/storage-locations/ShowPage.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: 'storage-locations/:storageLocationId/edit',
+        name: 'storage locations edit',
+        component: () => import('pages/storage-locations/EditPage.vue'),
+        meta: { requiresAuth: true }
       }
     ]
   },
