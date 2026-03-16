@@ -35,6 +35,7 @@ describe('mapCategory', () => {
             price: null,
             brand_id: null,
             supplier_id: null,
+            storage_location_id: null,
             image_url: null
           }
         ]
