@@ -23,7 +23,8 @@ const mountComponent = (props = {}) =>
         initialState: {
           categories: { categoriesOptions: [{ label: 'Test Category', value: 1 }] },
           brands: { brandsOptions: [{ label: 'Test Brand', value: 1 }] },
-          suppliers: { suppliersOptions: [{ label: 'Test Supplier', value: 1 }] }
+          suppliers: { suppliersOptions: [{ label: 'Test Supplier', value: 1 }] },
+          storageLocations: { storageLocationsOptions: [{ label: 'Main Warehouse', value: 3 }] }
         }
       })]
     }
@@ -66,5 +67,12 @@ describe('ProductForm.vue', () => {
     const vm = wrapper.vm as any
     vm.categories = [1, 2]
     expect(wrapper.emitted('update:categories')?.[0]).toEqual([[1, 2]])
+  })
+
+  it('binds v-model correctly for storage location', async () => {
+    const wrapper = mountComponent()
+    const vm = wrapper.vm as any
+    vm.storageLocation = 3
+    expect(wrapper.emitted('update:storageLocation')?.[0]).toEqual([3])
   })
 })
