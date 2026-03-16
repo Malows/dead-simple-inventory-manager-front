@@ -4,7 +4,7 @@ import { Product } from '../../../../types/product.interfaces'
 
 import PricePart from '../PricePart.vue'
 
-import { mockProduct, mockProductNoPrice, mockProductNoPriceUpdate } from './mocks'
+import { mockProduct, mockProductNoPrice, mockProductNoPriceUpdate } from '../../../__tests__/mocks'
 
 // Mock the utilities
 vi.mock('../../../../utils/date', () => ({

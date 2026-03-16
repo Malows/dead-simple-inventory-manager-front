@@ -45,6 +45,15 @@ describe('brands store', () => {
       expect(store.brands[0].name).toBe('Brand A')
       expect(store.brands[0].created_at).toBeInstanceOf(Date)
     })
+
+    it('returns early if already fetched and brands are not empty', async () => {
+      vi.mocked(brandService.fetch).mockResolvedValue(mockResponse([makeRawBrand()]))
+      await store.getBrands()
+      expect(brandService.fetch).toHaveBeenCalledTimes(1)
+
+      await store.getBrands()
+      expect(brandService.fetch).toHaveBeenCalledTimes(1)
+    })
   })
 
   describe('getBrand', () => {
@@ -64,6 +73,15 @@ describe('brands store', () => {
       await store.getBrand('b-uuid-1')
       expect(store.brands).toHaveLength(1)
       expect(store.brands[0].name).toBe('Updated')
+    })
+
+    it('pushes new brand to the list if not present', async () => {
+      vi.mocked(brandService.get).mockResolvedValue(
+        mockResponse(makeRawBrand(2, 'b-uuid-2', 'Brand 2'))
+      )
+      await store.getBrand('b-uuid-2')
+      expect(store.brands).toHaveLength(1)
+      expect(store.brands[0].uuid).toBe('b-uuid-2')
     })
   })
 
@@ -96,6 +114,22 @@ describe('brands store', () => {
       })
       expect(store.brands[0].name).toBe('Edited')
     })
+
+    it('pushes brand to the list if not present during update', async () => {
+      vi.mocked(brandService.update).mockResolvedValue(
+        mockResponse(makeRawBrand(1, 'b-uuid-1', 'New in list'))
+      )
+      await store.updateBrand({
+        id: 1,
+        uuid: 'b-uuid-1',
+        name: 'New in list',
+        created_at: new Date(),
+        updated_at: new Date(),
+        products: []
+      })
+      expect(store.brands).toHaveLength(1)
+      expect(store.brands[0].name).toBe('New in list')
+    })
   })
 
   describe('deleteBrand', () => {
@@ -106,6 +140,19 @@ describe('brands store', () => {
 
       vi.mocked(brandService.remove).mockResolvedValue(mockResponse(makeRawBrand()))
       await store.deleteBrand(store.brands[0])
+      expect(store.brands).toHaveLength(0)
+    })
+
+    it('does nothing to list if brand is not present', async () => {
+      vi.mocked(brandService.remove).mockResolvedValue(mockResponse(makeRawBrand()))
+      await store.deleteBrand({
+        id: 1,
+        uuid: 'b-uuid-1',
+        name: 'Brand A',
+        created_at: new Date(),
+        updated_at: new Date(),
+        products: []
+      })
       expect(store.brands).toHaveLength(0)
     })
   })

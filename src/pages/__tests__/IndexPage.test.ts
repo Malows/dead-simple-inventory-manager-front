@@ -81,6 +81,6 @@ describe('IndexPage.vue', () => {
 
   it('computes codePadding correctly', () => {
     const wrapper = mountComponent()
-    expect(wrapper.vm.codePadding).toBe(5) // 'TP001'.length
+    expect((wrapper.vm as any).codePadding).toBe(5) // 'TP001'.length
   })
 })

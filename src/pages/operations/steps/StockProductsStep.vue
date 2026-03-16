@@ -6,10 +6,10 @@ import { useProductsStore } from '../../../stores/products'
 import { useBrandsStore } from '../../../stores/brands'
 import { useCategoriesStore } from '../../../stores/categories'
 import { useSuppliersStore } from '../../../stores/suppliers'
-import type { Product } from '../../../types/product.interfaces'
+import { useOperationsStore } from '../../../stores/operations'
 
-import TransferList from '../TransferList.vue'
-import StockControls from '../StockControls.vue'
+import TransferList from '../../../components/operations/TransferList.vue'
+import StockControls from '../../../components/operations/StockControls.vue'
 
 const { t } = useI18n()
 
@@ -19,19 +19,14 @@ const productsStore = useProductsStore()
 const brandsStore = useBrandsStore()
 const categoriesStore = useCategoriesStore()
 const suppliersStore = useSuppliersStore()
-
-const selectedProducts = defineModel<Product[]>({ default: () => [] })
-const quantities = defineModel<Record<string, number>>('quantities', { default: () => ({}) })
+const operationsStore = useOperationsStore()
 
 const searchText = ref('')
 const filterBrand = ref<number | null>(null)
 const filterSupplier = ref<number | null>(null)
 const filterCategory = ref<number | null>(null)
 
-const canContinue = computed(() => {
-  if (selectedProducts.value.length === 0) return false
-  return selectedProducts.value.every((p) => (quantities.value[p.uuid] ?? 0) > 0)
-})
+const canContinue = computed(() => operationsStore.canContinue)
 </script>
 
 <template>
@@ -47,8 +42,6 @@ const canContinue = computed(() => {
   />
 
   <transfer-list
-    v-model="selectedProducts"
-    v-model:quantities="quantities"
     :items="productsStore.products"
     :search-text="searchText"
     :filter-brand="filterBrand"

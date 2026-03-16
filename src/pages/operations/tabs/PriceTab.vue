@@ -4,11 +4,10 @@ import { useI18n } from 'vue-i18n'
 
 import { bulkOperationService } from '../../../services/BulkOperationService'
 import type { PriceAdjustmentType } from '../../../types/operations.interfaces'
-
 import { useEntitySelection } from '../../../composition/components/useEntitySelection'
 import { useBulkSubmit } from '../../../composition/components/useBulkSubmit'
 
-import FilterableSelect from '../../filterable/FilterableSelect.vue'
+import FilterableSelect from '../../../components/filterable/FilterableSelect.vue'
 
 const { t } = useI18n()
 

@@ -48,6 +48,15 @@ describe('suppliers store', () => {
       expect(store.suppliers).toHaveLength(1)
       expect(store.suppliers[0].name).toBe('Sup A')
     })
+
+    it('returns early if already fetched and suppliers are not empty', async () => {
+      vi.mocked(supplierService.fetch).mockResolvedValue(mockResponse([makeRawSupplier()]))
+      await store.getSuppliers()
+      expect(supplierService.fetch).toHaveBeenCalledTimes(1)
+
+      await store.getSuppliers()
+      expect(supplierService.fetch).toHaveBeenCalledTimes(1)
+    })
   })
 
   describe('getSupplier', () => {
@@ -55,6 +64,18 @@ describe('suppliers store', () => {
       vi.mocked(supplierService.get).mockResolvedValue(mockResponse(makeRawSupplier()))
       await store.getSupplier('s-uuid-1')
       expect(store.suppliers).toHaveLength(1)
+    })
+
+    it('updates existing supplier in the list', async () => {
+      vi.mocked(supplierService.fetch).mockResolvedValue(mockResponse([makeRawSupplier()]))
+      await store.getSuppliers()
+
+      vi.mocked(supplierService.get).mockResolvedValue(
+        mockResponse(makeRawSupplier(1, 's-uuid-1', 'Updated'))
+      )
+      await store.getSupplier('s-uuid-1')
+      expect(store.suppliers).toHaveLength(1)
+      expect(store.suppliers[0].name).toBe('Updated')
     })
   })
 
@@ -96,6 +117,26 @@ describe('suppliers store', () => {
       })
       expect(store.suppliers[0].name).toBe('Edited')
     })
+
+    it('pushes supplier to the list if not present during update', async () => {
+      vi.mocked(supplierService.update).mockResolvedValue(
+        mockResponse(makeRawSupplier(1, 's-uuid-1', 'New in list'))
+      )
+      await store.updateSupplier({
+        id: 1,
+        uuid: 's-uuid-1',
+        name: 'New in list',
+        email: null,
+        phone: null,
+        address: null,
+        web: null,
+        created_at: new Date(),
+        updated_at: new Date(),
+        products: []
+      })
+      expect(store.suppliers).toHaveLength(1)
+      expect(store.suppliers[0].name).toBe('New in list')
+    })
   })
 
   describe('deleteSupplier', () => {
@@ -105,6 +146,23 @@ describe('suppliers store', () => {
 
       vi.mocked(supplierService.remove).mockResolvedValue(mockResponse(makeRawSupplier()))
       await store.deleteSupplier(store.suppliers[0])
+      expect(store.suppliers).toHaveLength(0)
+    })
+
+    it('does nothing to list if supplier is not present', async () => {
+      vi.mocked(supplierService.remove).mockResolvedValue(mockResponse(makeRawSupplier()))
+      await store.deleteSupplier({
+        id: 1,
+        uuid: 's-uuid-1',
+        name: 'Sup A',
+        email: null,
+        phone: null,
+        address: null,
+        web: null,
+        created_at: new Date(),
+        updated_at: new Date(),
+        products: []
+      })
       expect(store.suppliers).toHaveLength(0)
     })
   })

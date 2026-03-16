@@ -69,6 +69,12 @@ export default {
   select_entity_value: 'Select an entity',
   value_required: 'Enter a value',
   quantity_required: 'Quantity must be greater than 0',
+  quantity_min: 'Quantity must be at least {min}',
+  quantity_max_stock: 'Quantity cannot exceed current stock',
+  sold_quantity: 'Sold units',
+  purchased_quantity: 'Purchased units',
+  returned_quantity: 'Returned units',
+  adjusted_quantity: 'Adjusted stock',
   no_products: 'No products available',
 
   // review

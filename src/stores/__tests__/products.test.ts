@@ -65,6 +65,15 @@ describe('products store', () => {
       expect(store.products[0].name).toBe('Prod A')
     })
 
+    it('returns early if already fetched and products are not empty', async () => {
+      vi.mocked(productService.fetch).mockResolvedValue(mockResponse([makeRawProduct()]))
+      await store.getProducts()
+      expect(productService.fetch).toHaveBeenCalledTimes(1)
+
+      await store.getProducts()
+      expect(productService.fetch).toHaveBeenCalledTimes(1)
+    })
+
     it('forceGetProducts always re-fetches', async () => {
       vi.mocked(productService.fetch).mockResolvedValue(mockResponse([makeRawProduct()]))
       await store.forceGetProducts()
@@ -91,6 +100,15 @@ describe('products store', () => {
       await store.getProduct('p-uuid-1')
       expect(store.products).toHaveLength(1)
       expect(store.products[0].name).toBe('Updated')
+    })
+
+    it('pushes new product to the list if not present', async () => {
+      vi.mocked(productService.get).mockResolvedValue(
+        mockResponse(makeRawProduct(2, 'p-uuid-2', 'Product 2'))
+      )
+      await store.getProduct('p-uuid-2')
+      expect(store.products).toHaveLength(1)
+      expect(store.products[0].uuid).toBe('p-uuid-2')
     })
   })
 
@@ -134,6 +152,25 @@ describe('products store', () => {
       })
       expect(store.products[0].name).toBe('Edited')
     })
+
+    it('pushes product to the list if not present during update', async () => {
+      vi.mocked(productService.update).mockResolvedValue(
+        mockResponse(makeRawProduct(1, 'p-uuid-1', 'New in list'))
+      )
+      await store.updateProduct({
+        uuid: 'p-uuid-1',
+        name: 'New in list',
+        code: 'P-001',
+        stock: 10,
+        min_stock_warning: 5,
+        description: null,
+        price: 100,
+        brand_id: 1,
+        supplier_id: 1
+      })
+      expect(store.products).toHaveLength(1)
+      expect(store.products[0].name).toBe('New in list')
+    })
   })
 
   describe('deleteProduct', () => {
@@ -143,6 +180,32 @@ describe('products store', () => {
 
       vi.mocked(productService.remove).mockResolvedValue(mockResponse(makeRawProduct()))
       await store.deleteProduct(store.products[0])
+      expect(store.products).toHaveLength(0)
+    })
+
+    it('does nothing to list if product is not present', async () => {
+      vi.mocked(productService.remove).mockResolvedValue(mockResponse(makeRawProduct()))
+      await store.deleteProduct({
+        id: 1,
+        uuid: 'p-uuid-1',
+        name: 'Prod A',
+        created_at: new Date(),
+        updated_at: new Date(),
+        code: 'P-001',
+        stock: 10,
+        min_stock_warning: 5,
+        description: null,
+        price: 100,
+        brand_id: 1,
+        supplier_id: 1,
+        image_url: null,
+        brand: null,
+        supplier: null,
+        categories: [],
+        last_price_update: null,
+        last_stock_update: null,
+        deleted_at: null
+      })
       expect(store.products).toHaveLength(0)
     })
   })
@@ -158,6 +221,15 @@ describe('products store', () => {
       const file = new File(['img'], 'photo.jpg', { type: 'image/jpeg' })
       await store.uploadProductImage('p-uuid-1', file)
       expect(productService.uploadImage).toHaveBeenCalledWith('p-uuid-1', file)
+    })
+
+    it('pushes product to list if not present during image upload', async () => {
+      vi.mocked(productService.uploadImage).mockResolvedValue(
+        mockResponse(makeRawProduct(1, 'p-uuid-1', 'Prod A'))
+      )
+      const file = new File(['img'], 'photo.jpg', { type: 'image/jpeg' })
+      await store.uploadProductImage('p-uuid-1', file)
+      expect(store.products).toHaveLength(1)
     })
   })
 

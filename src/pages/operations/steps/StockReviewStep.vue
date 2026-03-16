@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 
-import type { Product } from '../../../types/product.interfaces'
+import { useOperationsStore } from '../../../stores/operations'
 import type { MovementOption } from './StockMovementStep.vue'
 
 defineProps<{
   movement: MovementOption | undefined
-  products: Product[]
-  quantities: Record<string, number>
   canConfirm: boolean
 }>()
 
@@ -17,6 +15,7 @@ defineEmits<{
 }>()
 
 const { t } = useI18n()
+const operationsStore = useOperationsStore()
 </script>
 
 <template>
@@ -46,17 +45,17 @@ const { t } = useI18n()
 
   <div class="text-subtitle2 text-grey-7 q-mb-sm">
     {{ t('operations.review_products') }}
-    ({{ t('operations.review_total_products', { count: products.length }, products.length) }})
+    ({{ t('operations.review_total_products', { count: operationsStore.selectedProducts.length }, operationsStore.selectedProducts.length) }})
   </div>
 
   <q-list
-    v-if="products.length > 0"
+    v-if="operationsStore.selectedProducts.length > 0"
     bordered
     separator
     class="rounded-borders"
   >
     <q-item
-      v-for="product in products"
+      v-for="product in operationsStore.selectedProducts"
       :key="product.uuid"
     >
       <q-item-section avatar>
@@ -75,7 +74,7 @@ const { t } = useI18n()
         <q-chip
           color="primary"
           text-color="white"
-          :label="`${t('operations.quantity')}: ${quantities[product.uuid] ?? 0}`"
+          :label="`${t('operations.quantity')}: ${operationsStore.quantities[product.uuid] ?? 0}`"
         />
       </q-item-section>
     </q-item>
