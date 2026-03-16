@@ -19,6 +19,7 @@ const stock = ref(0)
 const stockWarning = ref(0)
 const brand = ref<number | null>(null)
 const supplier = ref<number | null>(null)
+const storageLocation = ref<number | null>(null)
 const categories = ref<number[]>([])
 
 const submit = () => {
@@ -32,6 +33,7 @@ const submit = () => {
       min_stock_warning: stockWarning.value,
       brand_id: brand.value,
       supplier_id: supplier.value,
+      storage_location_id: storageLocation.value,
       categories: categories.value
     })
     .then(goodNotify('products.created', { name: 'products index' }))
@@ -53,6 +55,7 @@ const submit = () => {
         v-model:stock-warning.number="stockWarning"
         v-model:brand="brand"
         v-model:supplier="supplier"
+        v-model:storage-location="storageLocation"
         v-model:categories="categories"
       />
 

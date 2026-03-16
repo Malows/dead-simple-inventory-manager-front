@@ -151,6 +151,20 @@ const price = computed(() => (product.value?.price ? parsePrice(product.value.pr
       </router-link>
     </inline-data>
 
+    <inline-data
+      v-if="product.storage_location"
+      :label="t('storage_locations.StorageLocation')"
+    >
+      <router-link
+        :to="{
+          name: 'storage locations show',
+          params: { storageLocationId: product.storage_location.uuid },
+        }"
+      >
+        {{ product.storage_location.name }}
+      </router-link>
+    </inline-data>
+
     <q-page-sticky
       position="bottom-right"
       :offset="[32, 32]"

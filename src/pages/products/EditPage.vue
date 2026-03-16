@@ -21,6 +21,7 @@ const stock = ref(0)
 const stockWarning = ref(0)
 const supplier = ref<number | null>(null)
 const brand = ref<number | null>(null)
+const storageLocation = ref<number | null>(null)
 const categories = ref<number[]>([])
 
 const uuid = computed(() =>
@@ -44,6 +45,7 @@ onMounted(async () => {
     stockWarning.value = product.value.min_stock_warning
     brand.value = product.value.brand_id
     supplier.value = product.value.supplier_id
+    storageLocation.value = product.value.storage_location_id
     categories.value = product.value.categories?.map((x) => x.id) ?? []
   }
 })
@@ -62,6 +64,7 @@ const submit = () => {
       min_stock_warning: stockWarning.value,
       brand_id: brand.value,
       supplier_id: supplier.value,
+      storage_location_id: storageLocation.value,
       categories: categories.value
     })
     .then(goodNotify('products.updated', backRoute))
@@ -83,6 +86,7 @@ const submit = () => {
         v-model:stock-warning.number="stockWarning"
         v-model:brand="brand"
         v-model:supplier="supplier"
+        v-model:storage-location="storageLocation"
         v-model:categories="categories"
       />
 
