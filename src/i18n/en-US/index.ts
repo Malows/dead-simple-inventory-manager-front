@@ -7,6 +7,7 @@ import categories from './categories'
 import products from './products'
 import suppliers from './suppliers'
 import operations from './operations'
+import storageLocations from './storage-locations'
 
 export default {
   common,
@@ -14,5 +15,7 @@ export default {
   categories,
   products,
   suppliers,
-  operations
+  operations,
+  // eslint-disable-next-line quote-props
+  'storage_locations': storageLocations
 }
