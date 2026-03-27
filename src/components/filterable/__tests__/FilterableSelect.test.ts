@@ -95,4 +95,16 @@ describe('FilterableSelect.vue', () => {
     await wrapper.vm.$nextTick()
     expect(select.props('options')).toHaveLength(4)
   })
+
+  it('updates displayed options when the options prop changes after mount', async () => {
+    const wrapper = mountComponent({ options: [] })
+    const select = wrapper.findComponent({ name: 'QSelect' })
+
+    expect(select.props('options')).toHaveLength(0)
+
+    await wrapper.setProps({ options })
+    await wrapper.vm.$nextTick()
+
+    expect(select.props('options')).toHaveLength(4)
+  })
 })
