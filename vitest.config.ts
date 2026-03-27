@@ -36,6 +36,7 @@ export default defineConfig({
         'src/shims-vue.d.ts',
         'src/env.d.ts',
         'src/router/index.ts',
+        'src/router/routes.ts',
         'src/stores/index.ts',
         'src/boot/**',
         'src/i18n/**',

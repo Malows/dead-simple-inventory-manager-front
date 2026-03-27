@@ -56,8 +56,9 @@ describe('BaseDeleteDialog.vue', () => {
     props.deleteAction.mockResolvedValue({ isOk: true })
     const wrapper = mount(BaseDeleteDialog, { props, attachTo: document.body })
 
-    wrapper.vm.show = true
-    await wrapper.vm.$nextTick()
+    const vm = wrapper.vm as any
+    vm.show = true
+    await vm.$nextTick()
 
     const deleteBtn = wrapper.findComponent({ name: 'QBtn', props: { color: 'red' } })
     await deleteBtn.trigger('click')
@@ -74,8 +75,9 @@ describe('BaseDeleteDialog.vue', () => {
 
     const wrapper = mount(BaseDeleteDialog, { props, attachTo: document.body })
 
-    wrapper.vm.show = true
-    await wrapper.vm.$nextTick()
+    const vm = wrapper.vm as any
+    vm.show = true
+    await vm.$nextTick()
 
     const deleteBtn = wrapper.findComponent({ name: 'QBtn', props: { color: 'red' } })
     await deleteBtn.trigger('click')
@@ -93,8 +95,9 @@ describe('BaseDeleteDialog.vue', () => {
 
     const wrapper = mount(BaseDeleteDialog, { props, attachTo: document.body })
 
-    wrapper.vm.show = true
-    await wrapper.vm.$nextTick()
+    const vm = wrapper.vm as any
+    vm.show = true
+    await vm.$nextTick()
 
     const deleteBtn = wrapper.findComponent({ name: 'QBtn', props: { color: 'red' } })
     await deleteBtn.trigger('click')

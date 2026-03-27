@@ -106,8 +106,9 @@ describe('ToggleGrid.vue', () => {
         modelValue: ['a', 'c']
       }
     })
+    const vm = wrapper.vm as any
 
-    expect(wrapper.vm.model).toEqual(['a', 'c'])
+    expect(vm.model).toEqual(['a', 'c'])
   })
 
   it('has correct CSS classes', () => {

@@ -145,4 +145,46 @@ describe('storage locations store', () => {
       expect(store.storageLocationsOptions).toEqual([{ label: 'Main Warehouse', value: 1 }])
     })
   })
+
+  describe('error paths (null data)', () => {
+    it('getStorageLocations: does not update list when response.data is null', async () => {
+      vi.mocked(storageLocationService.fetch).mockResolvedValue(mockResponse(null, false))
+      await store.getStorageLocations()
+      expect(store.storageLocations).toHaveLength(0)
+    })
+
+    it('getStorageLocation: does not update list when response.data is null', async () => {
+      vi.mocked(storageLocationService.get).mockResolvedValue(mockResponse(null, false))
+      await store.getStorageLocation('sl-uuid-1')
+      expect(store.storageLocations).toHaveLength(0)
+    })
+
+    it('createStorageLocation: does not add to list when response.data is null', async () => {
+      vi.mocked(storageLocationService.create).mockResolvedValue(mockResponse(null, false))
+      await store.createStorageLocation({ name: 'Fail', description: '' })
+      expect(store.storageLocations).toHaveLength(0)
+    })
+
+    it('updateStorageLocation: does not modify list when response.data is null', async () => {
+      vi.mocked(storageLocationService.fetch).mockResolvedValue(mockResponse([makeRawStorageLocation()]))
+      await store.getStorageLocations()
+      vi.mocked(storageLocationService.update).mockResolvedValue(mockResponse(null, false))
+      await store.updateStorageLocation({ id: 1, uuid: 'sl-uuid-1', name: 'Main Warehouse', description: 'Primary location', created_at: new Date(), updated_at: new Date(), products: [] })
+      expect(store.storageLocations[0].name).toBe('Main Warehouse')
+    })
+
+    it('deleteStorageLocation: does not modify list when response.data is null', async () => {
+      vi.mocked(storageLocationService.fetch).mockResolvedValue(mockResponse([makeRawStorageLocation()]))
+      await store.getStorageLocations()
+      vi.mocked(storageLocationService.remove).mockResolvedValue(mockResponse(null, false))
+      await store.deleteStorageLocation(store.storageLocations[0])
+      expect(store.storageLocations).toHaveLength(1)
+    })
+
+    it('deleteStorageLocation: does not splice when item not found in list', async () => {
+      vi.mocked(storageLocationService.remove).mockResolvedValue(mockResponse(makeRawStorageLocation()))
+      await store.deleteStorageLocation({ id: 99, uuid: 'sl-uuid-99', name: 'Unknown', description: '', created_at: new Date(), updated_at: new Date(), products: [] })
+      expect(store.storageLocations).toHaveLength(0)
+    })
+  })
 })

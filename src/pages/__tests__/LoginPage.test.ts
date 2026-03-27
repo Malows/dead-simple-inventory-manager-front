@@ -77,9 +77,10 @@ describe('LoginPage.vue', () => {
   })
 
   it('calls login on form submit', async () => {
-    const wrapper = mountComponent();
-    (wrapper.vm as any).username = 'testuser';
-    (wrapper.vm as any).password = 'testpass'
+    const wrapper = mountComponent()
+    const vm = wrapper.vm as any
+    vm.username = 'testuser'
+    vm.password = 'testpass'
     const form = wrapper.findComponent({ name: 'QForm' })
     await form.trigger('submit')
     await flushPromises()
@@ -90,9 +91,10 @@ describe('LoginPage.vue', () => {
   })
 
   it('navigates to index on successful login', async () => {
-    const wrapper = mountComponent();
-    (wrapper.vm as any).username = 'testuser';
-    (wrapper.vm as any).password = 'testpass'
+    const wrapper = mountComponent()
+    const vm = wrapper.vm as any
+    vm.username = 'testuser'
+    vm.password = 'testpass'
     const form = wrapper.findComponent({ name: 'QForm' })
     await form.trigger('submit')
     await flushPromises()
@@ -101,9 +103,10 @@ describe('LoginPage.vue', () => {
 
   it('shows error notification on failed login', async () => {
     vi.mocked(store.login).mockResolvedValue({ isOk: false })
-    const wrapper = mountComponent();
-    (wrapper.vm as any).username = 'testuser';
-    (wrapper.vm as any).password = 'testpass'
+    const wrapper = mountComponent()
+    const vm = wrapper.vm as any
+    vm.username = 'testuser'
+    vm.password = 'testpass'
     const form = wrapper.findComponent({ name: 'QForm' })
     await form.trigger('submit')
     await flushPromises()

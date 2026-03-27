@@ -164,4 +164,40 @@ describe('brands store', () => {
       expect(store.brandsOptions).toEqual([{ label: 'Brand A', value: 1 }])
     })
   })
+
+  describe('error paths (null data)', () => {
+    it('getBrands: does not update list when response.data is null', async () => {
+      vi.mocked(brandService.fetch).mockResolvedValue(mockResponse(null, false))
+      await store.getBrands()
+      expect(store.brands).toHaveLength(0)
+    })
+
+    it('getBrand: does not update list when response.data is null', async () => {
+      vi.mocked(brandService.get).mockResolvedValue(mockResponse(null, false))
+      await store.getBrand('b-uuid-1')
+      expect(store.brands).toHaveLength(0)
+    })
+
+    it('createBrand: does not add to list when response.data is null', async () => {
+      vi.mocked(brandService.create).mockResolvedValue(mockResponse(null, false))
+      await store.createBrand({ name: 'Fail' })
+      expect(store.brands).toHaveLength(0)
+    })
+
+    it('updateBrand: does not modify list when response.data is null', async () => {
+      vi.mocked(brandService.fetch).mockResolvedValue(mockResponse([makeRawBrand()]))
+      await store.getBrands()
+      vi.mocked(brandService.update).mockResolvedValue(mockResponse(null, false))
+      await store.updateBrand({ id: 1, uuid: 'b-uuid-1', name: 'Brand A', created_at: new Date(), updated_at: new Date(), products: [] })
+      expect(store.brands[0].name).toBe('Brand A')
+    })
+
+    it('deleteBrand: does not modify list when response.data is null', async () => {
+      vi.mocked(brandService.fetch).mockResolvedValue(mockResponse([makeRawBrand()]))
+      await store.getBrands()
+      vi.mocked(brandService.remove).mockResolvedValue(mockResponse(null, false))
+      await store.deleteBrand(store.brands[0])
+      expect(store.brands).toHaveLength(1)
+    })
+  })
 })
