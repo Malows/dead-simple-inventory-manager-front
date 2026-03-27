@@ -27,7 +27,7 @@ export default {
   uploading_photo: 'Subiendo foto...',
 
   // dialogs titles
-  confirm_delete: '¿Está seguro de que desea eliminar el @products.product {name} ({code})?',
+  confirm_delete: '¿Está seguro de que desea eliminar el @:products.product {name} ({code})?',
   reduce_stock: 'Restar unidades de stock',
   upload_photo: 'Subir foto del producto',
 

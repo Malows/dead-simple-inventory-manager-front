@@ -46,8 +46,8 @@ vi.mock('../../../composition/useNotify', () => ({
 vi.mock('../../../components/forms/ProductForm.vue', () => ({
   default: {
     name: 'ProductForm',
-    props: ['name', 'code', 'description', 'price', 'stock', 'stockWarning', 'brand', 'supplier', 'categories'],
-    emits: ['update:name', 'update:code', 'update:description', 'update:price', 'update:stock', 'update:stockWarning', 'update:brand', 'update:supplier', 'update:categories'],
+    props: ['name', 'code', 'description', 'price', 'stock', 'stockWarning', 'brand', 'supplier', 'storageLocation', 'categories'],
+    emits: ['update:name', 'update:code', 'update:description', 'update:price', 'update:stock', 'update:stockWarning', 'update:brand', 'update:supplier', 'update:storageLocation', 'update:categories'],
     template: '<div>ProductForm</div>'
   }
 }))
@@ -101,6 +101,7 @@ describe('products/EditPage.vue', () => {
     expect(form.props('stockWarning')).toBe(productWithCategories.min_stock_warning)
     expect(form.props('brand')).toBe(productWithCategories.brand_id)
     expect(form.props('supplier')).toBe(productWithCategories.supplier_id)
+    expect(form.props('storageLocation')).toBe(productWithCategories.storage_location_id)
     expect(form.props('categories')).toEqual([7, 8])
   })
 
@@ -127,6 +128,7 @@ describe('products/EditPage.vue', () => {
       min_stock_warning: productWithCategories.min_stock_warning,
       brand_id: productWithCategories.brand_id,
       supplier_id: productWithCategories.supplier_id,
+      storage_location_id: productWithCategories.storage_location_id,
       categories: [7]
     })
     expect(mockGoodNotify).toHaveBeenCalledWith('products.updated', {

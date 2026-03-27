@@ -17,7 +17,8 @@ describe('NameOnlyForm.vue', () => {
 
   it('binds v-model correctly for name', async () => {
     const wrapper = mount(NameOnlyForm)
-    wrapper.vm.name = 'Test Name'
+    const vm = wrapper.vm as any
+    vm.name = 'Test Name'
     expect(wrapper.emitted('update:name')?.[0]).toEqual(['Test Name'])
   })
 

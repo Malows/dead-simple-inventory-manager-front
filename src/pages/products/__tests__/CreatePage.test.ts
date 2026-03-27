@@ -31,8 +31,8 @@ vi.mock('../../../composition/useNotify', () => ({
 vi.mock('../../../components/forms/ProductForm.vue', () => ({
   default: {
     name: 'ProductForm',
-    props: ['name', 'code', 'description', 'price', 'stock', 'stockWarning', 'brand', 'supplier', 'categories'],
-    emits: ['update:name', 'update:code', 'update:description', 'update:price', 'update:stock', 'update:stockWarning', 'update:brand', 'update:supplier', 'update:categories'],
+    props: ['name', 'code', 'description', 'price', 'stock', 'stockWarning', 'brand', 'supplier', 'storageLocation', 'categories'],
+    emits: ['update:name', 'update:code', 'update:description', 'update:price', 'update:stock', 'update:stockWarning', 'update:brand', 'update:supplier', 'update:storageLocation', 'update:categories'],
     template: '<div>ProductForm</div>'
   }
 }))
@@ -74,6 +74,7 @@ describe('products/CreatePage.vue', () => {
     await form.vm.$emit('update:stockWarning', 3)
     await form.vm.$emit('update:brand', 2)
     await form.vm.$emit('update:supplier', 4)
+    await form.vm.$emit('update:storageLocation', 3)
     await form.vm.$emit('update:categories', [10, 20])
     await wrapper.vm.$nextTick()
 
@@ -89,6 +90,7 @@ describe('products/CreatePage.vue', () => {
       min_stock_warning: 3,
       brand_id: 2,
       supplier_id: 4,
+      storage_location_id: 3,
       categories: [10, 20]
     })
     expect(mockGoodNotify).toHaveBeenCalledWith('products.created', { name: 'products index' })

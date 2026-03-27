@@ -13,9 +13,11 @@ const makeRawProduct = (overrides: Partial<RawProduct> = {}): RawProduct => ({
   price: 99.99,
   brand_id: 1,
   supplier_id: 2,
+  storage_location_id: 3,
   image_url: null,
   brand: null,
   supplier: null,
+  storage_location: null,
   categories: null,
   last_price_update: '2024-03-10T08:00:00.000Z',
   last_stock_update: '2024-04-15T09:00:00.000Z',
@@ -58,6 +60,11 @@ describe('mapProduct', () => {
   it('defaults supplier to null', () => {
     const result = mapProduct(makeRawProduct({ supplier: undefined }))
     expect(result.supplier).toBeNull()
+  })
+
+  it('defaults storage location to null', () => {
+    const result = mapProduct(makeRawProduct({ storage_location: undefined }))
+    expect(result.storage_location).toBeNull()
   })
 
   it('preserves entity fields', () => {

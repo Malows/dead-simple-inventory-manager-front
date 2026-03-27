@@ -6,11 +6,13 @@ export const useCacheStore = defineStore('cache', () => {
   const categories = ref<Set<string>>(new Set())
   const products = ref<Set<string>>(new Set())
   const suppliers = ref<Set<string>>(new Set())
+  const storageLocations = ref<Set<string>>(new Set())
 
   const getAllBrands = computed(() => brands.value.has('all'))
   const getAllCategories = computed(() => categories.value.has('all'))
   const getAllProducts = computed(() => products.value.has('all'))
   const getAllSuppliers = computed(() => suppliers.value.has('all'))
+  const getAllStorageLocations = computed(() => storageLocations.value.has('all'))
 
   const flushBrands = (uuid?: string) => {
     if (!uuid) {
@@ -48,19 +50,32 @@ export const useCacheStore = defineStore('cache', () => {
     }
   }
 
+  const flushStorageLocations = (uuid?: string) => {
+    if (!uuid) {
+      storageLocations.value.clear()
+      return true
+    } else {
+      return storageLocations.value.delete(uuid)
+    }
+  }
+
   return {
-    products,
-    categories,
-    suppliers,
     brands,
+    categories,
+    products,
+    suppliers,
+    storageLocations,
+
+    getAllBrands,
     getAllCategories,
     getAllProducts,
     getAllSuppliers,
-    getAllBrands,
+    getAllStorageLocations,
 
+    flushBrands,
     flushCategories,
     flushProducts,
     flushSuppliers,
-    flushBrands
+    flushStorageLocations
   }
 })

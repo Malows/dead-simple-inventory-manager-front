@@ -22,31 +22,36 @@ describe('SupplierForm.vue', () => {
 
   it('binds v-model correctly for name', async () => {
     const wrapper = mountComponent()
-    wrapper.vm.name = 'Test Supplier'
+    const vm = wrapper.vm as any
+    vm.name = 'Test Supplier'
     expect(wrapper.emitted('update:name')?.[0]).toEqual(['Test Supplier'])
   })
 
   it('binds v-model correctly for address', async () => {
     const wrapper = mountComponent()
-    wrapper.vm.address = 'Test Address'
+    const vm = wrapper.vm as any
+    vm.address = 'Test Address'
     expect(wrapper.emitted('update:address')?.[0]).toEqual(['Test Address'])
   })
 
   it('binds v-model correctly for phone', async () => {
     const wrapper = mountComponent()
-    wrapper.vm.phone = '123456789'
+    const vm = wrapper.vm as any
+    vm.phone = '123456789'
     expect(wrapper.emitted('update:phone')?.[0]).toEqual(['123456789'])
   })
 
   it('binds v-model correctly for email', async () => {
     const wrapper = mountComponent()
-    wrapper.vm.email = 'test@example.com'
+    const vm = wrapper.vm as any
+    vm.email = 'test@example.com'
     expect(wrapper.emitted('update:email')?.[0]).toEqual(['test@example.com'])
   })
 
   it('binds v-model correctly for web', async () => {
     const wrapper = mountComponent()
-    wrapper.vm.web = 'https://example.com'
+    const vm = wrapper.vm as any
+    vm.web = 'https://example.com'
     expect(wrapper.emitted('update:web')?.[0]).toEqual(['https://example.com'])
   })
 })

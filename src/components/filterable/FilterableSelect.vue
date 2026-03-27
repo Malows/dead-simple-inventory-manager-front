@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 import { SelectOption } from '../../types/index'
 
@@ -11,6 +11,10 @@ const props = defineProps<{
 const model = defineModel<T>()
 
 const filteredOptions = ref<SelectOption<T>[]>(props.options)
+
+watch(() => props.options, (newOptions) => {
+  filteredOptions.value = newOptions
+})
 
 function filterFn (val: string, update: (callback: () => void) => void) {
   update(() => {

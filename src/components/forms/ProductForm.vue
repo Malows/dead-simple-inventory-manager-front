@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useCategoriesStore } from '../../stores/categories'
 import { useSuppliersStore } from '../../stores/suppliers'
 import { useBrandsStore } from '../../stores/brands'
+import { useStorageLocationsStore } from '../../stores/storageLocations'
 
 import FilterableSelect from '../filterable/FilterableSelect.vue'
 import ToggleGrid from '../ToggleGrid.vue'
@@ -13,6 +14,7 @@ const { t } = useI18n()
 const categoriesStore = useCategoriesStore()
 const brandsStore = useBrandsStore()
 const suppliersStore = useSuppliersStore()
+const storageLocationsStore = useStorageLocationsStore()
 
 const name = defineModel<string>('name', { default: '' })
 const code = defineModel<string>('code', { default: '' })
@@ -21,6 +23,7 @@ const price = defineModel<number>('price', { default: 0 })
 const stock = defineModel<number>('stock', { default: 0 })
 const stockWarning = defineModel<number>('stockWarning', { default: 0 })
 const supplier = defineModel<number | null>('supplier', { default: null })
+const storageLocation = defineModel<number | null>('storageLocation', { default: null })
 const brand = defineModel<number | null>('brand', { default: null })
 const categories = defineModel<number[]>('categories', { default: [] })
 
@@ -28,6 +31,7 @@ onMounted(() => {
   brandsStore.getBrands()
   categoriesStore.getCategories()
   suppliersStore.getSuppliers()
+  storageLocationsStore.getStorageLocations()
 })
 </script>
 
@@ -63,7 +67,7 @@ onMounted(() => {
     <q-input
       v-model.number="stock"
       type="number"
-      :label="t('products.Stock')"
+      :label="t('products.stock')"
     />
     <q-input
       v-model.number="stockWarning"
@@ -82,6 +86,11 @@ onMounted(() => {
       v-model="supplier"
       :label="t('suppliers.Supplier')"
       :options="suppliersStore.suppliersOptions"
+    />
+    <filterable-select
+      v-model="storageLocation"
+      :label="t('storage_locations.StorageLocation')"
+      :options="storageLocationsStore.storageLocationsOptions"
     />
   </div>
 

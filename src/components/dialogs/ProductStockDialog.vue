@@ -19,12 +19,12 @@ const stockCheck = computed(() => props.product.stock - stock.value < 0)
 
 const reduce = () => {
   if (stockCheck.value) {
-    return
+    return Promise.resolve()
   }
 
   quasar.loading.show()
 
-  productsStore
+  return productsStore
     .updateProduct({
       ...props.product,
       categories: props.product.categories.map((category) => category.id),

@@ -1,14 +1,37 @@
 import type { Brand } from '../types/brand.interfaces'
 import type { Category } from '../types/category.interfaces'
+import type { StorageLocation } from '../types/storage-location.interfaces'
 import type { Supplier } from '../types/supplier.interfaces'
 import type { Product, ProductEntity } from '../types/product.interfaces'
 
 // Internal entity list used by brand/category/supplier mocks
 const mockProductEntities: ProductEntity[] = [
-  { id: 1, uuid: 'product-uuid-1', name: 'Product 1', code: 'PRD001', stock: 10, min_stock_warning: 5, price: 100, brand_id: 1, description: 'Test product 1', supplier_id: 1, image_url: 'https://example.com/image1.jpg' },
-  { id: 2, uuid: 'product-uuid-2', name: 'Product 2', code: 'PRD002', stock: 20, min_stock_warning: 8, price: 200, brand_id: 1, description: 'Test product 2', supplier_id: 1, image_url: 'https://example.com/image2.jpg' },
-  { id: 3, uuid: 'product-uuid-3', name: 'Product 3', code: 'PRD003', stock: 15, min_stock_warning: 6, price: 150, brand_id: 1, description: 'Test product 3', supplier_id: 1, image_url: 'https://example.com/image3.jpg' }
+  { id: 1, uuid: 'product-uuid-1', name: 'Product 1', code: 'PRD001', stock: 10, min_stock_warning: 5, price: 100, brand_id: 1, description: 'Test product 1', supplier_id: 1, storage_location_id: 1, image_url: 'https://example.com/image1.jpg' },
+  { id: 2, uuid: 'product-uuid-2', name: 'Product 2', code: 'PRD002', stock: 20, min_stock_warning: 8, price: 200, brand_id: 1, description: 'Test product 2', supplier_id: 1, storage_location_id: 1, image_url: 'https://example.com/image2.jpg' },
+  { id: 3, uuid: 'product-uuid-3', name: 'Product 3', code: 'PRD003', stock: 15, min_stock_warning: 6, price: 150, brand_id: 1, description: 'Test product 3', supplier_id: 1, storage_location_id: null, image_url: 'https://example.com/image3.jpg' }
 ]
+
+// ── Storage Locations ────────────────────────────────────────────────────────
+
+export const mockStorageLocation: StorageLocation = {
+  id: 1,
+  uuid: 'storage-location-uuid-123',
+  name: 'Main Warehouse',
+  description: 'Primary location',
+  created_at: new Date(),
+  updated_at: new Date(),
+  products: mockProductEntities
+}
+
+export const mockStorageLocationNoProducts: StorageLocation = {
+  id: 2,
+  uuid: 'storage-location-uuid-456',
+  name: 'Secondary Warehouse',
+  description: 'Backup location',
+  created_at: new Date(),
+  updated_at: new Date(),
+  products: []
+}
 
 // ── Products ──────────────────────────────────────────────────────────────────
 
@@ -24,9 +47,11 @@ export const mockProducts: Product[] = [
     description: 'Test Description',
     brand_id: 1,
     supplier_id: 1,
+    storage_location_id: 1,
     image_url: 'https://example.com/image.jpg',
     brand: { id: 1, uuid: 'brand-uuid-123', name: 'Test Brand' },
     supplier: { id: 1, uuid: 'supplier-uuid-123', name: 'Test Supplier', email: 'supplier@example.com', phone: '1234567890', address: 'Test Address', web: 'https://example.com' },
+    storage_location: { id: 1, uuid: 'storage-location-uuid-123', name: 'Main Warehouse', description: 'Primary location' },
     categories: [],
     last_price_update: new Date('2024-01-01'),
     last_stock_update: new Date('2024-01-01'),
@@ -45,9 +70,11 @@ export const mockProducts: Product[] = [
     description: 'Another Description',
     brand_id: 2,
     supplier_id: 2,
+    storage_location_id: null,
     image_url: null,
     brand: null,
     supplier: null,
+    storage_location: null,
     categories: [],
     last_price_update: null,
     last_stock_update: null,

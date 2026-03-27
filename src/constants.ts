@@ -27,6 +27,11 @@ export const DRAWER_ITEMS: Link[] = [
     icon: 'people_alt'
   },
   {
+    to: '/storage-locations',
+    label: 'storage_locations.StorageLocations',
+    icon: 'warehouse'
+  },
+  {
     to: '/operations',
     label: 'operations.Operations',
     icon: 'swap_vert'

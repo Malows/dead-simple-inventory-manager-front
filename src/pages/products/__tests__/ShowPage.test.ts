@@ -146,6 +146,7 @@ describe('products/ShowPage.vue', () => {
     expect(mockLoadingHide).toHaveBeenCalledTimes(1)
     expect(wrapper.text()).toContain(mockProduct.name)
     expect(wrapper.text()).toContain(`$${mockProduct.price}`)
+    expect(wrapper.text()).toContain(mockProduct.storage_location?.name ?? '')
     expect(parsePrice).toHaveBeenCalledWith(mockProduct.price)
     expect(wrapper.findComponent({ name: 'QImg' }).exists()).toBe(true)
   })

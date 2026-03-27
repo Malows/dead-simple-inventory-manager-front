@@ -10,6 +10,7 @@ export const BRANDS_URL = `${URL}/brands`
 export const CATEGORIES_URL = `${URL}/categories`
 export const PRODUCTS_URL = `${URL}/products`
 export const SUPPLIERS_URL = `${URL}/suppliers`
+export const STORAGE_LOCATIONS_URL = `${URL}/storage-locations`
 
 // bulk operations
 export const BULK_OPERATIONS_URL = `${URL}/bulk-operations`

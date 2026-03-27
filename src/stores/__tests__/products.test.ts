@@ -20,9 +20,11 @@ const makeRawProduct = (
   price,
   brand_id: 1,
   supplier_id: 1,
+  storage_location_id: null,
   image_url: null,
   brand: null,
   supplier: null,
+  storage_location: null,
   categories: [],
   last_price_update: null,
   last_stock_update: null,
@@ -125,7 +127,8 @@ describe('products store', () => {
         description: null,
         price: 0,
         brand_id: null,
-        supplier_id: null
+        supplier_id: null,
+        storage_location_id: null
       })
       expect(store.products).toHaveLength(1)
     })
@@ -148,7 +151,8 @@ describe('products store', () => {
         description: null,
         price: 100,
         brand_id: 1,
-        supplier_id: 1
+        supplier_id: 1,
+        storage_location_id: null
       })
       expect(store.products[0].name).toBe('Edited')
     })
@@ -166,7 +170,8 @@ describe('products store', () => {
         description: null,
         price: 100,
         brand_id: 1,
-        supplier_id: 1
+        supplier_id: 1,
+        storage_location_id: null
       })
       expect(store.products).toHaveLength(1)
       expect(store.products[0].name).toBe('New in list')
@@ -198,9 +203,11 @@ describe('products store', () => {
         price: 100,
         brand_id: 1,
         supplier_id: 1,
+        storage_location_id: null,
         image_url: null,
         brand: null,
         supplier: null,
+        storage_location: null,
         categories: [],
         last_price_update: null,
         last_stock_update: null,

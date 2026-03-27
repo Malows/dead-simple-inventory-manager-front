@@ -160,4 +160,40 @@ describe('categories store', () => {
       expect(store.categoriesMap.get(1)!.name).toBe('Cat A')
     })
   })
+
+  describe('error paths (null data)', () => {
+    it('getCategories: does not update list when response.data is null', async () => {
+      vi.mocked(categoryService.fetch).mockResolvedValue(mockResponse(null, false))
+      await store.getCategories()
+      expect(store.categories).toHaveLength(0)
+    })
+
+    it('getCategory: does not update list when response.data is null', async () => {
+      vi.mocked(categoryService.get).mockResolvedValue(mockResponse(null, false))
+      await store.getCategory('c-uuid-1')
+      expect(store.categories).toHaveLength(0)
+    })
+
+    it('createCategory: does not add to list when response.data is null', async () => {
+      vi.mocked(categoryService.create).mockResolvedValue(mockResponse(null, false))
+      await store.createCategory({ name: 'Fail' })
+      expect(store.categories).toHaveLength(0)
+    })
+
+    it('updateCategory: does not modify list when response.data is null', async () => {
+      vi.mocked(categoryService.fetch).mockResolvedValue(mockResponse([makeRawCategory()]))
+      await store.getCategories()
+      vi.mocked(categoryService.update).mockResolvedValue(mockResponse(null, false))
+      await store.updateCategory({ id: 1, uuid: 'c-uuid-1', name: 'Cat A', created_at: new Date(), updated_at: new Date(), products: [] })
+      expect(store.categories[0].name).toBe('Cat A')
+    })
+
+    it('deleteCategory: does not modify list when response.data is null', async () => {
+      vi.mocked(categoryService.fetch).mockResolvedValue(mockResponse([makeRawCategory()]))
+      await store.getCategories()
+      vi.mocked(categoryService.remove).mockResolvedValue(mockResponse(null, false))
+      await store.deleteCategory(store.categories[0])
+      expect(store.categories).toHaveLength(1)
+    })
+  })
 })

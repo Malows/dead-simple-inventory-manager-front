@@ -174,4 +174,40 @@ describe('suppliers store', () => {
       expect(store.suppliersOptions).toEqual([{ label: 'Sup A', value: 1 }])
     })
   })
+
+  describe('error paths (null data)', () => {
+    it('getSuppliers: does not update list when response.data is null', async () => {
+      vi.mocked(supplierService.fetch).mockResolvedValue(mockResponse(null, false))
+      await store.getSuppliers()
+      expect(store.suppliers).toHaveLength(0)
+    })
+
+    it('getSupplier: does not update list when response.data is null', async () => {
+      vi.mocked(supplierService.get).mockResolvedValue(mockResponse(null, false))
+      await store.getSupplier('s-uuid-1')
+      expect(store.suppliers).toHaveLength(0)
+    })
+
+    it('createSupplier: does not add to list when response.data is null', async () => {
+      vi.mocked(supplierService.create).mockResolvedValue(mockResponse(null, false))
+      await store.createSupplier({ name: 'Fail', email: null, phone: null, address: null, web: null })
+      expect(store.suppliers).toHaveLength(0)
+    })
+
+    it('updateSupplier: does not modify list when response.data is null', async () => {
+      vi.mocked(supplierService.fetch).mockResolvedValue(mockResponse([makeRawSupplier()]))
+      await store.getSuppliers()
+      vi.mocked(supplierService.update).mockResolvedValue(mockResponse(null, false))
+      await store.updateSupplier({ id: 1, uuid: 's-uuid-1', name: 'Sup A', email: null, phone: null, address: null, web: null, created_at: new Date(), updated_at: new Date(), products: [] })
+      expect(store.suppliers[0].name).toBe('Sup A')
+    })
+
+    it('deleteSupplier: does not modify list when response.data is null', async () => {
+      vi.mocked(supplierService.fetch).mockResolvedValue(mockResponse([makeRawSupplier()]))
+      await store.getSuppliers()
+      vi.mocked(supplierService.remove).mockResolvedValue(mockResponse(null, false))
+      await store.deleteSupplier(store.suppliers[0])
+      expect(store.suppliers).toHaveLength(1)
+    })
+  })
 })
